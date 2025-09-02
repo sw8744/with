@@ -1,0 +1,93 @@
+import json
+
+from fastapi.testclient import TestClient
+from sqlalchemy.orm import Session
+
+from app.main import app
+from app.models.places.regions import RegionModel
+
+client = TestClient(app)
+
+
+def test_region_creation(
+  db: Session
+):
+  response = client.post(
+    "/places/region",
+    content=json.dumps({
+      "name": "홍대"
+    })
+  )
+
+  assert response.status_code == 201
+  assert response.json()['code'] == 201
+  assert response.json()['status'] == "Created"
+  assert response.json()['content']['name'] == "홍대"
+
+  db.query(RegionModel).delete()
+  db.commit()
+
+
+def test_region_read(
+  region: RegionModel,
+  db: Session
+):
+  response = client.get(
+    "/places/region",
+    params={
+      "name": "홍대"
+    }
+  )
+
+  assert response.status_code == 200
+  assert response.json()['code'] == 200
+  assert response.json()['status'] == "OK"
+  assert len(response.json()['content']) == 1
+  assert response.json()['content'][0]['name'] == "홍대, 연남"
+  assert response.json()['content'][0]['uid'] == str(region.uid)
+
+
+def test_region_patch(
+  region: RegionModel,
+  db: Session
+):
+  response = client.patch(
+    "/places/region/" + str(region.uid),
+    content=json.dumps({
+      "name": "신촌"
+    })
+  )
+
+  assert response.status_code == 200
+  assert response.json()['code'] == 200
+  assert response.json()['status'] == "OK"
+
+  patched_region: RegionModel = db.query(RegionModel).get(region.uid)
+  assert patched_region.name == "신촌"
+
+  db.delete(patched_region)
+  db.commit()
+
+
+def test_region_delete(
+  region: RegionModel,
+  db: Session
+):
+  response = client.delete(
+    "/places/region/" + str(region.uid),
+  )
+
+  assert response.status_code == 200
+  assert response.json()['code'] == 200
+  assert response.json()['status'] == "OK"
+  assert response.json()['deleted'] == 1
+
+
+def test_patch_null_region():
+  response = client.patch(
+    "/places/region/a2ffae9b-04be-4b29-a529-aa4e55146cc4",
+    content=json.dumps({
+      "name": "신촌"
+    })
+  )
+  assert response.status_code == 404
