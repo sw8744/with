@@ -12,7 +12,7 @@ from app.schemas.place import Place
 from app.schemas.place_reqs import AddPlace, PlaceSearchQuery, PatchPlace
 
 router = APIRouter(
-  prefix="/places/place",
+  prefix="/location/place",
   tags=["place"]
 )
 

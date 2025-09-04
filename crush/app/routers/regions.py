@@ -12,13 +12,13 @@ from app.schemas.region import Region
 from app.schemas.region_reqs import AddRegion, RegionSearchQuery, PatchRegion
 
 router = APIRouter(
-  prefix="/places",
+  prefix="/location/region",
   tags=["region"]
 )
 
 
 @router.get(
-  path="/region",
+  path="",
 )
 async def search_region(
   query: Annotated[RegionSearchQuery, Query()],
@@ -39,7 +39,7 @@ async def search_region(
 
 
 @router.post(
-  path="/region",
+  path="",
 )
 async def add_region(
   region: AddRegion,
@@ -55,7 +55,7 @@ async def add_region(
 
 
 @router.patch(
-  path="/region/{region_id}",
+  path="/{region_id}",
 )
 async def patch_region(
   region_id: UUID,
@@ -74,7 +74,7 @@ async def patch_region(
 
 
 @router.delete(
-  path="/region/{region_id}",
+  path="/{region_id}",
 )
 async def delete_region(
   region_id: UUID,

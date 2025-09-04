@@ -12,7 +12,7 @@ def test_place_creation(
   db: Session
 ):
   response = client.post(
-    "/places/place",
+    "/location/place",
     content=json.dumps({
       "name": "4233마음센터 연남점",
       "address": "서울 마포구 월드컵북로4길 43 지하1층"
@@ -34,7 +34,7 @@ def test_place_read_by_name(
   db: Session
 ):
   response = client.get(
-    "/places/place",
+    "/location/place",
     params={
       "name": "마음센터"
     }
@@ -54,7 +54,7 @@ def test_place_read_by_address(
   db: Session
 ):
   response = client.get(
-    "/places/place",
+    "/location/place",
     params={
       "address": "월드컵북로4길 43"
     }
@@ -74,7 +74,7 @@ def test_place_patch(
   db: Session
 ):
   response = client.patch(
-    "/places/place/" + str(place.uid),
+    "/location/place/" + str(place.uid),
     content=json.dumps({
       "coordinate": [37.558147, 126.921673]
     })
@@ -96,7 +96,7 @@ def test_place_patch(
 
 def test_patch_null_region():
   response = client.patch(
-    "/places/place/a2ffae9b-04be-4b29-a529-aa4e55146cc4",
+    "/location/place/a2ffae9b-04be-4b29-a529-aa4e55146cc4",
     content=json.dumps({
       "name": "룸이스케이프 홍대"
     })
@@ -108,7 +108,7 @@ def test_place_delete(
   place: PlaceModel
 ):
   response = client.delete(
-    "/places/place/" + str(place.uid),
+    "/location/place/" + str(place.uid),
   )
 
   assert response.status_code == 200
