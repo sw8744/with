@@ -1,7 +1,7 @@
 from uuid import UUID as PyUUID
 
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID, VARCHAR, FLOAT, ARRAY
+from sqlalchemy.dialects.postgresql import UUID, VARCHAR, FLOAT, ARRAY, JSONB
 from sqlalchemy.orm import Mapped, relationship, backref
 
 from app.database import BaseTable
@@ -20,6 +20,7 @@ class PlaceModel(BaseTable):
   coordinate: Mapped[list[float]] = Column(ARRAY(FLOAT))
   address: Mapped[str] = Column(VARCHAR(128))
   region_uid: Mapped[PyUUID] = Column(UUID(as_uuid=True), ForeignKey('locations.regions.uid'))
+  place_meta: Mapped[dict] = Column('metadata', JSONB)
 
   region: Mapped[RegionModel] = relationship(
     "RegionModel",

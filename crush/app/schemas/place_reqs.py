@@ -35,6 +35,9 @@ class AddPlace(BaseModel):
     default=None,
     min_length=1, max_length=128
   )
+  metadata: dict = Field(
+    default={}
+  )
   region_uid: UUID = Field(default=None)
 
 
@@ -52,3 +55,6 @@ class PatchPlace(BaseModel):
     min_length=1, max_length=128
   )
   region_uid: UUID = Field(default=None)
+  metadata: dict = Field(
+    default=None
+  )

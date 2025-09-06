@@ -19,11 +19,12 @@ def add_place(
   place_data: AddPlace,
   db: Session
 ) -> Place:
-  place = PlaceModel()
+  place: PlaceModel = PlaceModel()
   place.name = place_data.name
   place.region_uid = place_data.region_uid
   place.coordinate = place_data.coordinate
   place.address = place_data.address
+  place.place_meta = place_data.metadata
 
   db.add(place)
   db.commit()
@@ -33,12 +34,21 @@ def add_place(
     name=place.name,
     coordinate=place.coordinate,
     address=place.address,
-    region_uid=place.region_uid
+    region_uid=place.region_uid,
+    metadata=place.place_meta,
   )
 
+# TODO: 허용 검색 쿼리 가변적으로 만들기
+ALLOWED_QUERY = {
+  'parking': bool,
+  'reservation': bool,
+  'contact': str,
+  'instagram': str
+}
 
 def search_place(
   q: PlaceSearchQuery,
+  meta: dict[str, str],
   db: Session
 ) -> list[Place]:
   query = db.query(PlaceModel)
@@ -51,11 +61,28 @@ def search_place(
     )
   else:
     if q.name is not None:
-      query.filter(PlaceModel.name.like("%"+q.name+"%"))
+      query = query.filter(PlaceModel.name.like("%"+q.name+"%"))
     if q.region_uid is not None:
-      query.filter(PlaceModel.region_uid == q.region_uid)
+      query = query.filter(PlaceModel.region_uid == q.region_uid)
     if q.address is not None:
-      query.filter(PlaceModel.address.like("%"+q.address+"%"))
+      query = query.filter(PlaceModel.address.like("%"+q.address+"%"))
+    if meta is not None:
+      for key in meta.keys():
+        type = ALLOWED_QUERY.get(key, None)
+        if type is not None:
+          try:
+            if type == bool:
+              val = meta[key] == 'true'
+            elif type == str:
+              val = meta[key]
+            elif type == int:
+              val = int(meta[key])
+            else:
+              val = meta[key]
+          except:
+            val = meta[key]
+          query = query.filter(PlaceModel.place_meta.contains({key: val}))
+
     query.limit(q.limit)
     places_db = query.all()
 
@@ -67,7 +94,8 @@ def search_place(
         name=place.name,
         coordinate=place.coordinate,
         address=place.address,
-        region_uid=place.region_uid
+        region_uid=place.region_uid,
+        metadata=place.place_meta,
       )
     )
 
@@ -109,5 +137,17 @@ def patch_place(
     place.coordinate = query.coordinate
   if query.address is not None:
     place.address = query.address
+  if query.metadata is not None:
+    meta = {}
+    for key in query.metadata.keys():
+      type = ALLOWED_QUERY.get(key, None)
+      if(
+        query.metadata[key] is not None and
+        type is not None and
+        isinstance(query.metadata[key], type)
+      ):
+        meta[key] = query.metadata[key]
+
+    place.place_meta = meta
 
   db.commit()

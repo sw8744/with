@@ -4,7 +4,7 @@ function Header() {
   return (
     <header
       className={
-        'w-screen shadow px-5 ' +
+        'w-full shadow px-5 ' +
         'flex justify-between'
       }
     >

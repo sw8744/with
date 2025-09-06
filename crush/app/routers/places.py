@@ -3,10 +3,11 @@ from uuid import UUID
 
 from fastapi import APIRouter, Query, Depends, HTTPException
 from sqlalchemy.orm import Session
+from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from app.core.exceptions.exceptions import ItemNotFoundError
-from app.core.region import core_region, core_place
+from app.core.location import core_region, core_place
 from app.database import create_connection
 from app.schemas.place import Place
 from app.schemas.place_reqs import AddPlace, PlaceSearchQuery, PatchPlace
@@ -22,18 +23,21 @@ router = APIRouter(
 )
 async def search_place(
   query: Annotated[PlaceSearchQuery, Query()],
+  request: Request,
   db: Session = Depends(create_connection)
 ):
-  regions: list[Place] = core_place.search_place(query, db)
+  metadata = dict(request.query_params)
 
-  if len(regions) == 0:
+  places: list[Place] = core_place.search_place(query, metadata, db)
+
+  if len(places) == 0:
     raise HTTPException(status_code=404, detail="No place was found")
   else:
     return JSONResponse({
       "code": 200,
       "status": "OK",
       "content": [
-        r.model_dump() for r in regions
+        r.model_dump() for r in places
       ]
     })
 

@@ -29,7 +29,11 @@ def place():
   place = PlaceModel(
     name="4233마음센터 연남점",
     address="서울 마포구 월드컵북로4길 43 지하1층",
-    region_uid=region.uid
+    region_uid=region.uid,
+    place_meta={
+      "parking": False,
+      "reservation": True,
+    }
   )
   db.add(place)
   db.commit()

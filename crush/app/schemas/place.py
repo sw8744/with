@@ -18,6 +18,9 @@ class Place(BaseModel):
     min_length=1, max_length=128
   )
   region_uid: Optional[UUID] = Field(default=None)
+  metadata: dict = Field(
+    default={}
+  )
 
 
   @field_serializer('uid')

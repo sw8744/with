@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
 from app.core.exceptions.exceptions import ItemNotFoundError
-from app.core.region import core_region
+from app.core.location import core_region
 from app.database import create_connection
 from app.schemas.region import Region
 from app.schemas.region_reqs import AddRegion, RegionSearchQuery, PatchRegion

@@ -1,4 +1,5 @@
 import json
+from http.client import responses
 
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
@@ -15,7 +16,11 @@ def test_place_creation(
     "/location/place",
     content=json.dumps({
       "name": "4233마음센터 연남점",
-      "address": "서울 마포구 월드컵북로4길 43 지하1층"
+      "address": "서울 마포구 월드컵북로4길 43 지하1층",
+      "metadata": {
+        "parking": False,
+        "reservation": True
+      }
     })
   )
 
@@ -24,6 +29,8 @@ def test_place_creation(
   assert response.json()['status'] == "Created"
   assert response.json()['content']['name'] == "4233마음센터 연남점"
   assert response.json()['content']['address'] == "서울 마포구 월드컵북로4길 43 지하1층"
+  assert dict(response.json()['content']['metadata']).get("parking", None) == False
+  assert dict(response.json()['content']['metadata']).get("reservation", None) == True
 
   db.query(PlaceModel).delete()
   db.commit()
@@ -69,6 +76,53 @@ def test_place_read_by_address(
   assert response.json()['content'][0]['uid'] == str(place.uid)
 
 
+def test_place_read_by_metadata(
+  place: PlaceModel,
+  db: Session
+):
+  response = client.get(
+    "/location/place",
+    params={
+      "reservation": True,
+      "parking": False,
+    }
+  )
+
+  assert response.status_code == 200
+  assert response.json()['code'] == 200
+  assert response.json()['status'] == "OK"
+  assert len(response.json()['content']) == 1
+  assert response.json()['content'][0]['name'] == "4233마음센터 연남점"
+  assert response.json()['content'][0]['address'] == "서울 마포구 월드컵북로4길 43 지하1층"
+  assert response.json()['content'][0]['uid'] == str(place.uid)
+
+def test_place_search_nothing(
+  place: PlaceModel,
+  db: Session
+):
+  response = client.get(
+    "/location/place",
+    params={
+      "name": "메가박스"
+    }
+  )
+
+  assert response.status_code == 404
+
+def test_place_search_nothing_from_param(
+  place: PlaceModel,
+  db: Session
+):
+  response = client.get(
+    "/location/place",
+    params={
+      "parking": True
+    }
+  )
+
+  assert response.status_code == 404
+
+
 def test_place_patch(
   place: PlaceModel,
   db: Session
@@ -76,7 +130,11 @@ def test_place_patch(
   response = client.patch(
     "/location/place/" + str(place.uid),
     content=json.dumps({
-      "coordinate": [37.558147, 126.921673]
+      "coordinate": [37.558147, 126.921673],
+      "metadata": {
+        "parking": True,
+        "reservation": True
+      }
     })
   )
 
@@ -89,6 +147,42 @@ def test_place_patch(
   assert patched_place.address == "서울 마포구 월드컵북로4길 43 지하1층"
   assert patched_place.coordinate == [37.558147, 126.921673]
   assert patched_place.uid == place.uid
+  assert patched_place.place_meta == {
+    "parking": True,
+    "reservation": True,
+  }
+
+  db.delete(patched_place)
+  db.commit()
+
+
+def test_place_patch_meta_not_set(
+  place: PlaceModel,
+  db: Session
+):
+  response = client.patch(
+    "/location/place/" + str(place.uid),
+    content=json.dumps({
+      "coordinate": [37.558147, 126.921673],
+      "metadata": {
+        "parking": "True",
+        "reservation": False
+      }
+    })
+  )
+
+  assert response.status_code == 200
+  assert response.json()['code'] == 200
+  assert response.json()['status'] == "OK"
+
+  patched_place: PlaceModel = db.query(PlaceModel).get(place.uid)
+  assert patched_place.name == "4233마음센터 연남점"
+  assert patched_place.address == "서울 마포구 월드컵북로4길 43 지하1층"
+  assert patched_place.coordinate == [37.558147, 126.921673]
+  assert patched_place.uid == place.uid
+  assert patched_place.place_meta == {
+    "reservation": False
+  }
 
   db.delete(patched_place)
   db.commit()
