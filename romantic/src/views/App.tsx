@@ -1,8 +1,8 @@
 import "../style/univ.css"
 import Footer from "./outline/Footer.tsx";
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Header from "./outline/Header.tsx";
-import Locations from "./location/Locations.tsx";
+import Regions from "./location/Regions.tsx";
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route
             path={'/location'}
-            element={<Locations/>}
+            element={<Regions/>}
           />
         </Routes>
       </main>
