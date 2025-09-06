@@ -12,7 +12,7 @@ from app.schemas.region import Region
 from app.schemas.region_reqs import AddRegion, RegionSearchQuery, PatchRegion
 
 router = APIRouter(
-  prefix="/location/region",
+  prefix="/api/v1/location/region",
   tags=["region"]
 )
 
