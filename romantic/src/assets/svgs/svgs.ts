@@ -4,6 +4,9 @@ import LocationIcon from './location.fill.svg?react'
 import PhoneAndClockIcon from './phone.badge.clock.svg?react'
 import ClockIcon from './clock.svg?react'
 import CheckListIcon from './checklist.svg?react'
+import LogoGoogleIcon from './logo.google.svg?react'
+import CheckMarkIcon from './checkmark.circle.fill.svg?react'
+import XMarkIcon from './x.circle.fill.svg?react'
 
 export {
   RouteIcon,
@@ -11,5 +14,8 @@ export {
   LocationIcon,
   PhoneAndClockIcon,
   ClockIcon,
-  CheckListIcon
+  CheckListIcon,
+  LogoGoogleIcon,
+  CheckMarkIcon,
+  XMarkIcon,
 }

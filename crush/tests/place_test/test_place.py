@@ -1,5 +1,4 @@
 import json
-from http.client import responses
 
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
@@ -9,11 +8,12 @@ from app.models.places.places import PlaceModel
 
 client = TestClient(app)
 
+
 def test_place_creation(
   db: Session
 ):
   response = client.post(
-    "/location/place",
+    "/api/v1/location/place",
     content=json.dumps({
       "name": "4233마음센터 연남점",
       "address": "서울 마포구 월드컵북로4길 43 지하1층",
@@ -41,7 +41,7 @@ def test_place_read_by_name(
   db: Session
 ):
   response = client.get(
-    "/location/place",
+    "/api/v1/location/place",
     params={
       "name": "마음센터"
     }
@@ -61,7 +61,7 @@ def test_place_read_by_address(
   db: Session
 ):
   response = client.get(
-    "/location/place",
+    "/api/v1/location/place",
     params={
       "address": "월드컵북로4길 43"
     }
@@ -81,7 +81,7 @@ def test_place_read_by_metadata(
   db: Session
 ):
   response = client.get(
-    "/location/place",
+    "/api/v1/location/place",
     params={
       "reservation": True,
       "parking": False,
@@ -96,12 +96,13 @@ def test_place_read_by_metadata(
   assert response.json()['content'][0]['address'] == "서울 마포구 월드컵북로4길 43 지하1층"
   assert response.json()['content'][0]['uid'] == str(place.uid)
 
+
 def test_place_search_nothing(
   place: PlaceModel,
   db: Session
 ):
   response = client.get(
-    "/location/place",
+    "/api/v1/location/place",
     params={
       "name": "메가박스"
     }
@@ -109,12 +110,13 @@ def test_place_search_nothing(
 
   assert response.status_code == 404
 
+
 def test_place_search_nothing_from_param(
   place: PlaceModel,
   db: Session
 ):
   response = client.get(
-    "/location/place",
+    "/api/v1/location/place",
     params={
       "parking": True
     }
@@ -128,7 +130,7 @@ def test_place_patch(
   db: Session
 ):
   response = client.patch(
-    "/location/place/" + str(place.uid),
+    "/api/v1/location/place/" + str(place.uid),
     content=json.dumps({
       "coordinate": [37.558147, 126.921673],
       "metadata": {
@@ -161,7 +163,7 @@ def test_place_patch_meta_not_set(
   db: Session
 ):
   response = client.patch(
-    "/location/place/" + str(place.uid),
+    "/api/v1/location/place/" + str(place.uid),
     content=json.dumps({
       "coordinate": [37.558147, 126.921673],
       "metadata": {
@@ -190,7 +192,7 @@ def test_place_patch_meta_not_set(
 
 def test_patch_null_region():
   response = client.patch(
-    "/location/place/a2ffae9b-04be-4b29-a529-aa4e55146cc4",
+    "/api/v1/location/place/a2ffae9b-04be-4b29-a529-aa4e55146cc4",
     content=json.dumps({
       "name": "룸이스케이프 홍대"
     })
@@ -202,7 +204,7 @@ def test_place_delete(
   place: PlaceModel
 ):
   response = client.delete(
-    "/location/place/" + str(place.uid),
+    "/api/v1/location/place/" + str(place.uid),
   )
 
   assert response.status_code == 200

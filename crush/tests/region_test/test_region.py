@@ -13,7 +13,7 @@ def test_region_creation(
   db: Session
 ):
   response = client.post(
-    "/location/region",
+    "/api/v1/location/region",
     content=json.dumps({
       "name": "홍대"
     })
@@ -33,7 +33,7 @@ def test_region_read(
   db: Session
 ):
   response = client.get(
-    "/location/region",
+    "/api/v1/location/region",
     params={
       "name": "홍대"
     }
@@ -52,7 +52,7 @@ def test_region_patch(
   db: Session
 ):
   response = client.patch(
-    "/location/region/" + str(region.uid),
+    "/api/v1/location/region/" + str(region.uid),
     content=json.dumps({
       "name": "신촌"
     })
@@ -74,7 +74,7 @@ def test_region_delete(
   db: Session
 ):
   response = client.delete(
-    "/location/region/" + str(region.uid),
+    "/api/v1/location/region/" + str(region.uid),
   )
 
   assert response.status_code == 200
@@ -85,7 +85,7 @@ def test_region_delete(
 
 def test_patch_null_region():
   response = client.patch(
-    "/location/region/a2ffae9b-04be-4b29-a529-aa4e55146cc4",
+    "/api/v1/location/region/a2ffae9b-04be-4b29-a529-aa4e55146cc4",
     content=json.dumps({
       "name": "신촌"
     })

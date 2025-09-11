@@ -7,10 +7,10 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from app.core.exceptions.exceptions import ItemNotFoundError
-from app.core.location import core_region, core_place
+from app.core.location import core_place
 from app.database import create_connection
-from app.schemas.place import Place
-from app.schemas.place_reqs import AddPlace, PlaceSearchQuery, PatchPlace
+from app.schemas.location.place import Place
+from app.schemas.location.place_reqs import AddPlace, PlaceSearchQuery, PatchPlace
 
 router = APIRouter(
   prefix="/api/v1/location/place",

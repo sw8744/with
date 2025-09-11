@@ -1,3 +1,4 @@
+import redis
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -26,12 +27,35 @@ def create_connection():
     db.close()
 
 
-'''
-redis_db = redis.Redis(
+from sqlalchemy.types import TypeDecorator, String
+
+
+class EnumAsValue(TypeDecorator):
+  impl = String
+
+  def __init__(self, enumtype, *args, **kwargs):
+    self._enumtype = enumtype
+    super().__init__(*args, **kwargs)
+
+  def process_bind_param(self, value, dialect):
+    return value.value if value is not None else None
+
+  def process_result_value(self, value, dialect):
+    return self._enumtype(value) if value is not None else None
+
+
+redis_db0 = redis.Redis(
   host=config['database']["redis"]["host"],
   port=config['database']["redis"]["port"],
   password=config['database']["redis"]["password"],
   db=0,
   decode_responses=True
 )
-'''
+
+redis_refresh_token_blacklist_db1 = redis.Redis(
+  host=config['database']["redis"]["host"],
+  port=config['database']["redis"]["port"],
+  password=config['database']["redis"]["password"],
+  db=1,
+  decode_responses=True
+)

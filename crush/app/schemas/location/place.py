@@ -22,7 +22,6 @@ class Place(BaseModel):
     default={}
   )
 
-
   @field_serializer('uid')
   def serialize_uid(self, uid: UUID):
     return str(uid)

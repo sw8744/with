@@ -8,8 +8,8 @@ from starlette.responses import JSONResponse
 from app.core.exceptions.exceptions import ItemNotFoundError
 from app.core.location import core_region
 from app.database import create_connection
-from app.schemas.region import Region
-from app.schemas.region_reqs import AddRegion, RegionSearchQuery, PatchRegion
+from app.schemas.location.region import Region
+from app.schemas.location.region_reqs import AddRegion, RegionSearchQuery, PatchRegion
 
 router = APIRouter(
   prefix="/api/v1/location/region",

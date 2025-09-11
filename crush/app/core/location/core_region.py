@@ -6,8 +6,8 @@ from sqlalchemy.orm import Session
 
 from app.core.exceptions.exceptions import ItemNotFoundError
 from app.models.places.regions import RegionModel
-from app.schemas.region import Region
-from app.schemas.region_reqs import AddRegion, RegionSearchQuery, PatchRegion
+from app.schemas.location.region import Region
+from app.schemas.location.region_reqs import AddRegion, RegionSearchQuery, PatchRegion
 
 log = logging.getLogger(__name__)
 
@@ -32,7 +32,6 @@ def search_region(
   query: RegionSearchQuery,
   db: Session
 ) -> list[Region]:
-
   if query.uid is not None:
     regions_db = (
       db.query(RegionModel)

@@ -16,6 +16,7 @@ SQLALCHEMY_DATABASE_URL = "postgresql://{user}:{password}@{host}:{port}/{dbname}
 db_engine = create_engine(SQLALCHEMY_DATABASE_URL)
 session = sessionmaker(autocommit=False, autoflush=False, bind=db_engine)
 
+
 @pytest.fixture
 def region():
   db = session()

@@ -6,11 +6,8 @@ from sqlalchemy.orm import Session
 
 from app.core.exceptions.exceptions import ItemNotFoundError
 from app.models.places.places import PlaceModel
-from app.models.places.regions import RegionModel
-from app.schemas.place import Place
-from app.schemas.place_reqs import AddPlace, PatchPlace, PlaceSearchQuery
-from app.schemas.region import Region
-from app.schemas.region_reqs import AddRegion, RegionSearchQuery, PatchRegion
+from app.schemas.location.place import Place
+from app.schemas.location.place_reqs import AddPlace, PatchPlace, PlaceSearchQuery
 
 log = logging.getLogger(__name__)
 
@@ -38,6 +35,7 @@ def add_place(
     metadata=place.place_meta,
   )
 
+
 # TODO: 허용 검색 쿼리 가변적으로 만들기
 ALLOWED_QUERY = {
   'parking': bool,
@@ -45,6 +43,7 @@ ALLOWED_QUERY = {
   'contact': str,
   'instagram': str
 }
+
 
 def search_place(
   q: PlaceSearchQuery,
@@ -61,11 +60,11 @@ def search_place(
     )
   else:
     if q.name is not None:
-      query = query.filter(PlaceModel.name.like("%"+q.name+"%"))
+      query = query.filter(PlaceModel.name.like("%" + q.name + "%"))
     if q.region_uid is not None:
       query = query.filter(PlaceModel.region_uid == q.region_uid)
     if q.address is not None:
-      query = query.filter(PlaceModel.address.like("%"+q.address+"%"))
+      query = query.filter(PlaceModel.address.like("%" + q.address + "%"))
     if meta is not None:
       for key in meta.keys():
         type = ALLOWED_QUERY.get(key, None)
@@ -141,7 +140,7 @@ def patch_place(
     meta = {}
     for key in query.metadata.keys():
       type = ALLOWED_QUERY.get(key, None)
-      if(
+      if (
         query.metadata[key] is not None and
         type is not None and
         isinstance(query.metadata[key], type)

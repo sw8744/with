@@ -24,7 +24,8 @@ function Footer() {
   return (
     <footer
       className={
-        'w-full grid grid-cols-3 ' +
+        'fixed bottom-0 left-0 ' +
+        'w-full grid grid-cols-3 bg-light ' +
         'border-t border-t-neutral-300'
       }
     >
