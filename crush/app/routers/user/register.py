@@ -49,6 +49,7 @@ def register_user(
     max_age=2592000,
     httponly=True,
     samesite='strict',
-    secure=config['cookie']['secure']
+    secure=config['cookie']['secure'],
+    path='/api/v1'
   )
   return response
