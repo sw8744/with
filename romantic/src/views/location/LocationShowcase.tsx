@@ -64,7 +64,9 @@ function LocationShowcase() {
         title={'예약 정보'}
         icon={<PhoneAndClockIcon height={22}/>}
       >
-        <p><Link to={'https://map.naver.com/p/search/4233%EB%A7%88%EC%9D%8C%EC%84%BC%ED%84%B0/place/1521554569?placePath=/ticket?entry=pll&from=nx&fromNxList=true&from=map&fromPanelNum=2&timestamp=202509041257&locale=ko&svcName=map_pcv5&searchText=4233%EB%A7%88%EC%9D%8C%EC%84%BC%ED%84%B0&from=map&fromNxList=true&fromPanelNum=2&timestamp=202509041257&locale=ko&svcName=map_pcv5&searchText=4233%EB%A7%88%EC%9D%8C%EC%84%BC%ED%84%B0&searchType=place&c=15.00,0,0,0,dh'}>예약 링크</Link></p>
+        <p><Link
+          to={'https://map.naver.com/p/search/4233%EB%A7%88%EC%9D%8C%EC%84%BC%ED%84%B0/place/1521554569?placePath=/ticket?entry=pll&from=nx&fromNxList=true&from=map&fromPanelNum=2&timestamp=202509041257&locale=ko&svcName=map_pcv5&searchText=4233%EB%A7%88%EC%9D%8C%EC%84%BC%ED%84%B0&from=map&fromNxList=true&fromPanelNum=2&timestamp=202509041257&locale=ko&svcName=map_pcv5&searchText=4233%EB%A7%88%EC%9D%8C%EC%84%BC%ED%84%B0&searchType=place&c=15.00,0,0,0,dh'}>예약
+          링크</Link></p>
         <p><Link to={'tel://023381114'}>02-338-1114</Link></p>
       </InformationArea>
 
