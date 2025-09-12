@@ -16,12 +16,14 @@ def add_place(
   place_data: AddPlace,
   db: Session
 ) -> Place:
-  place: PlaceModel = PlaceModel()
-  place.name = place_data.name
-  place.region_uid = place_data.region_uid
-  place.coordinate = place_data.coordinate
-  place.address = place_data.address
-  place.place_meta = place_data.metadata
+  place: PlaceModel = PlaceModel(
+    name=place_data.name,
+    description=place_data.description,
+    region_uid=place_data.region_uid,
+    coordinate=place_data.coordinate,
+    address=place_data.address,
+    place_meta=place_data.metadata
+  )
 
   db.add(place)
   db.commit()
@@ -29,6 +31,7 @@ def add_place(
   return Place(
     uid=place.uid,
     name=place.name,
+    description=place.description,
     coordinate=place.coordinate,
     address=place.address,
     region_uid=place.region_uid,
@@ -91,6 +94,7 @@ def search_place(
       Place(
         uid=place.uid,
         name=place.name,
+        description=place.description,
         coordinate=place.coordinate,
         address=place.address,
         region_uid=place.region_uid,
@@ -130,6 +134,8 @@ def patch_place(
 
   if query.name is not None:
     place.name = query.name
+  if query.description is not None:
+    place.description = query.description
   if query.region_uid is not None:
     place.region_uid = query.region_uid
   if query.coordinate is not None:

@@ -1,7 +1,6 @@
 import axios from "axios";
 import store from "../redux/RootReducer.ts";
 import {refreshAccessToken} from "./apiAccessTokenInterceptor.ts";
-import {userInfoAction} from "../redux/UserInfoReducer.ts";
 
 const api = axios.create({
   baseURL: '/api/v1/',

@@ -1,3 +1,4 @@
+from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel, Field
@@ -5,7 +6,7 @@ from pydantic import BaseModel, Field
 
 class RegionSearchQuery(BaseModel):
   name: str = Field(
-    default=None,
+    default='',
     min_length=1, max_length=64,
   )
   uid: UUID = Field(default=None)
@@ -14,12 +15,21 @@ class RegionSearchQuery(BaseModel):
 
 class AddRegion(BaseModel):
   name: str = Field(
-    min_length=1, max_length=64,
+    default='',
+    min_length=0, max_length=64,
+  )
+  description: str = Field(
+    default='',
+    min_length=0, max_length=512
   )
 
 
 class PatchRegion(BaseModel):
-  name: str = Field(
+  name: Optional[str] = Field(
     default=None,
-    min_length=1, max_length=64,
+    min_length=0, max_length=64,
+  )
+  description: Optional[str] = Field(
+    default=None,
+    min_length=0, max_length=512
   )

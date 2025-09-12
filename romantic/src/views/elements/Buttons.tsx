@@ -5,20 +5,21 @@ interface ButtonPropsType {
   onClick?: () => void
   children: ReactNode;
   className?: string;
-  theme?: 'default' | 'white';
+  theme?: 'default' | 'white' | 'clear';
 }
 
 interface LinkPropsType {
   to?: string;
   children: ReactNode;
   className?: string;
-  theme?: 'default' | 'white';
+  theme?: 'default' | 'white' | 'clear';
   reloadDocument?: boolean
 }
 
 const themeClass = {
   'default': 'bg-blue-500 !text-light shadow-sm shadow-neutral-200 hover:shadow-md hover:shadow-neutral-300',
-  'white': 'bg-light border border-neutral-300 shadow-sm shadow-neutral-200 hover:shadow-md hover:shadow-neutral-300'
+  'white': 'bg-light border border-neutral-300 shadow-sm shadow-neutral-200 hover:shadow-md hover:shadow-neutral-300',
+  'clear': 'bg-transparent border-none'
 }
 
 function Button(

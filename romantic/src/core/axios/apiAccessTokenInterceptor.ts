@@ -1,7 +1,7 @@
 import {userInfoAction, type UserSignInType} from "../redux/UserInfoReducer.ts";
 import {api} from "./withAxios.ts";
 import type {userAPI} from "../apiResponseInterfaces/user.ts";
-import axios, {isAxiosError} from "axios";
+import axios from "axios";
 import type {authAuthorizeAPI, authRefreshAPI} from "../apiResponseInterfaces/authentication.ts";
 import store from "../redux/RootReducer.ts";
 

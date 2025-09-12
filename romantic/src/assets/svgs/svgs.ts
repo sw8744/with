@@ -7,6 +7,7 @@ import CheckListIcon from './checklist.svg?react'
 import LogoGoogleIcon from './logo.google.svg?react'
 import CheckMarkIcon from './checkmark.circle.fill.svg?react'
 import XMarkIcon from './x.circle.fill.svg?react'
+import GearIcon from './gearshape.fill.svg?react'
 
 export {
   RouteIcon,
@@ -18,4 +19,5 @@ export {
   LogoGoogleIcon,
   CheckMarkIcon,
   XMarkIcon,
+  GearIcon
 }

@@ -17,6 +17,7 @@ def test_place_creation(
     content=json.dumps({
       "name": "4233마음센터 연남점",
       "address": "서울 마포구 월드컵북로4길 43 지하1층",
+      "description": "하트시그널",
       "metadata": {
         "parking": False,
         "reservation": True
@@ -28,11 +29,12 @@ def test_place_creation(
   assert response.json()['code'] == 201
   assert response.json()['status'] == "Created"
   assert response.json()['content']['name'] == "4233마음센터 연남점"
+  assert response.json()['content']['description'] == "하트시그널"
   assert response.json()['content']['address'] == "서울 마포구 월드컵북로4길 43 지하1층"
   assert dict(response.json()['content']['metadata']).get("parking", None) == False
   assert dict(response.json()['content']['metadata']).get("reservation", None) == True
 
-  db.query(PlaceModel).delete()
+  db.query(PlaceModel).filter(PlaceModel.uid == response.json()['content']['uid']).delete()
   db.commit()
 
 
@@ -52,6 +54,7 @@ def test_place_read_by_name(
   assert response.json()['status'] == "OK"
   assert len(response.json()['content']) == 1
   assert response.json()['content'][0]['name'] == "4233마음센터 연남점"
+  assert response.json()['content'][0]['description'] == "하트시그널"
   assert response.json()['content'][0]['address'] == "서울 마포구 월드컵북로4길 43 지하1층"
   assert response.json()['content'][0]['uid'] == str(place.uid)
 
@@ -72,6 +75,7 @@ def test_place_read_by_address(
   assert response.json()['status'] == "OK"
   assert len(response.json()['content']) == 1
   assert response.json()['content'][0]['name'] == "4233마음센터 연남점"
+  assert response.json()['content'][0]['description'] == "하트시그널"
   assert response.json()['content'][0]['address'] == "서울 마포구 월드컵북로4길 43 지하1층"
   assert response.json()['content'][0]['uid'] == str(place.uid)
 
@@ -93,6 +97,7 @@ def test_place_read_by_metadata(
   assert response.json()['status'] == "OK"
   assert len(response.json()['content']) == 1
   assert response.json()['content'][0]['name'] == "4233마음센터 연남점"
+  assert response.json()['content'][0]['description'] == "하트시그널"
   assert response.json()['content'][0]['address'] == "서울 마포구 월드컵북로4길 43 지하1층"
   assert response.json()['content'][0]['uid'] == str(place.uid)
 
@@ -132,6 +137,7 @@ def test_place_patch(
   response = client.patch(
     "/api/v1/location/place/" + str(place.uid),
     content=json.dumps({
+      "description": "환승연애",
       "coordinate": [37.558147, 126.921673],
       "metadata": {
         "parking": True,
@@ -146,6 +152,7 @@ def test_place_patch(
 
   patched_place: PlaceModel = db.query(PlaceModel).get(place.uid)
   assert patched_place.name == "4233마음센터 연남점"
+  assert patched_place.description == "환승연애"
   assert patched_place.address == "서울 마포구 월드컵북로4길 43 지하1층"
   assert patched_place.coordinate == [37.558147, 126.921673]
   assert patched_place.uid == place.uid

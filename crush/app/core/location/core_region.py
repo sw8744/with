@@ -16,15 +16,18 @@ def add_region(
   region_data: AddRegion,
   db: Session
 ) -> Region:
-  region = RegionModel()
-  region.name = region_data.name
+  region = RegionModel(
+    name=region_data.name,
+    description=region_data.description,
+  )
 
   db.add(region)
   db.commit()
 
   return Region(
     uid=region.uid,
-    name=region.name
+    name=region.name,
+    description=region.description,
   )
 
 
@@ -38,20 +41,23 @@ def search_region(
       .filter(RegionModel.uid == query.uid)
       .all()
     )
-  else:
+  elif query.name is not None:
     regions_db = (
       db.query(RegionModel)
       .filter(RegionModel.name.like("%" + query.name + "%"))
       .limit(query.limit)
       .all()
     )
+  else:
+    regions_db = []
 
   regions: list[Region] = []
   for region in regions_db:
     regions.append(
       Region(
         uid=region.uid,
-        name=region.name
+        name=region.name,
+        description=region.description
       )
     )
 
@@ -87,5 +93,7 @@ def patch_region(
 
   if query.name is not None:
     region.name = query.name
+  if query.description is not None:
+    region.description = query.description
 
   db.commit()

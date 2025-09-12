@@ -8,6 +8,10 @@ class Region(BaseModel):
   name: str = Field(
     min_length=1, max_length=64,
   )
+  description: str = Field(
+    default='',
+    min_length=0, max_length=512
+  )
 
   @field_serializer('uid')
   def serialize_uid(self, uid: UUID):

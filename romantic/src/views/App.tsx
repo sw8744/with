@@ -2,7 +2,7 @@ import "../style/univ.css"
 import Footer from "./outline/Footer.tsx";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Header from "./outline/Header.tsx";
-import Regions from "./location/Regions.tsx";
+import CoreLocation from "./location/CoreLocation.tsx";
 import CoreLogin from "./auth/authentication/login/CoreLogin.tsx";
 import GoogleRegister from "./auth/signup/GoogleRegister.tsx";
 import SetJwt from "./auth/authentication/login/SetJwt.tsx";
@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route
             path={'/location'}
-            element={<Regions/>}
+            element={<CoreLocation/>}
           />
 
           <Route

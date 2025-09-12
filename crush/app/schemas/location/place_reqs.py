@@ -1,20 +1,21 @@
+from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel, Field
 
 
 class PlaceSearchQuery(BaseModel):
-  name: str = Field(
+  name: Optional[str] = Field(
     default=None,
     min_length=1, max_length=64,
   )
-  uid: UUID = Field(default=None)
-  region_uid: UUID = Field(default=None)
-  coordinate: list[float] = Field(
+  uid: Optional[UUID] = Field(default=None)
+  region_uid: Optional[UUID] = Field(default=None)
+  coordinate: Optional[list[float]] = Field(
     default=None,
     min_length=2, max_length=2
   )
-  address: str = Field(
+  address: Optional[str] = Field(
     default=None,
     min_length=1, max_length=128
   )
@@ -24,8 +25,12 @@ class PlaceSearchQuery(BaseModel):
 
 class AddPlace(BaseModel):
   name: str = Field(
-    default=None,
-    min_length=1, max_length=64,
+    default='',
+    min_length=0, max_length=64,
+  )
+  description: str = Field(
+    default='',
+    min_length=0, max_length=512
   )
   coordinate: list[float] = Field(
     default=None,
@@ -33,7 +38,7 @@ class AddPlace(BaseModel):
   )
   address: str = Field(
     default=None,
-    min_length=1, max_length=128
+    min_length=0, max_length=128
   )
   metadata: dict = Field(
     default={}
@@ -42,19 +47,23 @@ class AddPlace(BaseModel):
 
 
 class PatchPlace(BaseModel):
-  name: str = Field(
+  name: Optional[str] = Field(
     default=None,
-    min_length=1, max_length=64,
+    min_length=0, max_length=64,
   )
-  coordinate: list[float] = Field(
+  description: Optional[str] = Field(
+    default=None,
+    min_length=0, max_length=512
+  )
+  coordinate: Optional[list[float]] = Field(
     default=None,
     min_length=2, max_length=2
   )
-  address: str = Field(
+  address: Optional[str] = Field(
     default=None,
-    min_length=1, max_length=128
+    min_length=0, max_length=128
   )
-  region_uid: UUID = Field(default=None)
-  metadata: dict = Field(
+  region_uid: Optional[UUID] = Field(default=None)
+  metadata: Optional[dict] = Field(
     default=None
   )

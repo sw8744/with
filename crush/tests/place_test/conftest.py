@@ -23,12 +23,14 @@ def place():
   db = session()
 
   region = RegionModel(
-    name="홍대, 연남"
+    name="홍대, 연남",
+    description="연트럴파크"
   )
   db.add(region)
 
   place = PlaceModel(
     name="4233마음센터 연남점",
+    description="하트시그널",
     address="서울 마포구 월드컵북로4길 43 지하1층",
     region_uid=region.uid,
     place_meta={
