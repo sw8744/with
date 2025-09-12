@@ -36,6 +36,7 @@ def create_refresh_token(user_id: UUID) -> str:
     'exp': datetime.now(KST) + timedelta(weeks=4),
     'iat': datetime.now(KST),
     'iss': 'with',
+    'aud': ['auth:refresh'],
     'rti': str(refresh_token_uid)
   }
 
@@ -71,6 +72,18 @@ def decode_access_token(token: str) -> dict:
     issuer='with',
     require=['aud', 'exp', 'iat', 'iss', 'sub'],
     audience=['core:user'],
+  )
+
+
+def decode_refresh_token(token: str) -> dict:
+  return jwt.decode(
+    jwt=token,
+    key=config['security']['jwt_secret'],
+    algorithms=['HS256'],
+    verify_signature=True,
+    issuer='with',
+    require=['rti', 'exp', 'iat', 'iss', 'sub', 'aud'],
+    audience=['auth:refresh'],
   )
 
 

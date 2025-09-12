@@ -1,8 +1,9 @@
-import {type UserSignInType} from "../redux/UserInfoReducer.ts";
+import {userInfoAction, type UserSignInType} from "../redux/UserInfoReducer.ts";
 import {api} from "./withAxios.ts";
 import type {userAPI} from "../apiResponseInterfaces/user.ts";
-import axios from "axios";
-import type {authAuthorizeAPI} from "../apiResponseInterfaces/authentication.ts";
+import axios, {isAxiosError} from "axios";
+import type {authAuthorizeAPI, authRefreshAPI} from "../apiResponseInterfaces/authentication.ts";
+import store from "../redux/RootReducer.ts";
 
 /**
  * reset access token and user redux
@@ -51,8 +52,16 @@ async function resetAccessToken(
   }
 }
 
-function refreshAccessToken() {
+async function refreshAccessToken(): Promise<string> {
+  // TODO: ADD CSRF PREVENT TOKEN BEFORE REFRESH
+  const resp = await api.post<authRefreshAPI>(
+    '/auth/refresh'
+  );
 
+  const credential = await resetAccessToken(resp.data.accessToken);
+  store.dispatch(userInfoAction.signIn(credential));
+
+  return credential.accessToken;
 }
 
 export {

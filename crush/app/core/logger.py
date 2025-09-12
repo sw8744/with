@@ -33,5 +33,5 @@ logging.basicConfig(
   handlers=handler
 )
 
-logger = logging.getLogger('fastapi_app')
+logger = logging.getLogger('crush')
 logger.debug('Logger set')
