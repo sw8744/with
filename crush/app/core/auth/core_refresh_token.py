@@ -28,7 +28,8 @@ def use_refresh_token(
   else:
     redis_refresh_token_blacklist_db1.set(
       name=token.get('rti'),
-      value=1
+      value=1,
+      ex=2419200
     )
 
   sub = get_sub(token)

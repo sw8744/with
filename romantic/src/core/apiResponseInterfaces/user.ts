@@ -1,6 +1,6 @@
-interface userAPI {
-  code: number;
-  status: string;
+import type ApiInterface from "./apiInterface.ts";
+
+type userAPI = ApiInterface & {
   user: {
     uuid: string;
     name: string;

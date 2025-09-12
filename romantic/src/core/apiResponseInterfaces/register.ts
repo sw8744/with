@@ -1,12 +1,10 @@
-interface userRegisterAPI {
-  code: number;
-  status: string;
+import type ApiInterface from "./apiInterface.ts";
+
+type userRegisterAPI = ApiInterface & {
   jwt: string;
 }
 
-interface authOAuthGoogleRegisterInfoAPI {
-  code: number;
-  status: string;
+type authOAuthGoogleRegisterInfoAPI = ApiInterface & {
   content: {
     auth: {
       type: string;
