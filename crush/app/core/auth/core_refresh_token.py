@@ -35,8 +35,8 @@ def use_refresh_token(
   sub = get_sub(token)
   identity = (
     db.query(IdentityModel)
-      .filter(IdentityModel.uid == sub)
-      .scalar()
+    .filter(IdentityModel.uid == sub)
+    .scalar()
   )
 
   if identity is None:

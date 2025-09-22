@@ -32,18 +32,22 @@ class AddPlace(BaseModel):
     default='',
     min_length=0, max_length=512
   )
-  coordinate: list[float] = Field(
+  coordinate: Optional[list[float]] = Field(
     default=None,
     min_length=2, max_length=2
   )
-  address: str = Field(
+  address: Optional[str] = Field(
     default=None,
     min_length=0, max_length=128
+  )
+  thumbnail: Optional[str] = Field(
+    default=None,
+    min_length=0, max_length=512
   )
   metadata: dict = Field(
     default={}
   )
-  region_uid: UUID = Field(default=None)
+  region_uid: Optional[UUID] = Field(default=None)
 
 
 class PatchPlace(BaseModel):
@@ -64,6 +68,10 @@ class PatchPlace(BaseModel):
     min_length=0, max_length=128
   )
   region_uid: Optional[UUID] = Field(default=None)
+  thumbnail: Optional[str] = Field(
+    default=None,
+    min_length=0, max_length=512
+  )
   metadata: Optional[dict] = Field(
     default=None
   )

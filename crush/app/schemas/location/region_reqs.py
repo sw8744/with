@@ -5,11 +5,11 @@ from pydantic import BaseModel, Field
 
 
 class RegionSearchQuery(BaseModel):
-  name: str = Field(
-    default='',
+  name: Optional[str] = Field(
+    default=None,
     min_length=1, max_length=64,
   )
-  uid: UUID = Field(default=None)
+  uid: Optional[UUID] = Field(default=None)
   limit: int = Field(100, ge=0, le=100)
 
 
@@ -22,6 +22,10 @@ class AddRegion(BaseModel):
     default='',
     min_length=0, max_length=512
   )
+  thumbnail: Optional[str] = Field(
+    default=None,
+    min_length=0, max_length=512
+  )
 
 
 class PatchRegion(BaseModel):
@@ -30,6 +34,10 @@ class PatchRegion(BaseModel):
     min_length=0, max_length=64,
   )
   description: Optional[str] = Field(
+    default=None,
+    min_length=0, max_length=512
+  )
+  thumbnail: Optional[str] = Field(
     default=None,
     min_length=0, max_length=512
   )

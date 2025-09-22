@@ -1,6 +1,7 @@
-import axios from "axios";
+import axios, {isAxiosError} from "axios";
 import store from "../redux/RootReducer.ts";
 import {refreshAccessToken} from "./apiAccessTokenInterceptor.ts";
+import {PageState} from "../apiResponseInterfaces/apiInterface.ts";
 
 const api = axios.create({
   baseURL: '/api/v1/',
@@ -12,17 +13,43 @@ const apiAuth = axios.create({
   timeout: 5000,
 });
 
+function handleAxiosError(
+  err: unknown,
+  stateSetter: (state: PageState) => void
+) {
+  if (isAxiosError(err)) {
+    switch (err.status) {
+      case 400:
+      case 406:
+      case 422:
+        stateSetter(PageState.CLIENT_FAULT);
+        break;
+      case 404:
+      case 405:
+        stateSetter(PageState.NOT_FOUND);
+        break;
+      case 401:
+        stateSetter(PageState.FORBIDDEN);
+        break;
+      case 500:
+        stateSetter(PageState.SERVER_FAULT);
+        break;
+      default:
+        stateSetter(PageState.UNKNOWN_FAULT);
+    }
+  } else stateSetter(PageState.UNKNOWN_FAULT);
+}
+
 apiAuth.interceptors.request.use(
-  async (config) => {
+  async config => {
     const accessToken = store.getState().userInfoReducer.accessToken;
 
-    if(accessToken) {
+    if (accessToken) {
       config.headers = {
         ...config.headers,
         Authorization: `Bearer ${accessToken}`
       };
-    }
-    else {
+    } else {
       const accessToken = await refreshAccessToken();
 
       config.headers = {
@@ -39,5 +66,6 @@ apiAuth.interceptors.request.use(
 
 export {
   api,
-  apiAuth
+  apiAuth,
+  handleAxiosError
 };

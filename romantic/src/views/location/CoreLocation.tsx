@@ -1,12 +1,9 @@
-import RegionShowcase from "./RegionShowcase.tsx";
-import LocationShowcase from "./LocationShowcase.tsx";
+import {Outlet} from "react-router-dom";
 
 function CoreLocation() {
   return (
     <>
-      <div>
-        <LocationShowcase/>
-      </div>
+      <Outlet/>
     </>
   );
 }

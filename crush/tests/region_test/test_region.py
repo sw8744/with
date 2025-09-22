@@ -16,7 +16,8 @@ def test_region_creation(
     "/api/v1/location/region",
     content=json.dumps({
       "name": "홍대",
-      "description": "연트럴파크"
+      "description": "연트럴파크",
+      "thumbnail": "asdf"
     })
   )
 
@@ -25,6 +26,7 @@ def test_region_creation(
   assert response.json()['status'] == "Created"
   assert response.json()['content']['name'] == "홍대"
   assert response.json()['content']['description'] == "연트럴파크"
+  assert response.json()['content']['thumbnail'] == "asdf"
 
   db.query(RegionModel).filter(RegionModel.uid == response.json()['content']['uid']).delete()
   db.commit()
@@ -47,6 +49,7 @@ def test_region_read(
   assert len(response.json()['content']) == 1
   assert response.json()['content'][0]['name'] == "홍대, 연남"
   assert response.json()['content'][0]['description'] == "연트럴파크"
+  assert response.json()['content'][0]['thumbnail'] == "qwer"
   assert response.json()['content'][0]['uid'] == str(region.uid)
 
 
@@ -58,7 +61,8 @@ def test_region_patch(
     "/api/v1/location/region/" + str(region.uid),
     content=json.dumps({
       "name": "신촌",
-      "description": "연세대"
+      "description": "연세대",
+      "thumbnail": "asdf"
     })
   )
 
@@ -69,6 +73,7 @@ def test_region_patch(
   patched_region: RegionModel = db.query(RegionModel).get(region.uid)
   assert patched_region.name == "신촌"
   assert patched_region.description == "연세대"
+  assert patched_region.thumbnail == "asdf"
 
   db.delete(patched_region)
   db.commit()

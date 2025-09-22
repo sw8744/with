@@ -17,3 +17,4 @@ class RegionModel(BaseTable):
                                server_default='gen_random_uuid()')
   name: Mapped[str] = Column(VARCHAR(64), nullable=False, server_default='')
   description: Mapped[str] = Column(TEXT, nullable=False, server_default='')
+  thumbnail: Mapped[str] = Column(TEXT)

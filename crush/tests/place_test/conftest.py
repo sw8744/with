@@ -36,7 +36,8 @@ def place():
     place_meta={
       "parking": False,
       "reservation": True,
-    }
+    },
+    thumbnail="axaxax"
   )
   db.add(place)
   db.commit()

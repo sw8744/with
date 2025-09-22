@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import ErrorPage from "../../../error/ErrorPage.tsx";
+import {ErrorPage} from "../../../error/ErrorPage.tsx";
 import {useDispatch} from "react-redux";
 import {userInfoAction} from '../../../../core/redux/UserInfoReducer.ts'
 import {resetAccessToken} from "../../../../core/axios/apiAccessTokenInterceptor.ts";

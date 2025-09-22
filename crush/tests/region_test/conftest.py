@@ -23,7 +23,8 @@ def region():
 
   region = RegionModel(
     name="홍대, 연남",
-    description="연트럴파크"
+    description="연트럴파크",
+    thumbnail="qwer"
   )
 
   db.add(region)

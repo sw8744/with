@@ -8,16 +8,25 @@ import LogoGoogleIcon from './logo.google.svg?react'
 import CheckMarkIcon from './checkmark.circle.fill.svg?react'
 import XMarkIcon from './x.circle.fill.svg?react'
 import GearIcon from './gearshape.fill.svg?react'
+import PhoneAndCheckIcon from './phone.badge.checkmark.svg?react'
+import InstagramIcon from './instagram.svg?react'
+import PhoneFillIcon from './phone.fill.svg?react'
+import CalendarBadgeIcon from './calendar.badge.svg?react'
 
 export {
   RouteIcon,
   PersonIcon,
   LocationIcon,
   PhoneAndClockIcon,
+  PhoneAndCheckIcon,
+  PhoneFillIcon,
   ClockIcon,
   CheckListIcon,
   LogoGoogleIcon,
   CheckMarkIcon,
   XMarkIcon,
-  GearIcon
+  GearIcon,
+  CalendarBadgeIcon,
+
+  InstagramIcon
 }

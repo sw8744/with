@@ -22,6 +22,10 @@ class Place(BaseModel):
     min_length=1, max_length=128
   )
   region_uid: Optional[UUID] = Field(default=None)
+  thumbnail: Optional[str] = Field(
+    default=None,
+    min_length=0, max_length=512
+  )
   metadata: dict = Field(
     default={}
   )

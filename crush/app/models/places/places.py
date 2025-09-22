@@ -21,6 +21,7 @@ class PlaceModel(BaseTable):
   coordinate: Mapped[list[float]] = Column(ARRAY(FLOAT))
   address: Mapped[str] = Column(VARCHAR(128))
   region_uid: Mapped[PyUUID] = Column(UUID(as_uuid=True), ForeignKey('locations.regions.uid'))
+  thumbnail: Mapped[str] = Column(TEXT)
   place_meta: Mapped[dict] = Column('metadata', JSONB)
 
   region: Mapped[RegionModel] = relationship(

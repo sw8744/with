@@ -33,6 +33,7 @@ def authorize_access_token(
     }
   )
 
+
 @router.post(
   path='/refresh'
 )
@@ -59,7 +60,7 @@ def refresh_access_token(
     httponly=True,
     samesite='strict',
     secure=config['cookie']['secure'],
-    path='/api/v1'
+    path='/api/v1/auth/refresh'
   )
 
   return response

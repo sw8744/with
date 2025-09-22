@@ -1,8 +1,6 @@
 import type ApiInterface from "./apiInterface.ts";
 
 type authAuthorizeAPI = ApiInterface & {
-  code: number;
-  status: string;
   auth: boolean;
 }
 

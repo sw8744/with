@@ -19,6 +19,7 @@ def add_region(
   region = RegionModel(
     name=region_data.name,
     description=region_data.description,
+    thumbnail=region_data.thumbnail
   )
 
   db.add(region)
@@ -28,6 +29,7 @@ def add_region(
     uid=region.uid,
     name=region.name,
     description=region.description,
+    thumbnail=region.thumbnail
   )
 
 
@@ -57,7 +59,8 @@ def search_region(
       Region(
         uid=region.uid,
         name=region.name,
-        description=region.description
+        description=region.description,
+        thumbnail=region.thumbnail
       )
     )
 
@@ -95,5 +98,7 @@ def patch_region(
     region.name = query.name
   if query.description is not None:
     region.description = query.description
+  if query.thumbnail is not None:
+    region.thumbnail = query.thumbnail
 
   db.commit()

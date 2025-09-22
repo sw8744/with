@@ -50,6 +50,6 @@ def register_user(
     httponly=True,
     samesite='strict',
     secure=config['cookie']['secure'],
-    path='/api/v1'
+    path='/api/v1/auth/refresh'
   )
   return response

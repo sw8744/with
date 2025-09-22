@@ -1,15 +1,8 @@
 import type ApiInterface from "./apiInterface.ts";
+import type {Identity} from "../model/User.ts";
 
 type userAPI = ApiInterface & {
-  user: {
-    uuid: string;
-    name: string;
-    email: string;
-    emailVerified: string;
-    sex: number;
-    birthday: string;
-    role: string[];
-  }
+  user: Identity
 }
 
 export type {

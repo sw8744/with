@@ -1,4 +1,3 @@
-import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {useEffect, useState} from "react";
 import {apiAuth} from "../../core/axios/withAxios.ts";
 import type {userAPI} from "../../core/apiResponseInterfaces/user.ts";

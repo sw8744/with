@@ -22,6 +22,7 @@ def add_place(
     region_uid=place_data.region_uid,
     coordinate=place_data.coordinate,
     address=place_data.address,
+    thumbnail=place_data.thumbnail,
     place_meta=place_data.metadata
   )
 
@@ -35,7 +36,8 @@ def add_place(
     coordinate=place.coordinate,
     address=place.address,
     region_uid=place.region_uid,
-    metadata=place.place_meta,
+    thumbnail=place.thumbnail,
+    metadata=place.place_meta
   )
 
 
@@ -98,6 +100,7 @@ def search_place(
         coordinate=place.coordinate,
         address=place.address,
         region_uid=place.region_uid,
+        thumbnail=place.thumbnail,
         metadata=place.place_meta,
       )
     )
@@ -142,6 +145,8 @@ def patch_place(
     place.coordinate = query.coordinate
   if query.address is not None:
     place.address = query.address
+  if query.thumbnail is not None:
+    place.thumbnail = query.thumbnail
   if query.metadata is not None:
     meta = {}
     for key in query.metadata.keys():
