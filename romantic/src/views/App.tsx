@@ -9,14 +9,16 @@ import SetJwt from "./auth/authentication/login/SetJwt.tsx";
 import CoreProfile from "./profile/CoreProfile.tsx";
 import RegionShowcase from "./location/RegionShowcase.tsx";
 import PlaceShowcase from "./location/LocationShowcase.tsx";
+import Locations from "./location/Locations.tsx";
 
 function App() {
   return (
     <BrowserRouter>
       <Header/>
-      <main className={'w-full sm:w-3/4 md:w-1/2 mx-auto mb-[64.74px]'}>
+      <main className={'w-full sm:w-3/4 md:w-1/2 xl:w-[35%] mx-auto mb-[64.74px]'}>
         <Routes>
           <Route path={'/location'} element={<CoreLocation/>}>
+            <Route path={''} element={<Locations/>}/>
             <Route path={'region/:regionUID'} element={<RegionShowcase/>}/>
             <Route path={'place/:placeUID'} element={<PlaceShowcase/>}/>
           </Route>

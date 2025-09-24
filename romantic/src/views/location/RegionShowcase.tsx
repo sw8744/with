@@ -67,7 +67,10 @@ function RegionShowcase() {
   const [pageState, setPageState] = useState<PageState>(PageState.LOADING);
 
   useEffect(() => {
-    if (!regionUid) setPageState(1);
+    if (!regionUid) {
+      setPageState(PageState.NOT_FOUND);
+      return;
+    }
 
     (async () => {
       const regionResp =

@@ -99,8 +99,13 @@ function ReservationInformation(
 
   let reservationRqrd: boolean | undefined = undefined;
   let reservationMethod: string | undefined = undefined;
+  let reservationTele: string | undefined = undefined;
+  let reservationWeb: string | undefined = undefined;
 
   if ('required' in meta.reservation && typeof (meta.reservation.required) == 'boolean') reservationRqrd = meta.reservation.required;
+  if ('method' in meta.reservation && typeof (meta.reservation.method) == 'string') reservationMethod = meta.reservation.method;
+  if ('tel' in meta.reservation && typeof (meta.reservation.tel) == 'string') reservationTele = meta.reservation.tel;
+  if ('web' in meta.reservation && typeof (meta.reservation.web) == 'string') reservationWeb = meta.reservation.web;
 
   return (
     <InformationArea
@@ -112,7 +117,10 @@ function ReservationInformation(
           <p>{reservationRqrd ? '예약 필수' : '예약 가능'}</p>
         </>
       }
-      <p><Link to={'tel://023381114'}>02-338-1114</Link></p>
+      {reservationMethod !== undefined && <p>{reservationMethod}</p>}
+      {reservationTele !== undefined &&
+        <p><Link to={'tel://' + reservationTele.replaceAll('-', '')}>{reservationTele}</Link></p>}
+      {reservationWeb !== undefined && <p><Link to={reservationWeb} target={'_blank'}>예약 사이트</Link></p>}
     </InformationArea>
   );
 }

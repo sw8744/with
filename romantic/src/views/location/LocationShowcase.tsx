@@ -38,7 +38,10 @@ function LocationShowcase() {
   const [pageState, setPageState] = useState<PageState>(PageState.LOADING);
 
   useEffect(() => {
-    if (!placeUid) setPageState(1);
+    if (!placeUid) {
+      setPageState(PageState.NOT_FOUND);
+      return;
+    }
 
     apiAuth.get<locationPlaceAPI>(
       "location/place",
