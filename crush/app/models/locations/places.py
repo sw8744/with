@@ -5,7 +5,7 @@ from sqlalchemy.dialects.postgresql import UUID, VARCHAR, FLOAT, ARRAY, JSONB, T
 from sqlalchemy.orm import Mapped, relationship, backref
 
 from app.database import BaseTable
-from app.models.places.regions import RegionModel
+from app.models.locations.regions import RegionModel
 
 
 class PlaceModel(BaseTable):
@@ -28,7 +28,7 @@ class PlaceModel(BaseTable):
     "RegionModel",
     uselist=False,
     backref=backref(
-      "places",
+      "locations",
       uselist=True,
       cascade="all, delete-orphan",
       passive_deletes=True

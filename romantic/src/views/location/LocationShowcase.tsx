@@ -65,7 +65,7 @@ function LocationShowcase() {
     <>
       <img
         src={thumbnailUrl(placeInfo?.thumbnail)}
-        className={'mb-10 w-full'}
+        className={'mb-10 w-full shadow'}
       />
 
       <div className={'flex flex-col justify-baseline items-center gap-3'}>

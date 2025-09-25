@@ -1,0 +1,104 @@
+from datetime import datetime
+
+import pytest
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, Session
+
+from app.core.config_store import config
+from app.core.user import core_jwt
+from app.models.locations.places import PlaceModel
+from app.models.locations.regions import RegionModel
+from app.models.users.identities import IdentityModel, SEX
+
+SQLALCHEMY_DATABASE_URL = "postgresql://{user}:{password}@{host}:{port}/{dbname}".format(
+  host=config['database']['relational']['host'],
+  port=config['database']['relational']['port'],
+  password=config['database']['relational']['password'],
+  user=config['database']['relational']['user'],
+  dbname=config['database']['relational']['name']
+)
+
+db_engine = create_engine(SQLALCHEMY_DATABASE_URL)
+session = sessionmaker(autocommit=False, autoflush=False, bind=db_engine)
+
+@pytest.fixture
+def db():
+  db = session()
+
+  try:
+    yield db
+  finally:
+    db.close()
+
+
+@pytest.fixture
+def identity(db: Session):
+  iden = IdentityModel(
+    name="test",
+    email="test@test.com",
+    email_verified=True,
+    sex=SEX.MALE,
+    birthday=datetime.today(),
+    role=['core:user']
+  )
+  db.add(iden)
+
+  db.commit()
+  db.refresh(iden)
+
+  yield iden
+
+  db.delete(iden)
+  db.commit()
+
+
+@pytest.fixture
+def access_token(identity: IdentityModel):
+  access_token = core_jwt.create_access_token(identity.uid, identity.role)
+
+  yield access_token
+
+
+@pytest.fixture
+def region(db: Session):
+  region = RegionModel(
+    name="홍대/연남",
+    description="홍대와 연남",
+    thumbnail="thumbnail"
+  )
+
+  db.add(region)
+  db.commit()
+  db.refresh(region)
+
+  yield region
+
+  db.delete(region)
+  db.commit()
+
+
+@pytest.fixture
+def place(
+  region: RegionModel,
+  db: Session
+):
+  place = PlaceModel(
+    name="4233마음센터 연남점",
+    description="설명",
+    address="서울 마포구 월드컵북로4길 43 지하1층",
+    coordinate=[37.558147, 126.921673],
+    region_uid=region.uid,
+    place_meta={
+      "parking": False,
+      "reservation": True,
+    },
+    thumbnail="thumbnail"
+  )
+  db.add(place)
+  db.commit()
+  db.refresh(place)
+
+  yield place
+
+  db.delete(place)
+  db.commit()

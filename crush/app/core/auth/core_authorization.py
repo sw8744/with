@@ -17,7 +17,7 @@ class APIKeyHeaderBearer(APIKeyHeader):
 authorization_header = APIKeyHeaderBearer()
 
 
-def authorize_jwt(token: str) -> dict[str, any]:
+def authorize_jwt(token: str) -> dict[str, str]:
   if token is None:
     log.debug("Auth failed: Authorization header was not provided")
     raise HTTPException(status_code=400, detail="Authorization header was not provided")

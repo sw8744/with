@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from app.main import app
-from app.models.places.regions import RegionModel
+from app.models.locations.regions import RegionModel
 
 client = TestClient(app)
 
@@ -15,18 +15,18 @@ def test_region_creation(
   response = client.post(
     "/api/v1/location/region",
     content=json.dumps({
-      "name": "홍대",
-      "description": "연트럴파크",
-      "thumbnail": "asdf"
+      "name": "홍대/연남",
+      "description": "설명",
+      "thumbnail": "thumbnail"
     })
   )
 
   assert response.status_code == 201
   assert response.json()['code'] == 201
   assert response.json()['status'] == "Created"
-  assert response.json()['content']['name'] == "홍대"
-  assert response.json()['content']['description'] == "연트럴파크"
-  assert response.json()['content']['thumbnail'] == "asdf"
+  assert response.json()['content']['name'] == "홍대/연남"
+  assert response.json()['content']['description'] == "설명"
+  assert response.json()['content']['thumbnail'] == "thumbnail"
 
   db.query(RegionModel).filter(RegionModel.uid == response.json()['content']['uid']).delete()
   db.commit()
@@ -47,9 +47,9 @@ def test_region_read(
   assert response.json()['code'] == 200
   assert response.json()['status'] == "OK"
   assert len(response.json()['content']) == 1
-  assert response.json()['content'][0]['name'] == "홍대, 연남"
-  assert response.json()['content'][0]['description'] == "연트럴파크"
-  assert response.json()['content'][0]['thumbnail'] == "qwer"
+  assert response.json()['content'][0]['name'] == "홍대/연남"
+  assert response.json()['content'][0]['description'] == "홍대와 연남"
+  assert response.json()['content'][0]['thumbnail'] == "thumbnail"
   assert response.json()['content'][0]['uid'] == str(region.uid)
 
 
@@ -61,8 +61,8 @@ def test_region_patch(
     "/api/v1/location/region/" + str(region.uid),
     content=json.dumps({
       "name": "신촌",
-      "description": "연세대",
-      "thumbnail": "asdf"
+      "description": "신촌을 못가",
+      "thumbnail": "nail"
     })
   )
 
@@ -70,10 +70,11 @@ def test_region_patch(
   assert response.json()['code'] == 200
   assert response.json()['status'] == "OK"
 
+  db.expire_all()
   patched_region: RegionModel = db.query(RegionModel).get(region.uid)
   assert patched_region.name == "신촌"
-  assert patched_region.description == "연세대"
-  assert patched_region.thumbnail == "asdf"
+  assert patched_region.description == "신촌을 못가"
+  assert patched_region.thumbnail == "nail"
 
   db.delete(patched_region)
   db.commit()
