@@ -12,6 +12,8 @@ import PhoneAndCheckIcon from './phone.badge.checkmark.svg?react'
 import InstagramIcon from './instagram.svg?react'
 import PhoneFillIcon from './phone.fill.svg?react'
 import CalendarBadgeIcon from './calendar.badge.svg?react'
+import StarFilledIcon from './star.fill.svg?react'
+import StarIcon from './star.svg?react'
 
 export {
   RouteIcon,
@@ -27,6 +29,8 @@ export {
   XMarkIcon,
   GearIcon,
   CalendarBadgeIcon,
+  StarIcon,
+  StarFilledIcon,
 
   InstagramIcon
 }

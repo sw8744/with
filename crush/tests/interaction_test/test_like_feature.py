@@ -83,3 +83,74 @@ def test_dislike(
     .scalar()
   )
   assert like is None
+
+
+def test_list_likes(
+  place: PlaceModel,
+  identity: IdentityModel,
+  access_token: str,
+  db: Session
+):
+  like = LikesModel(
+    user_id=identity.uid,
+    place_id=place.uid
+  )
+  db.add(like)
+  db.commit()
+
+  response = client.get(
+    "/api/v1/interaction/like",
+    headers={
+      "Authorization": f"Bearer {access_token}"
+    }
+  )
+
+  assert response.status_code == 200
+  assert response.json()['code'] == 200
+  assert response.json()['status'] == "OK"
+  assert response.json()['likes'] == [str(place.uid)]
+
+
+def test_liked_single_place_liked(
+  place: PlaceModel,
+  identity: IdentityModel,
+  access_token: str,
+  db: Session
+):
+  like = LikesModel(
+    user_id=identity.uid,
+    place_id=place.uid
+  )
+  db.add(like)
+  db.commit()
+
+  response = client.get(
+    "/api/v1/interaction/like/" + str(place.uid),
+    headers={
+      "Authorization": f"Bearer {access_token}"
+    }
+  )
+
+  assert response.status_code == 200
+  assert response.json()['code'] == 200
+  assert response.json()['status'] == "OK"
+  assert response.json()['liked'] == True
+
+
+def test_liked_single_place_not_liked(
+  place: PlaceModel,
+  identity: IdentityModel,
+  access_token: str,
+  db: Session
+):
+  response = client.get(
+    "/api/v1/interaction/like/" + str(place.uid),
+    headers={
+      "Authorization": f"Bearer {access_token}"
+    }
+  )
+
+  assert response.status_code == 200
+  assert response.json()['code'] == 200
+  assert response.json()['status'] == "OK"
+  assert response.json()['liked'] == False

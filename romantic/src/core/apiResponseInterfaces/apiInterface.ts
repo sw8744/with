@@ -1,5 +1,6 @@
 enum PageState {
   LOADING,
+  WORKING,
   NORMAL,
   NOT_FOUND,
   FORBIDDEN,
@@ -9,7 +10,7 @@ enum PageState {
 }
 
 function isPageError(pageState: PageState): boolean {
-  return (pageState >= 2 && pageState <= 6);
+  return (pageState > PageState.NORMAL);
 }
 
 export default interface ApiInterface {

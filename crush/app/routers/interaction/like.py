@@ -1,4 +1,5 @@
 from typing import Annotated
+from uuid import UUID
 
 from fastapi import APIRouter
 from fastapi.params import Security, Depends
@@ -15,6 +16,50 @@ router = APIRouter(
   prefix='/api/v1/interaction/like',
   tags=['interaction', 'like']
 )
+
+
+@router.get(
+  path=''
+)
+def query_liked_place(
+  jwt: str = Security(authorization_header),
+  db: Session = Depends(create_connection)
+):
+  token = authorize_jwt(jwt)
+
+  identity = core_user.get_identity(token, db)
+  likes = core_like.list_liked(identity, db)
+
+  return JSONResponse(
+    status_code=200,
+    content={
+      "code": 200,
+      "status": "OK",
+      "likes": [str(pid) for pid in likes.place_ids]
+    }
+  )
+
+
+@router.get(
+  path='/{place_id}'
+)
+def query_liked_place(
+  place_id: UUID,
+  jwt: str = Security(authorization_header),
+  db: Session = Depends(create_connection)
+):
+  token = authorize_jwt(jwt)
+
+  identity = core_user.get_identity(token, db)
+  liked = core_like.did_liked_place(identity, place_id, db)
+  return JSONResponse(
+    status_code=200,
+    content={
+      "code": 200,
+      "status": "OK",
+      "liked": liked
+    }
+  )
 
 
 @router.post(

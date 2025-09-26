@@ -8,7 +8,7 @@ import GoogleRegister from "./auth/signup/GoogleRegister.tsx";
 import SetJwt from "./auth/authentication/login/SetJwt.tsx";
 import CoreProfile from "./profile/CoreProfile.tsx";
 import RegionShowcase from "./location/RegionShowcase.tsx";
-import PlaceShowcase from "./location/LocationShowcase.tsx";
+import PlaceShowcase from "./location/PlaceShowcase.tsx";
 import Locations from "./location/Locations.tsx";
 
 function App() {

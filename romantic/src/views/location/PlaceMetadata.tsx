@@ -165,7 +165,7 @@ function InqueryInformation(
   );
 }
 
-function LocationMetaInterpreter(
+function PlaceMetaInterpreter(
   {meta, address}: { meta: object | undefined, address: string | undefined }
 ) {
   return (
@@ -178,4 +178,4 @@ function LocationMetaInterpreter(
   );
 }
 
-export default LocationMetaInterpreter;
+export default PlaceMetaInterpreter;

@@ -17,6 +17,7 @@ function handleAxiosError(
   err: unknown,
   stateSetter: (state: PageState) => void
 ) {
+  console.error(err);
   if (isAxiosError(err)) {
     switch (err.status) {
       case 400:
