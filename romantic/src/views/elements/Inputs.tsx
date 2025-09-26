@@ -83,7 +83,7 @@ function Select(
       onChange={onValueChange}
       value={value}
       className={
-        commonClass +
+          commonClass + ' pr-8' +
         (error ? ' border-red-300 shadow-red-300' : '') +
         (className ? ' ' + className : '')
       }

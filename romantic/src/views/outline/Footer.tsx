@@ -30,7 +30,7 @@ function Footer() {
       }
     >
       <FooterMenu
-        to={'/course'}
+        to={'/plan'}
         icon={
           <RouteIcon
             className={'fill-neutral-700'}

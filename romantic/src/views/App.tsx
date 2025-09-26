@@ -10,6 +10,7 @@ import CoreProfile from "./profile/CoreProfile.tsx";
 import RegionShowcase from "./location/RegionShowcase.tsx";
 import PlaceShowcase from "./location/PlaceShowcase.tsx";
 import Locations from "./location/Locations.tsx";
+import CorePlan from "./plan/CorePlan.tsx";
 
 function App() {
   return (
@@ -27,6 +28,10 @@ function App() {
             path={'/profile'}
             element={<CoreProfile/>}
           />
+
+          <Route path={'/plan'}>
+            <Route path={''} element={<CorePlan/>}/>
+          </Route>
 
           <Route
             path={'/register/google'}
