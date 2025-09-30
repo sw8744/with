@@ -41,7 +41,7 @@ def http_exception_handler(request: Request, exc: HTTPException):
     status_code=exc.status_code,
     content={
       "code": exc.status_code,
-      "state": HTTP_CODE_TO_STATE[exc.status_code],
+      "status": HTTP_CODE_TO_STATE[exc.status_code],
       "message": exc.detail
     }
   )
@@ -58,7 +58,7 @@ def http_value_error_handler(request: Request, exc: ValueError):
     status_code=400,
     content={
       "code": 400,
-      "state": "Bad Request",
+      "status": "Bad Request",
       "message": "value error"
     }
   )
@@ -71,7 +71,7 @@ def http_unauthorized_handler(request: Request, exc):
     headers={"WWW-Authenticate": "Bearer"},
     content={
       "code": 401,
-      "state": "Unauthorized",
+      "status": "Unauthorized",
       "message": "You are not authorized to access this resource"
     }
   )
@@ -83,7 +83,7 @@ def http_validation_error_handler(request: Request, exc: ValueError):
     status_code=400,
     content={
       "code": 400,
-      "state": "Bad Request",
+      "status": "Bad Request",
       "message": "validation error"
     }
   )
@@ -99,7 +99,7 @@ def http_request_validation_error_handler(request: Request, exc: RequestValidati
     status_code=400,
     content={
       "code": 400,
-      "state": "Bad Request",
+      "status": "Bad Request",
       "fails": errors
     }
   )
@@ -111,7 +111,7 @@ def http_internal_server_error_handler(request: Request, exc):
     status_code=500,
     content={
       "code": 500,
-      "state": "Internal Server Error",
+      "status": "Internal Server Error",
       "message": "Server currently unable to handle this request"
     }
   )
@@ -123,7 +123,7 @@ def http_not_found_handler(request: Request, exc):
     status_code=404,
     content={
       "code": 404,
-      "state": "Not found",
+      "status": "Not found",
       "message": "The requested resource could not be found"
     }
   )
@@ -135,7 +135,7 @@ def http_auth_error_handler(request: Request, exc):
     status_code=200,
     content={
       "code": 200,
-      "state": "OK",
+      "status": "OK",
       "result": "fail",
       "message": exc.message,
     }

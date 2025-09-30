@@ -27,7 +27,6 @@ def test_like(
     })
   )
 
-  print(response.json())
 
   assert response.status_code == 200
   assert response.json()['code'] == 200
@@ -58,18 +57,11 @@ def test_dislike(
   db.commit()
 
   response = client.delete(
-    "/api/v1/interaction/like",
-    params={
-      "place_id": str(place.uid),
-      "placeId": str(place.uid)
-    },
+    "/api/v1/interaction/like/" + str(place.uid),
     headers={
       "Authorization": f"Bearer {access_token}"
     }
   )
-  print(response.url)
-  print(response.json())
-
   assert response.status_code == 200
   assert response.json()['code'] == 200
   assert response.json()['status'] == "OK"

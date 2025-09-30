@@ -39,7 +39,7 @@ def like_place(
 
 def dislike_place(
   identity: Identity,
-  body: LikeRequest,
+  place_id: UUID,
   db: Session
 ):
   if identity is None:
@@ -49,7 +49,7 @@ def dislike_place(
     db.query(LikesModel)
     .filter(
       LikesModel.user_id == identity.uid,
-      LikesModel.place_id == body.place_id
+      LikesModel.place_id == place_id
     )
     .scalar()
   )

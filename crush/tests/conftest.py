@@ -53,10 +53,48 @@ def identity(db: Session):
 
 
 @pytest.fixture
+def identity_factory(db: Session):
+  test_users: list[IdentityModel] = []
+
+  def create_user(name: str = "test") -> IdentityModel:
+    iden = IdentityModel(
+      name=name,
+      email="test@test.com",
+      email_verified=True,
+      sex=SEX.MALE,
+      birthday=datetime.today(),
+      role=['core:user']
+    )
+    db.add(iden)
+    db.commit()
+    db.refresh(iden)
+    test_users.append(iden)
+    return iden
+
+  yield create_user
+
+  for iden in test_users:
+    db.delete(iden)
+  db.commit()
+
+
+@pytest.fixture
 def access_token(identity: IdentityModel):
   access_token = core_jwt.create_access_token(identity.uid, identity.role)
 
-  yield access_token
+  return access_token
+
+
+@pytest.fixture
+def access_token_factory(
+  identity_factory
+):
+  def create_access_token(name: str = "test") -> (IdentityModel, str):
+    identity = identity_factory(name)
+    access_token = core_jwt.create_access_token(identity.uid, identity.role)
+    return identity, access_token
+
+  return create_access_token
 
 
 @pytest.fixture

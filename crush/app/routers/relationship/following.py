@@ -1,79 +1,54 @@
-from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter
 from fastapi.params import Security, Depends
+from jedi.api.completion import complete_param_names
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
 from app.core.auth.core_authorization import authorization_header, authorize_jwt
-from app.core.interaction import core_like
+from app.core.relationship import core_following
 from app.core.user import core_user
 from app.database import create_connection
-from app.schemas.interaction.like_reqs import LikeRequest
+from app.schemas.relationship.following_reqs import FollowRequest, FollowPatchRequest
 
 router = APIRouter(
-  prefix='/api/v1/interaction/like',
-  tags=['interaction', 'like']
+  prefix='/api/v1/user/following'
 )
-
 
 @router.get(
-  path=''
+  path='/{friend_id}'
 )
-def query_liked_place(
+def query_relationship(
+  friend_id: UUID,
   jwt: str = Security(authorization_header),
   db: Session = Depends(create_connection)
 ):
-  token = authorize_jwt(jwt)
-
+  token: dict[str, str] = authorize_jwt(jwt)
   identity = core_user.get_identity(token, db)
-  likes = core_like.list_liked(identity, db)
+  relation = core_following.query_following(identity, friend_id, db)
 
   return JSONResponse(
     status_code=200,
     content={
       "code": 200,
       "status": "OK",
-      "likes": [str(pid) for pid in likes.place_ids]
+      "relationship": relation.value if relation is not None else -1
     }
   )
-
-
-@router.get(
-  path='/{place_id}'
-)
-def query_liked_place(
-  place_id: UUID,
-  jwt: str = Security(authorization_header),
-  db: Session = Depends(create_connection)
-):
-  token = authorize_jwt(jwt)
-
-  identity = core_user.get_identity(token, db)
-  liked = core_like.did_liked_place(identity, place_id, db)
-  return JSONResponse(
-    status_code=200,
-    content={
-      "code": 200,
-      "status": "OK",
-      "liked": liked
-    }
-  )
-
 
 @router.post(
   path=''
 )
-def like_place(
-  body: LikeRequest,
+def follow(
+  body: FollowRequest,
   jwt: str = Security(authorization_header),
   db: Session = Depends(create_connection)
 ):
-  token = authorize_jwt(jwt)
-
+  token: dict[str, str] = authorize_jwt(jwt)
   identity = core_user.get_identity(token, db)
-  core_like.like_place(identity, body, db)
+
+  core_following.follow(identity, body, db)
 
   return JSONResponse(
     status_code=200,
@@ -83,19 +58,39 @@ def like_place(
     }
   )
 
-
 @router.delete(
-  path='/{place_id}'
+  path='/{friend_id}'
 )
-def unlike_place(
-  place_id: UUID,
+def unfollow(
+  friend_id: UUID,
   jwt: str = Security(authorization_header),
   db: Session = Depends(create_connection)
 ):
-  token = authorize_jwt(jwt)
-
+  token: dict[str, str] = authorize_jwt(jwt)
   identity = core_user.get_identity(token, db)
-  core_like.dislike_place(identity, place_id, db)
+  core_following.unfollow(identity, friend_id, db)
+
+  return JSONResponse(
+    status_code=200,
+    content={
+      "code": 200,
+      "status": "OK"
+    }
+  )
+
+@router.patch(
+  path='/{friend_id}'
+)
+def patch_relationship(
+  friend_id: UUID,
+  body: FollowPatchRequest,
+  jwt: str = Security(authorization_header),
+  db: Session = Depends(create_connection)
+):
+  token: dict[str, str] = authorize_jwt(jwt)
+  identity = core_user.get_identity(token, db)
+
+  core_following.patch_relationship(identity, friend_id, body, db)
 
   return JSONResponse(
     status_code=200,

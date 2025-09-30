@@ -1,4 +1,3 @@
-from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter
@@ -7,73 +6,47 @@ from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
 from app.core.auth.core_authorization import authorization_header, authorize_jwt
-from app.core.interaction import core_like
+from app.core.relationship import core_follower
 from app.core.user import core_user
 from app.database import create_connection
-from app.schemas.interaction.like_reqs import LikeRequest
+from app.schemas.relationship.following_reqs import FollowPatchRequest
 
 router = APIRouter(
-  prefix='/api/v1/interaction/like',
-  tags=['interaction', 'like']
+  prefix="/api/v1/user/follower"
 )
-
 
 @router.get(
-  path=''
+  path='/{follower_id}'
 )
-def query_liked_place(
+def query_relationship(
+  follower_id: UUID,
   jwt: str = Security(authorization_header),
   db: Session = Depends(create_connection)
 ):
-  token = authorize_jwt(jwt)
-
+  token: dict[str, str] = authorize_jwt(jwt)
   identity = core_user.get_identity(token, db)
-  likes = core_like.list_liked(identity, db)
+  relation = core_follower.query_follower(identity, follower_id, db)
 
   return JSONResponse(
     status_code=200,
     content={
       "code": 200,
       "status": "OK",
-      "likes": [str(pid) for pid in likes.place_ids]
+      "relationship": relation.value if relation is not None else -1
     }
   )
 
-
-@router.get(
-  path='/{place_id}'
+@router.delete(
+  path='/{follower_id}'
 )
-def query_liked_place(
-  place_id: UUID,
+def unfollow(
+  follower_id: UUID,
   jwt: str = Security(authorization_header),
   db: Session = Depends(create_connection)
 ):
-  token = authorize_jwt(jwt)
-
+  token: dict[str, str] = authorize_jwt(jwt)
   identity = core_user.get_identity(token, db)
-  liked = core_like.did_liked_place(identity, place_id, db)
-  return JSONResponse(
-    status_code=200,
-    content={
-      "code": 200,
-      "status": "OK",
-      "liked": liked
-    }
-  )
-
-
-@router.post(
-  path=''
-)
-def like_place(
-  body: LikeRequest,
-  jwt: str = Security(authorization_header),
-  db: Session = Depends(create_connection)
-):
-  token = authorize_jwt(jwt)
-
-  identity = core_user.get_identity(token, db)
-  core_like.like_place(identity, body, db)
+  core_follower.unfollow(identity, follower_id, db)
 
   return JSONResponse(
     status_code=200,
@@ -83,19 +56,19 @@ def like_place(
     }
   )
 
-
-@router.delete(
-  path='/{place_id}'
+@router.patch(
+  path='/{follower_id}'
 )
-def unlike_place(
-  place_id: UUID,
+def patch_relationship(
+  follower_id: UUID,
+  body: FollowPatchRequest,
   jwt: str = Security(authorization_header),
   db: Session = Depends(create_connection)
 ):
-  token = authorize_jwt(jwt)
-
+  token: dict[str, str] = authorize_jwt(jwt)
   identity = core_user.get_identity(token, db)
-  core_like.dislike_place(identity, place_id, db)
+
+  core_follower.patch_relationship(identity, follower_id, body, db)
 
   return JSONResponse(
     status_code=200,
