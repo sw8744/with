@@ -78,7 +78,7 @@ def search_place(
             val = meta[key]
           query = query.filter(PlaceModel.place_meta.contains({key: val}))
 
-    query.limit(q.limit)
+    query = query.limit(q.limit)
     places_db = query.all()
 
   places: list[Place] = []

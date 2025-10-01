@@ -30,16 +30,13 @@ async def search_place(
 
   places: list[Place] = core_place.search_place(query, metadata, db)
 
-  if len(places) == 0:
-    raise HTTPException(status_code=404, detail="No place was found")
-  else:
-    return JSONResponse({
-      "code": 200,
-      "status": "OK",
-      "content": [
-        r.model_dump() for r in places
-      ]
-    })
+  return JSONResponse({
+    "code": 200,
+    "status": "OK",
+    "content": [
+      r.model_dump() for r in places
+    ]
+  })
 
 
 @router.post(

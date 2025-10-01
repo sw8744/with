@@ -26,16 +26,13 @@ async def search_region(
 ):
   regions: list[Region] = core_region.search_region(query, db)
 
-  if len(regions) == 0:
-    raise HTTPException(status_code=404, detail="No region was found")
-  else:
-    return JSONResponse({
-      "code": 200,
-      "status": "OK",
-      "content": [
-        r.model_dump() for r in regions
-      ]
-    })
+  return JSONResponse({
+    "code": 200,
+    "status": "OK",
+    "content": [
+      r.model_dump() for r in regions
+    ]
+  })
 
 
 @router.post(

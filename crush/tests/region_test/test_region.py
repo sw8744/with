@@ -20,7 +20,6 @@ def test_region_creation(
       "thumbnail": "thumbnail"
     })
   )
-
   assert response.status_code == 201
   assert response.json()['code'] == 201
   assert response.json()['status'] == "Created"
@@ -33,65 +32,80 @@ def test_region_creation(
 
 
 def test_region_read(
-  region: RegionModel,
+  regions: list[RegionModel],
   db: Session
 ):
   response = client.get(
     "/api/v1/location/region",
     params={
-      "name": "홍대"
+      "name": "1"
     }
   )
-
   assert response.status_code == 200
   assert response.json()['code'] == 200
   assert response.json()['status'] == "OK"
   assert len(response.json()['content']) == 1
-  assert response.json()['content'][0]['name'] == "홍대/연남"
-  assert response.json()['content'][0]['description'] == "홍대와 연남"
+  assert response.json()['content'][0]['name'] == "n1"
+  assert response.json()['content'][0]['description'] == "d1"
   assert response.json()['content'][0]['thumbnail'] == "thumbnail"
-  assert response.json()['content'][0]['uid'] == str(region.uid)
+  assert response.json()['content'][0]['uid'] == str(regions[1].uid)
+
+
+def test_region_read_limit(
+  regions: list[RegionModel],
+  db: Session
+):
+  response = client.get(
+    "/api/v1/location/region",
+    params={
+      "name": "n",
+      "limit": 2
+    }
+  )
+  assert response.status_code == 200
+  assert response.json()['code'] == 200
+  assert response.json()['status'] == "OK"
+  assert len(response.json()['content']) == 2
 
 
 def test_region_patch(
-  region: RegionModel,
+  regions: list[RegionModel],
   db: Session
 ):
   response = client.patch(
-    "/api/v1/location/region/" + str(region.uid),
+    "/api/v1/location/region/" + str(regions[0].uid),
     content=json.dumps({
-      "name": "신촌",
-      "description": "신촌을 못가",
-      "thumbnail": "nail"
+      "name": "a",
+      "description": "a",
+      "thumbnail": "a"
     })
   )
-
   assert response.status_code == 200
   assert response.json()['code'] == 200
   assert response.json()['status'] == "OK"
 
   db.expire_all()
-  patched_region: RegionModel = db.query(RegionModel).get(region.uid)
-  assert patched_region.name == "신촌"
-  assert patched_region.description == "신촌을 못가"
-  assert patched_region.thumbnail == "nail"
+  patched_region: RegionModel = db.query(RegionModel).get(regions[0].uid)
+  assert patched_region.name == "a"
+  assert patched_region.description == "a"
+  assert patched_region.thumbnail == "a"
 
   db.delete(patched_region)
   db.commit()
 
 
 def test_region_delete(
-  region: RegionModel,
+  regions: list[RegionModel],
   db: Session
 ):
   response = client.delete(
-    "/api/v1/location/region/" + str(region.uid),
+    "/api/v1/location/region/" + str(regions[0].uid),
   )
-
   assert response.status_code == 200
   assert response.json()['code'] == 200
   assert response.json()['status'] == "OK"
   assert response.json()['deleted'] == 1
+  assert db.query(RegionModel).filter(RegionModel.uid == regions[0].uid).scalar() is None
 
 
 def test_patch_null_region():
@@ -102,3 +116,13 @@ def test_patch_null_region():
     })
   )
   assert response.status_code == 404
+
+
+def test_delete_null_region():
+  response = client.delete(
+    "/api/v1/location/region/a2ffae9b-04be-4b29-a529-aa4e55146cc4"
+  )
+  assert response.status_code == 200
+  assert response.json()['code'] == 200
+  assert response.json()['status'] == "OK"
+  assert response.json()['deleted'] == 0

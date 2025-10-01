@@ -42,6 +42,20 @@ def test_delete_follower(
   assert deleted_relation is None
 
 
+def test_delete_null_follower(
+  access_token: str
+):
+  resp = client.delete(
+    '/api/v1/user/follower/a2ffae9b-04be-4b29-a529-aa4e55146cc4',
+    headers={
+      "Authorization": f"Bearer {access_token}"
+    }
+  )
+  assert resp.status_code == 404
+  assert resp.json()['code'] == 404
+  assert resp.json()['status'] == "Not found"
+
+
 def test_query_relationship_follower(
   access_token_factory: Callable[[str], Tuple[IdentityModel, str]],
   relation_factory: Callable[[IdentityModel, IdentityModel, RelationshipState], RelationshipModel],
@@ -124,3 +138,21 @@ def test_change_relationship_follower(
     assert resp.json()['code'] == 400
     assert resp.json()['status'] == "Bad Request"
     assert resp.json()['message'] == "Relationship change may not be done"
+
+
+def test_change_null_relationship_follower(
+  access_token: str
+):
+  resp = client.patch(
+    '/api/v1/user/follower/a2ffae9b-04be-4b29-a529-aa4e55146cc4',
+    headers={
+      "Authorization": f"Bearer {access_token}"
+    },
+    content=json.dumps({
+      "relationship": RelationshipState.BLOCKED.value
+    })
+  )
+
+  assert resp.status_code == 404
+  assert resp.json()['code'] == 404
+  assert resp.json()['status'] == "Not found"

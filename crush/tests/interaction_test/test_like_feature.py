@@ -1,5 +1,4 @@
 import json
-from typing import Callable
 
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
@@ -14,7 +13,7 @@ client = TestClient(app)
 
 
 def test_like(
-  place: PlaceModel,
+  places: list[PlaceModel],
   identity: IdentityModel,
   access_token: str,
   db: Session
@@ -25,7 +24,7 @@ def test_like(
       "Authorization": f"Bearer {access_token}"
     },
     content=json.dumps({
-      "placeId": str(place.uid)
+      "placeId": str(places[0].uid)
     })
   )
 
@@ -36,7 +35,7 @@ def test_like(
   like = (
     db.query(LikesModel)
     .filter(
-      LikesModel.place_id == place.uid,
+      LikesModel.place_id == places[0].uid,
       LikesModel.user_id == identity.uid
     )
     .scalar()
@@ -45,20 +44,22 @@ def test_like(
 
 
 def test_dislike(
-  place: PlaceModel,
+  places: list[PlaceModel],
   identity: IdentityModel,
   access_token: str,
   db: Session
 ):
-  like = LikesModel(
-    place_id=place.uid,
-    user_id=identity.uid
-  )
-  db.add(like)
+  for place in places:
+    like = LikesModel(
+      user_id=identity.uid,
+      place_id=place.uid
+    )
+    db.add(like)
+
   db.commit()
 
   response = client.delete(
-    "/api/v1/interaction/like/" + str(place.uid),
+    "/api/v1/interaction/like/" + str(places[0].uid),
     headers={
       "Authorization": f"Bearer {access_token}"
     }
@@ -70,7 +71,7 @@ def test_dislike(
   like = (
     db.query(LikesModel)
     .filter(
-      LikesModel.place_id == place.uid,
+      LikesModel.place_id == places[0].uid,
       LikesModel.user_id == identity.uid
     )
     .scalar()
@@ -80,23 +81,16 @@ def test_dislike(
 
 def test_list_likes(
   identity: IdentityModel,
-  place_factory: Callable[[str, str, str], PlaceModel],
+  places: list[PlaceModel],
   access_token: str,
   db: Session
 ):
-  places = []
-  for i in range(10):
-    place = place_factory()
-
+  for place in places:
     like = LikesModel(
       user_id=identity.uid,
       place_id=place.uid
     )
     db.add(like)
-
-    places.append(
-      Place(place).model_dump()
-    )
 
   db.commit()
 
@@ -110,24 +104,55 @@ def test_list_likes(
   assert response.status_code == 200
   assert response.json()['code'] == 200
   assert response.json()['status'] == "OK"
-  assert response.json()['likes'] == places
+  assert response.json()['likes'] == [Place(place).model_dump() for place in places]
+
+
+def test_list_likes_limit(
+  identity: IdentityModel,
+  places: list[PlaceModel],
+  access_token: str,
+  db: Session
+):
+  for place in places:
+    like = LikesModel(
+      user_id=identity.uid,
+      place_id=place.uid
+    )
+    db.add(like)
+
+  db.commit()
+
+  response = client.get(
+    "/api/v1/interaction/like",
+    headers={
+      "Authorization": f"Bearer {access_token}"
+    },
+    params={
+      "limit": 4
+    }
+  )
+
+  assert response.status_code == 200
+  assert response.json()['code'] == 200
+  assert response.json()['status'] == "OK"
+  assert len(response.json()['likes']) == 4
 
 
 def test_liked_single_place_liked(
-  place: PlaceModel,
+  places: list[PlaceModel],
   identity: IdentityModel,
   access_token: str,
   db: Session
 ):
   like = LikesModel(
     user_id=identity.uid,
-    place_id=place.uid,
+    place_id=places[0].uid,
   )
   db.add(like)
   db.commit()
 
   response = client.get(
-    "/api/v1/interaction/like/" + str(place.uid),
+    "/api/v1/interaction/like/" + str(places[0].uid),
     headers={
       "Authorization": f"Bearer {access_token}"
     }
@@ -140,13 +165,22 @@ def test_liked_single_place_liked(
 
 
 def test_liked_single_place_not_liked(
-  place: PlaceModel,
+  places: list[PlaceModel],
   identity: IdentityModel,
   access_token: str,
   db: Session
 ):
+  for place in places[1:-1]:
+    like = LikesModel(
+      user_id=identity.uid,
+      place_id=place.uid
+    )
+    db.add(like)
+
+  db.commit()
+
   response = client.get(
-    "/api/v1/interaction/like/" + str(place.uid),
+    "/api/v1/interaction/like/" + str(places[0].uid),
     headers={
       "Authorization": f"Bearer {access_token}"
     }

@@ -70,20 +70,18 @@ def list_liked(
 
   liked_places_query = db.query(LikesModel)
 
-  liked_places_query.filter(LikesModel.user_id == identity.uid)
+  liked_places_query = liked_places_query.filter(LikesModel.user_id == identity.uid)
 
   if query.head is not None:
     head_subquery = db.query(LikesModel.liked_at).filter(LikesModel.place_id == query.head).subquery()
-    liked_places_query.filter(LikesModel.liked_at > head_subquery)
+    liked_places_query = liked_places_query.filter(LikesModel.liked_at > head_subquery)
 
-  liked_places_query.order_by(LikesModel.liked_at.desc())
-  liked_places_query.limit(query.limit)
+  liked_places_query = liked_places_query.order_by(LikesModel.liked_at.desc())
+  liked_places_query = liked_places_query.limit(query.limit)
 
   liked_places: list[LikesModel] = liked_places_query.all()
 
   places = [liked_place.place for liked_place in liked_places]
-  print(places[0].uid, places[0].name, places[0].description, places[0].coordinate, places[0].address,
-        places[0].region_uid, places[0].thumbnail, places[0].place_meta)
 
   return [Place(place) for place in places]
 
