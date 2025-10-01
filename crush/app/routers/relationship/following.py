@@ -2,7 +2,6 @@ from uuid import UUID
 
 from fastapi import APIRouter
 from fastapi.params import Security, Depends
-from jedi.api.completion import complete_param_names
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
@@ -15,6 +14,7 @@ from app.schemas.relationship.following_reqs import FollowRequest, FollowPatchRe
 router = APIRouter(
   prefix='/api/v1/user/following'
 )
+
 
 @router.get(
   path='/{friend_id}'
@@ -37,6 +37,7 @@ def query_relationship(
     }
   )
 
+
 @router.post(
   path=''
 )
@@ -58,6 +59,7 @@ def follow(
     }
   )
 
+
 @router.delete(
   path='/{friend_id}'
 )
@@ -77,6 +79,7 @@ def unfollow(
       "status": "OK"
     }
   )
+
 
 @router.patch(
   path='/{friend_id}'

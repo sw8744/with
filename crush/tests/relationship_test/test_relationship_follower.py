@@ -11,6 +11,7 @@ from app.models.users.relationship import RelationshipModel, RelationshipState
 
 client = TestClient(app)
 
+
 def test_delete_follower(
   access_token_factory: Callable[[str], Tuple[IdentityModel, str]],
   relation_factory: Callable[[IdentityModel, IdentityModel], RelationshipModel],
@@ -40,6 +41,7 @@ def test_delete_follower(
   )
   assert deleted_relation is None
 
+
 def test_query_relationship_follower(
   access_token_factory: Callable[[str], Tuple[IdentityModel, str]],
   relation_factory: Callable[[IdentityModel, IdentityModel, RelationshipState], RelationshipModel],
@@ -60,25 +62,26 @@ def test_query_relationship_follower(
   assert resp.json()['status'] == "OK"
   assert resp.json()['relationship'] == RelationshipState.FRIEND.value
 
+
 @pytest.mark.parametrize(
   "fr, to, exp_code",
   [
-    (RelationshipState.BLOCKED,   RelationshipState.BLOCKED,    400),
-    (RelationshipState.BLOCKED,   RelationshipState.FOLLOWING,  400),
-    (RelationshipState.BLOCKED,   RelationshipState.FRIEND,     400),
-    (RelationshipState.BLOCKED,   RelationshipState.LIKED,      400),
-    (RelationshipState.FOLLOWING, RelationshipState.BLOCKED,    400),
-    (RelationshipState.FOLLOWING, RelationshipState.FOLLOWING,  400),
-    (RelationshipState.FOLLOWING, RelationshipState.FRIEND,     200),
-    (RelationshipState.FOLLOWING, RelationshipState.LIKED,      200),
-    (RelationshipState.FRIEND,    RelationshipState.BLOCKED,    400),
-    (RelationshipState.FRIEND,    RelationshipState.FOLLOWING,  200),
-    (RelationshipState.FRIEND,    RelationshipState.FRIEND,     400),
-    (RelationshipState.FRIEND,    RelationshipState.LIKED,      200),
-    (RelationshipState.LIKED,     RelationshipState.BLOCKED,    400),
-    (RelationshipState.LIKED,     RelationshipState.FOLLOWING,  200),
-    (RelationshipState.LIKED,     RelationshipState.FRIEND,     200),
-    (RelationshipState.LIKED,     RelationshipState.LIKED,      400),
+    (RelationshipState.BLOCKED, RelationshipState.BLOCKED, 400),
+    (RelationshipState.BLOCKED, RelationshipState.FOLLOWING, 400),
+    (RelationshipState.BLOCKED, RelationshipState.FRIEND, 400),
+    (RelationshipState.BLOCKED, RelationshipState.LIKED, 400),
+    (RelationshipState.FOLLOWING, RelationshipState.BLOCKED, 400),
+    (RelationshipState.FOLLOWING, RelationshipState.FOLLOWING, 400),
+    (RelationshipState.FOLLOWING, RelationshipState.FRIEND, 200),
+    (RelationshipState.FOLLOWING, RelationshipState.LIKED, 200),
+    (RelationshipState.FRIEND, RelationshipState.BLOCKED, 400),
+    (RelationshipState.FRIEND, RelationshipState.FOLLOWING, 200),
+    (RelationshipState.FRIEND, RelationshipState.FRIEND, 400),
+    (RelationshipState.FRIEND, RelationshipState.LIKED, 200),
+    (RelationshipState.LIKED, RelationshipState.BLOCKED, 400),
+    (RelationshipState.LIKED, RelationshipState.FOLLOWING, 200),
+    (RelationshipState.LIKED, RelationshipState.FRIEND, 200),
+    (RelationshipState.LIKED, RelationshipState.LIKED, 400),
   ]
 )
 def test_change_relationship_follower(

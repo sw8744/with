@@ -15,6 +15,7 @@ router = APIRouter(
   prefix="/api/v1/user/follower"
 )
 
+
 @router.get(
   path='/{follower_id}'
 )
@@ -36,6 +37,7 @@ def query_relationship(
     }
   )
 
+
 @router.delete(
   path='/{follower_id}'
 )
@@ -55,6 +57,7 @@ def unfollow(
       "status": "OK"
     }
   )
+
 
 @router.patch(
   path='/{follower_id}'

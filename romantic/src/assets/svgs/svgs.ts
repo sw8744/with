@@ -14,6 +14,9 @@ import PhoneFillIcon from './phone.fill.svg?react'
 import CalendarBadgeIcon from './calendar.badge.svg?react'
 import StarFilledIcon from './star.fill.svg?react'
 import StarIcon from './star.svg?react'
+import MapPinAndEllipseIcon from './mappin.and.ellipse.circle.fill.svg?react'
+import MapPinIcon from './mappin.svg?react'
+import MapFilledIcon from './map.fill.svg?react'
 
 export {
   RouteIcon,
@@ -31,6 +34,9 @@ export {
   CalendarBadgeIcon,
   StarIcon,
   StarFilledIcon,
+  MapPinAndEllipseIcon,
+  MapPinIcon,
+  MapFilledIcon,
 
   InstagramIcon
 }

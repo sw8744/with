@@ -7,13 +7,13 @@ from app.models.users.relationship import RelationshipModel, RelationshipState
 from app.schemas.relationship.following_reqs import FollowPatchRequest
 from app.schemas.user.identity import Identity
 
-
 RELATIONSHIP_FOLLOWER = [
-  [False, False,  False,  False],
-  [False, False,  True,   True],
-  [False, True,   False,  True],
-  [False, True,   True,   False]
+  [False, False, False, False],
+  [False, False, True, True],
+  [False, True, False, True],
+  [False, True, True, False]
 ]
+
 
 def query_follower(
   identity: Identity,

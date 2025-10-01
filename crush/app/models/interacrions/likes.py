@@ -1,7 +1,8 @@
+from datetime import datetime
 from uuid import UUID as PyUUID
 
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP
 from sqlalchemy.orm import Mapped, relationship, backref
 
 from app.database import BaseTable
@@ -19,6 +20,7 @@ class LikesModel(BaseTable):
                                    nullable=False)
   place_id: Mapped[PyUUID] = Column(UUID(as_uuid=True), ForeignKey('locations.places.uid'), primary_key=True,
                                     nullable=False)
+  liked_at: Mapped[datetime] = Column(TIMESTAMP, nullable=False, server_default="CURRENT_TIMESTAMP")
 
   user: Mapped[IdentityModel] = relationship(
     "IdentityModel",

@@ -9,10 +9,10 @@ from app.schemas.relationship.following_reqs import FollowRequest, FollowPatchRe
 from app.schemas.user.identity import Identity
 
 RELATIONSHIP_FOLLOWING = [
-  [False, True,   False,  False],
-  [True,  False,  False,  False],
-  [True,  False,  False,  False],
-  [True,  False,  False,  False],
+  [False, True, False, False],
+  [True, False, False, False],
+  [True, False, False, False],
+  [True, False, False, False],
 ]
 
 
@@ -42,10 +42,10 @@ def follow(
   db: Session
 ):
   no_friend = (
-    db.query(IdentityModel)
-    .filter(IdentityModel.uid == body.friend_id)
-    .scalar()
-  ) is None
+                db.query(IdentityModel)
+                .filter(IdentityModel.uid == body.friend_id)
+                .scalar()
+              ) is None
 
   if no_friend:
     raise HTTPException(status_code=404, detail="Friend to follow was not found")

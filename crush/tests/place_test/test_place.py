@@ -23,6 +23,7 @@ def assert_place(response, place):
   assert dict(response.json()['content'][0]['metadata']).get('parking') == False
   assert dict(response.json()['content'][0]['metadata']).get('reservation') == True
 
+
 def test_place_creation(
   db: Session
 ):

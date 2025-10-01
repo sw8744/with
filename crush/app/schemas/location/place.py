@@ -19,7 +19,7 @@ class Place(BaseModel):
     min_length=2, max_length=2
   )
   address: Optional[str] = Field(
-    min_length=1, max_length=128
+    min_length=0, max_length=128
   )
   region_uid: Optional[UUID] = Field(default=None)
   thumbnail: Optional[str] = Field(
@@ -35,5 +35,5 @@ class Place(BaseModel):
     return str(uid)
 
   @field_serializer('region_uid')
-  def serialize_region_uid(self, uid: UUID):
-    return str(uid)
+  def serialize_region_uid(self, uid: Optional[UUID]):
+    return str(uid) if uid is not None else None

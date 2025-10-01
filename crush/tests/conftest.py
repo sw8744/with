@@ -21,6 +21,7 @@ SQLALCHEMY_DATABASE_URL = "postgresql://{user}:{password}@{host}:{port}/{dbname}
 db_engine = create_engine(SQLALCHEMY_DATABASE_URL)
 session = sessionmaker(autocommit=False, autoflush=False, bind=db_engine)
 
+
 @pytest.fixture
 def db():
   db = session()
@@ -139,4 +140,35 @@ def place(
   yield place
 
   db.delete(place)
+  db.commit()
+
+
+@pytest.fixture
+def place_factory(
+  db: Session
+):
+  places: list[PlaceModel] = []
+
+  def create_place(
+    name: str = "4233마음센터 연남점",
+    description: str = "설명",
+    address: str = "서울 마포구 월드컵북로4길 43 지하1층"
+  ) -> PlaceModel:
+    nonlocal place
+
+    place = PlaceModel(
+      name=name,
+      description=description,
+      address=address,
+    )
+    db.add(place)
+    db.commit()
+    db.refresh(place)
+    places.append(place)
+    return place
+
+  yield create_place
+
+  for place in places:
+    db.delete(place)
   db.commit()

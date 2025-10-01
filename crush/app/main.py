@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from sqlalchemy.orm import relationship
 
 from app.core.logger import logger
 from app.routers.auth import GoogleOAuthRouter, AuthRouter

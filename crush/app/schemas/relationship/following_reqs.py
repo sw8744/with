@@ -9,5 +9,6 @@ class FollowRequest(BaseModel):
   friend_id: UUID = Field(alias="friendId")
   relationship: RelationshipState = Field()
 
+
 class FollowPatchRequest(BaseModel):
   relationship: RelationshipState = Field()

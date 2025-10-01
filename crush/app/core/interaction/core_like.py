@@ -1,3 +1,4 @@
+from typing import Optional
 from uuid import UUID
 
 from fastapi import HTTPException
@@ -5,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.models.interacrions.likes import LikesModel
 from app.schemas.interaction.like_reqs import LikeRequest
-from app.schemas.interaction.likes import Likes
+from app.schemas.location.place import Place
 from app.schemas.user.identity import Identity
 
 
@@ -27,7 +28,6 @@ def like_place(
                    ) is not None
   if exists_already:
     raise HTTPException(status_code=409, detail="Already liked")
-
 
   like = LikesModel(
     user_id=identity.uid,
@@ -63,23 +63,41 @@ def dislike_place(
 
 def list_liked(
   identity: Identity,
+  head: Optional[UUID],
+  limit: int,
   db: Session
-) -> Likes:
+) -> list[Place]:
   if identity is None:
     raise HTTPException(status_code=404, detail="User not found")
 
-  liked_places = (
-    db.query(LikesModel)
-    .filter(LikesModel.user_id == identity.uid)
-    .all()
-  )
+  liked_places_query = db.query(LikesModel)
 
-  likes = Likes(
-    user_id=identity.uid,
-    place_ids=[place.place_id for place in liked_places]
-  )
+  liked_places_query.filter(LikesModel.user_id == identity.uid)
 
-  return likes
+  if head is not None:
+    head_subquery = db.query(LikesModel.liked_at).filter(LikesModel.place_id == head).subquery()
+    liked_places_query.filter(LikesModel.liked_at > head_subquery)
+
+  liked_places_query.order_by(LikesModel.liked_at.desc())
+  liked_places_query.limit(limit)
+
+  liked_places: list[LikesModel] = liked_places_query.all()
+
+  places = [liked_place.place for liked_place in liked_places]
+
+  return [
+    Place(
+      uid=place.uid,
+      name=place.name,
+      description=place.description,
+      coordinate=place.coordinate,
+      address=place.address,
+      region_uid=place.region_uid,
+      thumbnail=place.thumbnail,
+      metadata=place.place_meta,
+    )
+    for place in places
+  ]
 
 
 def did_liked_place(
