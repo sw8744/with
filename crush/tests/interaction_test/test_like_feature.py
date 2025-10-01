@@ -86,7 +86,7 @@ def test_list_likes(
 ):
   places = []
   for i in range(10):
-    place = place_factory("", "", "")
+    place = place_factory("a", "a", "")
 
     like = LikesModel(
       user_id=identity.uid,
