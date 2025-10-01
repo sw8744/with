@@ -3,8 +3,8 @@ from typing import Tuple, Callable
 import pytest
 from sqlalchemy.orm import Session
 
-from app.models.users.identities import IdentityModel
-from app.models.users.relationship import RelationshipModel, RelationshipState
+from app.models.users.IdentityModel import IdentityModel
+from app.models.users.RelationshipModel import RelationshipModel, RelationshipState
 
 
 @pytest.fixture

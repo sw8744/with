@@ -2,7 +2,7 @@ from datetime import datetime
 
 from pydantic import BaseModel, Field, EmailStr
 
-from app.models.users.identities import SEX
+from app.models.users.IdentityModel import SEX
 
 
 class RegisterIdentityReq(BaseModel):

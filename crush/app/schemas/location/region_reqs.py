@@ -15,12 +15,10 @@ class RegionSearchQuery(BaseModel):
 
 class AddRegion(BaseModel):
   name: str = Field(
-    default='',
-    min_length=0, max_length=64,
+    min_length=1, max_length=64,
   )
   description: str = Field(
-    default='',
-    min_length=0, max_length=512
+    min_length=1, max_length=512
   )
   thumbnail: Optional[str] = Field(
     default=None,
@@ -31,11 +29,11 @@ class AddRegion(BaseModel):
 class PatchRegion(BaseModel):
   name: Optional[str] = Field(
     default=None,
-    min_length=0, max_length=64,
+    min_length=1, max_length=64,
   )
   description: Optional[str] = Field(
     default=None,
-    min_length=0, max_length=512
+    min_length=1, max_length=512
   )
   thumbnail: Optional[str] = Field(
     default=None,

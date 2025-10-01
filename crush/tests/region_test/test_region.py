@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from app.main import app
-from app.models.locations.regions import RegionModel
+from app.models.locations.RegionModel import RegionModel
 
 client = TestClient(app)
 

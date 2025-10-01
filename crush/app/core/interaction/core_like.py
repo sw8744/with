@@ -1,11 +1,10 @@
-from typing import Optional
 from uuid import UUID
 
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from app.models.interacrions.likes import LikesModel
-from app.schemas.interaction.like_reqs import LikeRequest
+from app.models.interacrions.LikeModel import LikesModel
+from app.schemas.interaction.like_reqs import LikeRequest, LikeSearchRequest
 from app.schemas.location.place import Place
 from app.schemas.user.identity import Identity
 
@@ -63,8 +62,7 @@ def dislike_place(
 
 def list_liked(
   identity: Identity,
-  head: Optional[UUID],
-  limit: int,
+  query: LikeSearchRequest,
   db: Session
 ) -> list[Place]:
   if identity is None:
@@ -74,12 +72,12 @@ def list_liked(
 
   liked_places_query.filter(LikesModel.user_id == identity.uid)
 
-  if head is not None:
-    head_subquery = db.query(LikesModel.liked_at).filter(LikesModel.place_id == head).subquery()
+  if query.head is not None:
+    head_subquery = db.query(LikesModel.liked_at).filter(LikesModel.place_id == query.head).subquery()
     liked_places_query.filter(LikesModel.liked_at > head_subquery)
 
   liked_places_query.order_by(LikesModel.liked_at.desc())
-  liked_places_query.limit(limit)
+  liked_places_query.limit(query.limit)
 
   liked_places: list[LikesModel] = liked_places_query.all()
 

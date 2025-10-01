@@ -6,9 +6,9 @@ from sqlalchemy.orm import sessionmaker, Session
 
 from app.core.config_store import config
 from app.core.user import core_jwt
-from app.models.locations.places import PlaceModel
-from app.models.locations.regions import RegionModel
-from app.models.users.identities import IdentityModel, SEX
+from app.models.locations.PlaceModel import PlaceModel
+from app.models.locations.RegionModel import RegionModel
+from app.models.users.IdentityModel import IdentityModel, SEX
 
 SQLALCHEMY_DATABASE_URL = "postgresql://{user}:{password}@{host}:{port}/{dbname}".format(
   host=config['database']['relational']['host'],

@@ -1,11 +1,11 @@
 from uuid import UUID as PyUUID
 
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID, VARCHAR, FLOAT, ARRAY, JSONB, TEXT
+from sqlalchemy.dialects.postgresql import UUID, VARCHAR, DOUBLE_PRECISION, ARRAY, JSONB, TEXT
 from sqlalchemy.orm import Mapped, relationship, backref
 
 from app.database import BaseTable
-from app.models.locations.regions import RegionModel
+from app.models.locations.RegionModel import RegionModel
 
 
 class PlaceModel(BaseTable):
@@ -18,11 +18,11 @@ class PlaceModel(BaseTable):
                                server_default='gen_random_uuid()')
   name: Mapped[str] = Column(VARCHAR(64), nullable=False, server_default='')
   description: Mapped[str] = Column(TEXT, nullable=False, server_default='')
-  coordinate: Mapped[list[float]] = Column(ARRAY(FLOAT))
+  coordinate: Mapped[list[float]] = Column(ARRAY(DOUBLE_PRECISION))
   address: Mapped[str] = Column(VARCHAR(128))
   region_uid: Mapped[PyUUID] = Column(UUID(as_uuid=True), ForeignKey('locations.regions.uid'))
   thumbnail: Mapped[str] = Column(TEXT)
-  place_meta: Mapped[dict] = Column('metadata', JSONB)
+  place_meta: Mapped[dict] = Column('metadata', JSONB, server_default='{}', nullable=False)
 
   region: Mapped[RegionModel] = relationship(
     "RegionModel",

@@ -2,7 +2,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from app.models.users.relationship import RelationshipState
+from app.models.users.RelationshipModel import RelationshipState
 
 
 class FollowRequest(BaseModel):

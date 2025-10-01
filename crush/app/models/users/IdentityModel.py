@@ -26,6 +26,6 @@ class IdentityModel(BaseTable):
   name: Mapped[str] = Column(VARCHAR(64), nullable=False)
   email: Mapped[str] = Column(VARCHAR(64), nullable=False)
   email_verified: Mapped[bool] = Column(BOOLEAN, nullable=False, server_default='FALSE')
-  sex: Mapped[SEX] = Column(EnumAsValue(SEX), nullable=False, default=SEX.OTHER)
+  sex: Mapped[SEX] = Column(EnumAsValue(SEX), nullable=False, server_default="2")
   birthday: Mapped[datetime] = Column('dob', DATE, nullable=False)
   role: Mapped[list[str]] = Column(ARRAY(VARCHAR(16)), nullable=False, default=[])

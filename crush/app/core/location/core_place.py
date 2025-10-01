@@ -5,7 +5,7 @@ from uuid import UUID
 from sqlalchemy.orm import Session
 
 from app.core.exceptions.exceptions import ItemNotFoundError
-from app.models.locations.places import PlaceModel
+from app.models.locations.PlaceModel import PlaceModel
 from app.schemas.location.place import Place
 from app.schemas.location.place_reqs import AddPlace, PatchPlace, PlaceSearchQuery
 

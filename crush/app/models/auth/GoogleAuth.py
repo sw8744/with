@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import UUID, VARCHAR, TIMESTAMP
 from sqlalchemy.orm import Mapped, relationship, backref
 
 from app.database import BaseTable
-from app.models.users.identities import IdentityModel
+from app.models.users.IdentityModel import IdentityModel
 
 
 class GoogleAuthModel(BaseTable):

@@ -1,7 +1,8 @@
+from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter
-from fastapi.params import Security, Depends
+from fastapi.params import Security, Depends, Query
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
@@ -9,7 +10,7 @@ from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.interaction import core_like
 from app.core.user import core_user
 from app.database import create_connection
-from app.schemas.interaction.like_reqs import LikeRequest
+from app.schemas.interaction.like_reqs import LikeRequest, LikeSearchRequest
 
 router = APIRouter(
   prefix='/api/v1/interaction/like',
@@ -21,15 +22,14 @@ router = APIRouter(
   path=''
 )
 def query_liked_places(
-  head: UUID = None,
-  limit: int = 100,
+  query: Annotated[LikeSearchRequest, Query()],
   jwt: str = Security(authorization_header),
   db: Session = Depends(create_connection)
 ):
   token = authorize_jwt(jwt)
 
   identity = core_user.get_identity(token, db)
-  liked_places = core_like.list_liked(identity, head, limit, db)
+  liked_places = core_like.list_liked(identity, query, db)
 
   return JSONResponse(
     status_code=200,

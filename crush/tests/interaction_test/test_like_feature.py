@@ -5,9 +5,9 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from app.main import app
-from app.models.interacrions.likes import LikesModel
-from app.models.locations.places import PlaceModel
-from app.models.users.identities import IdentityModel
+from app.models.interacrions.LikeModel import LikesModel
+from app.models.locations.PlaceModel import PlaceModel
+from app.models.users.IdentityModel import IdentityModel
 from app.schemas.location.place import Place
 
 client = TestClient(app)

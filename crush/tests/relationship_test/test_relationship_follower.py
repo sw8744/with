@@ -6,8 +6,8 @@ from sqlalchemy.orm import Session
 from starlette.testclient import TestClient
 
 from app.main import app
-from app.models.users.identities import IdentityModel
-from app.models.users.relationship import RelationshipModel, RelationshipState
+from app.models.users.IdentityModel import IdentityModel
+from app.models.users.RelationshipModel import RelationshipModel, RelationshipState
 
 client = TestClient(app)
 

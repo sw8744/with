@@ -3,7 +3,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field, EmailStr, field_serializer
 
-from app.models.users.identities import SEX
+from app.models.users.IdentityModel import SEX
 
 
 class Identity(BaseModel):

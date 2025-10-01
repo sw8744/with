@@ -3,7 +3,7 @@ from uuid import UUID
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from app.models.users.relationship import RelationshipModel, RelationshipState
+from app.models.users.RelationshipModel import RelationshipModel, RelationshipState
 from app.schemas.relationship.following_reqs import FollowPatchRequest
 from app.schemas.user.identity import Identity
 

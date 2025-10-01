@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
@@ -11,7 +12,7 @@ from app.core.auth.core_oauth import get_session_state
 from app.core.config_store import config
 from app.database import redis_db0
 from app.models.auth.GoogleAuth import GoogleAuthModel
-from app.models.users.identities import IdentityModel
+from app.models.users.IdentityModel import IdentityModel
 from app.schemas.user.identity import Identity
 
 
@@ -86,6 +87,7 @@ def find_sub_from_database(
     return None
   else:
     im: IdentityModel = google_auth.user
+    google_auth.last_used = datetime.now()
     return Identity(
       uid=im.uid,
       name=im.name,

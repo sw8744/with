@@ -7,7 +7,7 @@ from app.core.user import core_jwt
 from app.core.user.core_jwt import get_sub
 from app.core.user.core_login import login
 from app.database import redis_refresh_token_blacklist_db1
-from app.models.users.identities import IdentityModel
+from app.models.users.IdentityModel import IdentityModel
 
 
 def use_refresh_token(

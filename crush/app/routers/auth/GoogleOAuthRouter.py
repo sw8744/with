@@ -74,6 +74,7 @@ def callback_authentication(
       samesite='strict',
       secure=config['cookie']['secure']
     )
+    db.rollback()
   else:
     access_token, refresh_token = login(identity)
 
@@ -88,6 +89,7 @@ def callback_authentication(
       secure=config['cookie']['secure'],
       path='/api/v1/auth/refresh'
     )
+    db.commit()
 
   return response
 

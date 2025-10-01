@@ -5,7 +5,7 @@ from uuid import UUID
 from sqlalchemy.orm import Session
 
 from app.core.exceptions.exceptions import ItemNotFoundError
-from app.models.locations.regions import RegionModel
+from app.models.locations.RegionModel import RegionModel
 from app.schemas.location.region import Region
 from app.schemas.location.region_reqs import AddRegion, RegionSearchQuery, PatchRegion
 
