@@ -82,20 +82,10 @@ def list_liked(
   liked_places: list[LikesModel] = liked_places_query.all()
 
   places = [liked_place.place for liked_place in liked_places]
+  print(places[0].uid, places[0].name, places[0].description, places[0].coordinate, places[0].address,
+        places[0].region_uid, places[0].thumbnail, places[0].place_meta)
 
-  return [
-    Place(
-      uid=place.uid,
-      name=place.name,
-      description=place.description,
-      coordinate=place.coordinate,
-      address=place.address,
-      region_uid=place.region_uid,
-      thumbnail=place.thumbnail,
-      metadata=place.place_meta,
-    )
-    for place in places
-  ]
+  return [Place(place) for place in places]
 
 
 def did_liked_place(

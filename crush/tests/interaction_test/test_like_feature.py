@@ -86,7 +86,7 @@ def test_list_likes(
 ):
   places = []
   for i in range(10):
-    place = place_factory("a", "a", "")
+    place = place_factory()
 
     like = LikesModel(
       user_id=identity.uid,
@@ -95,16 +95,7 @@ def test_list_likes(
     db.add(like)
 
     places.append(
-      Place(
-        uid=place.uid,
-        name=place.name,
-        description=place.description,
-        coordinate=place.coordinate,
-        address=place.address,
-        region_uid=place.region_uid,
-        thumbnail=place.thumbnail,
-        metadata=place.place_meta,
-      ).model_dump()
+      Place(place).model_dump()
     )
 
   db.commit()

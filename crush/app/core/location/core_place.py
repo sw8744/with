@@ -29,16 +29,7 @@ def add_place(
   db.add(place)
   db.commit()
 
-  return Place(
-    uid=place.uid,
-    name=place.name,
-    description=place.description,
-    coordinate=place.coordinate,
-    address=place.address,
-    region_uid=place.region_uid,
-    thumbnail=place.thumbnail,
-    metadata=place.place_meta
-  )
+  return Place(place)
 
 
 # TODO: 허용 검색 쿼리 가변적으로 만들기
@@ -93,16 +84,7 @@ def search_place(
   places: list[Place] = []
   for place in places_db:
     places.append(
-      Place(
-        uid=place.uid,
-        name=place.name,
-        description=place.description,
-        coordinate=place.coordinate,
-        address=place.address,
-        region_uid=place.region_uid,
-        thumbnail=place.thumbnail,
-        metadata=place.place_meta,
-      )
+      Place(place)
     )
 
   return places

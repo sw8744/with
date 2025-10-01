@@ -3,8 +3,23 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field, field_serializer
 
+from app.models.locations.PlaceModel import PlaceModel
+
 
 class Place(BaseModel):
+  def __init__(self, place_model: PlaceModel):
+    super().__init__(
+      uid=place_model.uid,
+      name=place_model.name,
+      description=place_model.description,
+      coordinate=place_model.coordinate,
+      address=place_model.address,
+      region_uid=place_model.region_uid,
+      thumbnail=place_model.thumbnail,
+      metadata=place_model.place_meta
+    )
+
+
   uid: UUID = Field()
   name: str = Field(
     min_length=1, max_length=64

@@ -3,10 +3,22 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field, EmailStr, field_serializer
 
-from app.models.users.IdentityModel import SEX
+from app.models.users.IdentityModel import SEX, IdentityModel
 
 
 class Identity(BaseModel):
+  def __init__(self, identity_model: IdentityModel):
+    super().__init__(
+      uid=identity_model.uid,
+      name=identity_model.name,
+      email=identity_model.email,
+      email_verified=identity_model.email_verified,
+      sex=identity_model.sex,
+      birthday=identity_model.birthday,
+      role=identity_model.role
+    )
+
+
   uid: UUID = Field()
   name: str = Field(
     min_length=1, max_length=64

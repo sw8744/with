@@ -88,12 +88,4 @@ def find_sub_from_database(
   else:
     im: IdentityModel = google_auth.user
     google_auth.last_used = datetime.now()
-    return Identity(
-      uid=im.uid,
-      name=im.name,
-      email=im.email,
-      email_verified=im.email_verified,
-      sex=im.sex,
-      birthday=im.birthday,
-      role=im.role
-    )
+    return Identity(im)

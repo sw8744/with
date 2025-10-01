@@ -25,12 +25,7 @@ def add_region(
   db.add(region)
   db.commit()
 
-  return Region(
-    uid=region.uid,
-    name=region.name,
-    description=region.description,
-    thumbnail=region.thumbnail
-  )
+  return Region(region)
 
 
 def search_region(
@@ -56,12 +51,7 @@ def search_region(
   regions: list[Region] = []
   for region in regions_db:
     regions.append(
-      Region(
-        uid=region.uid,
-        name=region.name,
-        description=region.description,
-        thumbnail=region.thumbnail
-      )
+      Region(region)
     )
 
   return regions

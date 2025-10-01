@@ -25,12 +25,10 @@ class PlaceSearchQuery(BaseModel):
 
 class AddPlace(BaseModel):
   name: str = Field(
-    default='',
-    min_length=0, max_length=64,
+    min_length=1, max_length=64,
   )
   description: str = Field(
-    default='',
-    min_length=0, max_length=512
+    min_length=1, max_length=512
   )
   coordinate: Optional[list[float]] = Field(
     default=None,
@@ -53,11 +51,11 @@ class AddPlace(BaseModel):
 class PatchPlace(BaseModel):
   name: Optional[str] = Field(
     default=None,
-    min_length=0, max_length=64,
+    min_length=1, max_length=64,
   )
   description: Optional[str] = Field(
     default=None,
-    min_length=0, max_length=512
+    min_length=1, max_length=512
   )
   coordinate: Optional[list[float]] = Field(
     default=None,

@@ -26,6 +26,7 @@ def query_liked_places(
   jwt: str = Security(authorization_header),
   db: Session = Depends(create_connection)
 ):
+  print(query.model_dump())
   token = authorize_jwt(jwt)
 
   identity = core_user.get_identity(token, db)

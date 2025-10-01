@@ -45,15 +45,7 @@ def get_identity(
   if iden is None:
     return None
   else:
-    return Identity(
-      uid=iden.uid,
-      name=iden.name,
-      email=iden.email,
-      email_verified=iden.email_verified,
-      sex=iden.sex,
-      birthday=iden.birthday,
-      role=iden.role
-    )
+    return Identity(iden)
 
 
 def register_using_session(
@@ -90,15 +82,7 @@ def register_using_session(
 
   db.commit()
 
-  return Identity(
-    uid=identity.uid,
-    name=identity.name,
-    email=identity.email,
-    email_verified=identity.email_verified,
-    sex=identity.sex,
-    birthday=identity.birthday,
-    role=identity.role
-  )
+  return Identity(identity)
 
 
 def register_google_auth(
