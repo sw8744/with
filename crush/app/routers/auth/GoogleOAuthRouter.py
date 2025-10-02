@@ -35,8 +35,8 @@ def begin_authentication():
     session_uuid,
     max_age=600,
     httponly=True,
-    samesite='strict',
-    secure=config['cookie']['secure']
+    samesite="strict",
+    secure=config["cookie"]["secure"]
   )
 
   return response
@@ -49,7 +49,7 @@ def callback_authentication(
   request: Request,
   db: Session = Depends(create_connection)
 ):
-  state_session_uuid = request.cookies.get('OAuthState')
+  state_session_uuid = request.cookies.get("OAuthState")
 
   identity, userinfo = core_google_auth.google_login(str(request.url), state_session_uuid, db)
 
@@ -71,8 +71,8 @@ def callback_authentication(
       register_session_uuid,
       max_age=3600,
       httponly=True,
-      samesite='strict',
-      secure=config['cookie']['secure']
+      samesite="strict",
+      secure=config["cookie"]["secure"]
     )
     db.rollback()
   else:
@@ -81,13 +81,13 @@ def callback_authentication(
     response = RedirectResponse("/login/set-token?at={}".format(access_token))
     response.delete_cookie("OAuthState")
     response.set_cookie(
-      'WAUTHREF',
+      "WAUTHREF",
       refresh_token,
       max_age=2592000,
       httponly=True,
-      samesite='strict',
-      secure=config['cookie']['secure'],
-      path='/api/v1/auth/refresh'
+      samesite="strict",
+      secure=config["cookie"]["secure"],
+      path="/api/v1/auth/refresh"
     )
     db.commit()
 

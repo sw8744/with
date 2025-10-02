@@ -34,10 +34,10 @@ def add_place(
 
 # TODO: 허용 검색 쿼리 가변적으로 만들기
 ALLOWED_QUERY = {
-  'parking': bool,
-  'reservation': bool,
-  'contact': str,
-  'instagram': str
+  "parking": bool,
+  "reservation": bool,
+  "contact": str,
+  "instagram": str
 }
 
 
@@ -67,7 +67,7 @@ def search_place(
         if type is not None:
           try:
             if type == bool:
-              val = meta[key] == 'true'
+              val = meta[key] == "true"
             elif type == str:
               val = meta[key]
             elif type == int:

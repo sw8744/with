@@ -43,10 +43,10 @@ class Place(BaseModel):
     default={}
   )
 
-  @field_serializer('uid')
+  @field_serializer("uid")
   def serialize_uid(self, uid: UUID):
     return str(uid)
 
-  @field_serializer('region_uid')
+  @field_serializer("region_uid")
   def serialize_region_uid(self, uid: Optional[UUID]):
     return str(uid) if uid is not None else None

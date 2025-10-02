@@ -16,12 +16,12 @@ class GoogleAuthModel(BaseTable):
   }
 
   uid: Mapped[uuid.UUID] = Column(UUID(as_uuid=True), primary_key=True, unique=True, nullable=False,
-                                  server_default='gen_random_uuid()')
+                                  server_default="gen_random_uuid()")
   user_id: Mapped[uuid.UUID] = Column(UUID(as_uuid=True), ForeignKey("users.identities.uid"), unique=True,
                                       nullable=False)
 
   sub: Mapped[str] = Column(VARCHAR(21), nullable=False, unique=True)
-  last_used: Mapped[datetime] = Column(TIMESTAMP, nullable=False, server_default='current_timestamp')
+  last_used: Mapped[datetime] = Column(TIMESTAMP, nullable=False, server_default="current_timestamp")
 
   user: Mapped[IdentityModel] = relationship(
     "IdentityModel",

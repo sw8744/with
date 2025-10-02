@@ -11,16 +11,16 @@ client = TestClient(app)
 
 def assert_place(response, place):
   assert response.status_code == 200
-  assert response.json()['code'] == 200
-  assert response.json()['status'] == "OK"
-  assert len(response.json()['content']) == 1
-  assert response.json()['content'][0]['name'] == place.name
-  assert response.json()['content'][0]['description'] == place.description
-  assert response.json()['content'][0]['address'] == place.address
-  assert response.json()['content'][0]['coordinate'] == place.coordinate
-  assert response.json()['content'][0]['uid'] == str(place.uid)
-  assert response.json()['content'][0]['thumbnail'] == place.thumbnail
-  assert dict(response.json()['content'][0]['metadata']) == place.place_meta
+  assert response.json()["code"] == 200
+  assert response.json()["status"] == "OK"
+  assert len(response.json()["content"]) == 1
+  assert response.json()["content"][0]["name"] == place.name
+  assert response.json()["content"][0]["description"] == place.description
+  assert response.json()["content"][0]["address"] == place.address
+  assert response.json()["content"][0]["coordinate"] == place.coordinate
+  assert response.json()["content"][0]["uid"] == str(place.uid)
+  assert response.json()["content"][0]["thumbnail"] == place.thumbnail
+  assert dict(response.json()["content"][0]["metadata"]) == place.place_meta
 
 
 def test_place_creation(
@@ -42,17 +42,17 @@ def test_place_creation(
   )
 
   assert response.status_code == 201
-  assert response.json()['code'] == 201
-  assert response.json()['status'] == "Created"
-  assert response.json()['content']['name'] == "4233마음센터 연남점"
-  assert response.json()['content']['address'] == "서울 마포구 월드컵북로4길 43 지하1층"
-  assert response.json()['content']['description'] == "설명"
-  assert response.json()['content']['thumbnail'] == "thumbnail"
-  assert response.json()['content']['coordinate'] == [37.558147, 126.921673]
-  assert dict(response.json()['content']['metadata']).get("parking", None) == False
-  assert dict(response.json()['content']['metadata']).get("reservation", None) == True
+  assert response.json()["code"] == 201
+  assert response.json()["status"] == "Created"
+  assert response.json()["content"]["name"] == "4233마음센터 연남점"
+  assert response.json()["content"]["address"] == "서울 마포구 월드컵북로4길 43 지하1층"
+  assert response.json()["content"]["description"] == "설명"
+  assert response.json()["content"]["thumbnail"] == "thumbnail"
+  assert response.json()["content"]["coordinate"] == [37.558147, 126.921673]
+  assert dict(response.json()["content"]["metadata"]).get("parking", None) == False
+  assert dict(response.json()["content"]["metadata"]).get("reservation", None) == True
 
-  db.query(PlaceModel).filter(PlaceModel.uid == response.json()['content']['uid']).delete()
+  db.query(PlaceModel).filter(PlaceModel.uid == response.json()["content"]["uid"]).delete()
   db.commit()
 
 
@@ -108,9 +108,9 @@ def test_place_read_limit(
   )
 
   assert response.status_code == 200
-  assert response.json()['code'] == 200
-  assert response.json()['status'] == "OK"
-  assert len(response.json()['content']) == 2
+  assert response.json()["code"] == 200
+  assert response.json()["status"] == "OK"
+  assert len(response.json()["content"]) == 2
 
 
 def test_place_search_nothing():
@@ -122,9 +122,9 @@ def test_place_search_nothing():
   )
 
   assert response.status_code == 200
-  assert response.json()['code'] == 200
-  assert response.json()['status'] == "OK"
-  assert len(response.json()['content']) == 0
+  assert response.json()["code"] == 200
+  assert response.json()["status"] == "OK"
+  assert len(response.json()["content"]) == 0
 
 
 def test_place_search_nothing_from_param(
@@ -138,9 +138,9 @@ def test_place_search_nothing_from_param(
   )
 
   assert response.status_code == 200
-  assert response.json()['code'] == 200
-  assert response.json()['status'] == "OK"
-  assert len(response.json()['content']) == 0
+  assert response.json()["code"] == 200
+  assert response.json()["status"] == "OK"
+  assert len(response.json()["content"]) == 0
 
 
 def test_place_patch(
@@ -163,8 +163,8 @@ def test_place_patch(
   )
 
   assert response.status_code == 200
-  assert response.json()['code'] == 200
-  assert response.json()['status'] == "OK"
+  assert response.json()["code"] == 200
+  assert response.json()["status"] == "OK"
 
   db.expire_all()
   patched_place: PlaceModel = db.query(PlaceModel).get(places[0].uid)
@@ -199,8 +199,8 @@ def test_place_patch_meta_not_set(
   )
 
   assert response.status_code == 200
-  assert response.json()['code'] == 200
-  assert response.json()['status'] == "OK"
+  assert response.json()["code"] == 200
+  assert response.json()["status"] == "OK"
 
   db.expire_all()
   patched_place: PlaceModel = db.query(PlaceModel).get(places[0].uid)
@@ -233,9 +233,9 @@ def test_place_delete(
   )
 
   assert response.status_code == 200
-  assert response.json()['code'] == 200
-  assert response.json()['status'] == "OK"
-  assert response.json()['deleted'] == 1
+  assert response.json()["code"] == 200
+  assert response.json()["status"] == "OK"
+  assert response.json()["deleted"] == 1
   assert db.query(PlaceModel).filter(PlaceModel.uid == places[0].uid).scalar() is None
 
 
@@ -245,6 +245,6 @@ def test_place_delete_null():
   )
 
   assert response.status_code == 200
-  assert response.json()['code'] == 200
-  assert response.json()['status'] == "OK"
-  assert response.json()['deleted'] == 0
+  assert response.json()["code"] == 200
+  assert response.json()["status"] == "OK"
+  assert response.json()["deleted"] == 0

@@ -14,7 +14,7 @@ class RegionModel(BaseTable):
   }
 
   uid: Mapped[PyUUID] = Column(UUID(as_uuid=True), primary_key=True, unique=True, nullable=False,
-                               server_default='gen_random_uuid()')
-  name: Mapped[str] = Column(VARCHAR(64), nullable=False, server_default='')
-  description: Mapped[str] = Column(TEXT, nullable=False, server_default='')
+                               server_default="gen_random_uuid()")
+  name: Mapped[str] = Column(VARCHAR(64), nullable=False, server_default="")
+  description: Mapped[str] = Column(TEXT, nullable=False, server_default="")
   thumbnail: Mapped[str] = Column(TEXT)

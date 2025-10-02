@@ -29,8 +29,8 @@ def test_like(
   )
 
   assert response.status_code == 200
-  assert response.json()['code'] == 200
-  assert response.json()['status'] == "OK"
+  assert response.json()["code"] == 200
+  assert response.json()["status"] == "OK"
 
   like = (
     db.query(LikesModel)
@@ -65,8 +65,8 @@ def test_dislike(
     }
   )
   assert response.status_code == 200
-  assert response.json()['code'] == 200
-  assert response.json()['status'] == "OK"
+  assert response.json()["code"] == 200
+  assert response.json()["status"] == "OK"
 
   like = (
     db.query(LikesModel)
@@ -102,9 +102,9 @@ def test_list_likes(
   )
 
   assert response.status_code == 200
-  assert response.json()['code'] == 200
-  assert response.json()['status'] == "OK"
-  assert response.json()['likes'] == [Place(place).model_dump() for place in places]
+  assert response.json()["code"] == 200
+  assert response.json()["status"] == "OK"
+  assert response.json()["likes"] == [Place(place).model_dump() for place in places]
 
 
 def test_list_likes_limit(
@@ -133,9 +133,9 @@ def test_list_likes_limit(
   )
 
   assert response.status_code == 200
-  assert response.json()['code'] == 200
-  assert response.json()['status'] == "OK"
-  assert len(response.json()['likes']) == 4
+  assert response.json()["code"] == 200
+  assert response.json()["status"] == "OK"
+  assert len(response.json()["likes"]) == 4
 
 
 def test_liked_single_place_liked(
@@ -159,9 +159,9 @@ def test_liked_single_place_liked(
   )
 
   assert response.status_code == 200
-  assert response.json()['code'] == 200
-  assert response.json()['status'] == "OK"
-  assert response.json()['liked'] == True
+  assert response.json()["code"] == 200
+  assert response.json()["status"] == "OK"
+  assert response.json()["liked"] == True
 
 
 def test_liked_single_place_not_liked(
@@ -187,6 +187,6 @@ def test_liked_single_place_not_liked(
   )
 
   assert response.status_code == 200
-  assert response.json()['code'] == 200
-  assert response.json()['status'] == "OK"
-  assert response.json()['liked'] == False
+  assert response.json()["code"] == 200
+  assert response.json()["status"] == "OK"
+  assert response.json()["liked"] == False

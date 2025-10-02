@@ -13,13 +13,13 @@ from app.database import create_connection
 from app.schemas.interaction.like_reqs import LikeRequest, LikeSearchRequest
 
 router = APIRouter(
-  prefix='/api/v1/interaction/like',
-  tags=['interaction', 'like']
+  prefix="/api/v1/interaction/like",
+  tags=["interaction", "like"]
 )
 
 
 @router.get(
-  path=''
+  path=""
 )
 def query_liked_places(
   query: Annotated[LikeSearchRequest, Query()],
@@ -43,7 +43,7 @@ def query_liked_places(
 
 
 @router.get(
-  path='/{place_id}'
+  path="/{place_id}"
 )
 def query_liked_place(
   place_id: UUID,
@@ -65,7 +65,7 @@ def query_liked_place(
 
 
 @router.post(
-  path=''
+  path=""
 )
 def like_place(
   body: LikeRequest,
@@ -87,7 +87,7 @@ def like_place(
 
 
 @router.delete(
-  path='/{place_id}'
+  path="/{place_id}"
 )
 def unlike_place(
   place_id: UUID,

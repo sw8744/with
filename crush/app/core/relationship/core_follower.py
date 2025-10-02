@@ -131,3 +131,19 @@ def list_followers(
 
   followers = followers_query.all()
   return [Follower(follower) for follower in followers]
+
+
+def count_follower(
+  identity: Identity,
+  db: Session
+):
+  if identity is None:
+    raise HTTPException(status_code=404, detail="User not found")
+
+  cnt = (
+    db.query(RelationshipModel)
+    .filter(RelationshipModel.friend_id == identity.uid)
+    .count()
+  )
+
+  return cnt

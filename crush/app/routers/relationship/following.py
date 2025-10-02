@@ -13,34 +13,13 @@ from app.database import create_connection
 from app.schemas.relationship.follow_reqs import FollowRequest, FollowPatchRequest, ListingRelationshipRequest
 
 router = APIRouter(
-  prefix='/api/v1/user/following'
+  prefix="/api/v1/user/following",
+  tags=["user", "relationship", "following"]
 )
 
 
 @router.get(
-  path='/{friend_id}'
-)
-def query_relationship(
-  friend_id: UUID,
-  jwt: str = Security(authorization_header),
-  db: Session = Depends(create_connection)
-):
-  token: dict[str, str] = authorize_jwt(jwt)
-  identity = core_user.get_identity(token, db)
-  relation = core_following.query_following(identity, friend_id, db)
-
-  return JSONResponse(
-    status_code=200,
-    content={
-      "code": 200,
-      "status": "OK",
-      "relationship": relation.value if relation is not None else -1
-    }
-  )
-
-
-@router.get(
-  path=''
+  path=""
 )
 def list_followings(
   query: Annotated[ListingRelationshipRequest, Query()],
@@ -61,8 +40,53 @@ def list_followings(
   )
 
 
+@router.get(
+  path="/count"
+)
+def count_following(
+  jwt: str = Security(authorization_header),
+  db: Session = Depends(create_connection)
+):
+  token: dict[str, str] = authorize_jwt(jwt)
+  identity = core_user.get_identity(token, db)
+  cnt = core_following.count_following(identity, db)
+
+  return JSONResponse(
+    status_code=200,
+    content={
+      "code": 200,
+      "status": "OK",
+      "count": cnt
+    }
+  )
+
+
+@router.get(
+  path="/{friend_id}"
+)
+def query_relationship(
+  friend_id: UUID,
+  jwt: str = Security(authorization_header),
+  db: Session = Depends(create_connection)
+):
+  token: dict[str, str] = authorize_jwt(jwt)
+  identity = core_user.get_identity(token, db)
+  relation = core_following.query_following(identity, friend_id, db)
+
+  return JSONResponse(
+    status_code=200,
+    content={
+      "code": 200,
+      "status": "OK",
+      "relationship": relation.value if relation is not None else -1
+    }
+  )
+
+
+
+
 @router.post(
-  path=''
+  path=""
 )
 def follow(
   body: FollowRequest,
@@ -84,7 +108,7 @@ def follow(
 
 
 @router.delete(
-  path='/{friend_id}'
+  path="/{friend_id}"
 )
 def unfollow(
   friend_id: UUID,
@@ -105,7 +129,7 @@ def unfollow(
 
 
 @router.patch(
-  path='/{friend_id}'
+  path="/{friend_id}"
 )
 def patch_relationship(
   friend_id: UUID,

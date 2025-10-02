@@ -15,14 +15,14 @@ class PlaceModel(BaseTable):
   }
 
   uid: Mapped[PyUUID] = Column(UUID(as_uuid=True), primary_key=True, unique=True, nullable=False,
-                               server_default='gen_random_uuid()')
-  name: Mapped[str] = Column(VARCHAR(64), nullable=False, server_default='')
-  description: Mapped[str] = Column(TEXT, nullable=False, server_default='')
+                               server_default="gen_random_uuid()")
+  name: Mapped[str] = Column(VARCHAR(64), nullable=False, server_default="")
+  description: Mapped[str] = Column(TEXT, nullable=False, server_default="")
   coordinate: Mapped[list[float]] = Column(ARRAY(DOUBLE_PRECISION))
   address: Mapped[str] = Column(VARCHAR(128))
-  region_uid: Mapped[PyUUID] = Column(UUID(as_uuid=True), ForeignKey('locations.regions.uid'))
+  region_uid: Mapped[PyUUID] = Column(UUID(as_uuid=True), ForeignKey("locations.regions.uid"))
   thumbnail: Mapped[str] = Column(TEXT)
-  place_meta: Mapped[dict] = Column('metadata', JSONB, server_default='{}', nullable=False)
+  place_meta: Mapped[dict] = Column("metadata", JSONB, server_default="{}", nullable=False)
 
   region: Mapped[RegionModel] = relationship(
     "RegionModel",

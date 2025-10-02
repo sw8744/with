@@ -13,11 +13,11 @@ from app.models.locations.RegionModel import RegionModel
 from app.models.users.IdentityModel import IdentityModel, SEX
 
 SQLALCHEMY_DATABASE_URL = "postgresql://{user}:{password}@{host}:{port}/{dbname}".format(
-  host=config['database']['relational']['host'],
-  port=config['database']['relational']['port'],
-  password=config['database']['relational']['password'],
-  user=config['database']['relational']['user'],
-  dbname=config['database']['relational']['name']
+  host=config["database"]["relational"]["host"],
+  port=config["database"]["relational"]["port"],
+  password=config["database"]["relational"]["password"],
+  user=config["database"]["relational"]["user"],
+  dbname=config["database"]["relational"]["name"]
 )
 
 db_engine = create_engine(SQLALCHEMY_DATABASE_URL)
@@ -42,7 +42,7 @@ def identity(db: Session) -> Generator[IdentityModel]:
     email_verified=True,
     sex=SEX.MALE,
     birthday=datetime.today(),
-    role=['core:user']
+    role=["core:user"]
   )
   db.add(iden)
 
@@ -66,7 +66,7 @@ def identity_factory(db: Session) -> Generator[Callable[[str], IdentityModel]]:
       email_verified=True,
       sex=SEX.MALE,
       birthday=datetime.today(),
-      role=['core:user']
+      role=["core:user"]
     )
     db.add(iden)
     db.commit()

@@ -42,14 +42,14 @@ def register_user(
     }
   )
 
-  response.delete_cookie('session')
+  response.delete_cookie("session")
   response.set_cookie(
-    'WAUTHREF',
+    "WAUTHREF",
     refresh_token,
     max_age=2592000,
     httponly=True,
-    samesite='strict',
-    secure=config['cookie']['secure'],
-    path='/api/v1/auth/refresh'
+    samesite="strict",
+    secure=config["cookie"]["secure"],
+    path="/api/v1/auth/refresh"
   )
   return response

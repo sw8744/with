@@ -6,11 +6,11 @@ from sqlalchemy.orm import sessionmaker
 from app.core.config_store import config
 
 SQLALCHEMY_DATABASE_URL = "postgresql://{user}:{password}@{host}:{port}/{dbname}".format(
-  host=config['database']['relational']['host'],
-  port=config['database']['relational']['port'],
-  password=config['database']['relational']['password'],
-  user=config['database']['relational']['user'],
-  dbname=config['database']['relational']['name']
+  host=config["database"]["relational"]["host"],
+  port=config["database"]["relational"]["port"],
+  password=config["database"]["relational"]["password"],
+  user=config["database"]["relational"]["user"],
+  dbname=config["database"]["relational"]["name"]
 )
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True)
@@ -45,17 +45,17 @@ class EnumAsValue(TypeDecorator):
 
 
 redis_db0 = redis.Redis(
-  host=config['database']["redis"]["host"],
-  port=config['database']["redis"]["port"],
-  password=config['database']["redis"]["password"],
+  host=config["database"]["redis"]["host"],
+  port=config["database"]["redis"]["port"],
+  password=config["database"]["redis"]["password"],
   db=0,
   decode_responses=True
 )
 
 redis_refresh_token_blacklist_db1 = redis.Redis(
-  host=config['database']["redis"]["host"],
-  port=config['database']["redis"]["port"],
-  password=config['database']["redis"]["password"],
+  host=config["database"]["redis"]["host"],
+  port=config["database"]["redis"]["port"],
+  password=config["database"]["redis"]["password"],
   db=1,
   decode_responses=True
 )

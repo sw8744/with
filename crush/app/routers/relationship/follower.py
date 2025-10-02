@@ -13,12 +13,13 @@ from app.database import create_connection
 from app.schemas.relationship.follow_reqs import FollowPatchRequest, ListingRelationshipRequest
 
 router = APIRouter(
-  prefix="/api/v1/user/follower"
+  prefix="/api/v1/user/follower",
+  tags=["user", "relationship", "follower"]
 )
 
 
 @router.get(
-  path=''
+  path=""
 )
 def list_followers(
   query: Annotated[ListingRelationshipRequest, Query()],
@@ -39,9 +40,28 @@ def list_followers(
   )
 
 
+@router.get(
+  path="/count"
+)
+def count_follower(
+  jwt: str = Security(authorization_header),
+  db: Session = Depends(create_connection)
+):
+  token: dict[str, str] = authorize_jwt(jwt)
+  identity = core_user.get_identity(token, db)
+  cnt = core_follower.count_follower(identity, db)
+
+  return JSONResponse(
+    status_code=200,
+    content={
+      "code": 200,
+      "status": "OK",
+      "count": cnt
+    }
+  )
 
 @router.get(
-  path='/{follower_id}'
+  path="/{follower_id}"
 )
 def query_relationship(
   follower_id: UUID,
@@ -63,7 +83,7 @@ def query_relationship(
 
 
 @router.delete(
-  path='/{follower_id}'
+  path="/{follower_id}"
 )
 def unfollow(
   follower_id: UUID,
@@ -84,7 +104,7 @@ def unfollow(
 
 
 @router.patch(
-  path='/{follower_id}'
+  path="/{follower_id}"
 )
 def patch_relationship(
   follower_id: UUID,

@@ -8,13 +8,13 @@ from app.core.user import core_user
 from app.database import create_connection
 
 router = APIRouter(
-  prefix='/api/v1/user',
-  tags=['user']
+  prefix="/api/v1/user",
+  tags=["user"]
 )
 
 
 @router.get(
-  path=''
+  path=""
 )
 def get_user(
   jwt: str = Security(authorization_header),

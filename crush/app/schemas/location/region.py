@@ -27,7 +27,7 @@ class Region(BaseModel):
     min_length=0, max_length=512
   )
 
-  @field_serializer('uid')
+  @field_serializer("uid")
   def serialize_uid(self, uid: UUID):
     return str(uid)
 

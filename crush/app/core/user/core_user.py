@@ -63,19 +63,19 @@ def register_using_session(
     name=application.name,
     email=str(application.email),
     email_verified=(
-      application.email == reg.get('email', None) and
-      reg.get('email_verified', False)
+      application.email == reg.get("email", None) and
+      reg.get("email_verified", False)
     ),
     sex=application.sex,
     birthday=application.birthday,
-    role=['core:user']
+    role=["core:user"]
   )
   db.add(identity)
   db.flush()
 
-  auth_ctx = reg['auth']
+  auth_ctx = reg["auth"]
 
-  if auth_ctx['type'] == 'google':
+  if auth_ctx["type"] == "google":
     register_google_auth(identity.uid, auth_ctx, db)
   else:
     raise HTTPException(status_code=400, detail="Unknown authentication context")
@@ -92,7 +92,7 @@ def register_google_auth(
 ):
   google_auth = GoogleAuthModel(
     user_id=uid,
-    sub=auth_ctx['sub']
+    sub=auth_ctx["sub"]
   )
 
   db.add(google_auth)

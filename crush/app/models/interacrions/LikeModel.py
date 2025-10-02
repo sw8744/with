@@ -16,9 +16,9 @@ class LikesModel(BaseTable):
     "schema": "interactions"
   }
 
-  user_id: Mapped[PyUUID] = Column(UUID(as_uuid=True), ForeignKey('users.identities.uid'), primary_key=True,
+  user_id: Mapped[PyUUID] = Column(UUID(as_uuid=True), ForeignKey("users.identities.uid"), primary_key=True,
                                    nullable=False)
-  place_id: Mapped[PyUUID] = Column(UUID(as_uuid=True), ForeignKey('locations.places.uid'), primary_key=True,
+  place_id: Mapped[PyUUID] = Column(UUID(as_uuid=True), ForeignKey("locations.places.uid"), primary_key=True,
                                     nullable=False)
   liked_at: Mapped[datetime] = Column(TIMESTAMP, nullable=False, server_default="CURRENT_TIMESTAMP")
 

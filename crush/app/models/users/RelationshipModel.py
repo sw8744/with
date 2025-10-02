@@ -23,9 +23,9 @@ class RelationshipModel(BaseTable):
     "schema": "users"
   }
 
-  user_id: Mapped[PyUUID] = Column(UUID(as_uuid=True), ForeignKey('users.identities.uid'), primary_key=True,
+  user_id: Mapped[PyUUID] = Column(UUID(as_uuid=True), ForeignKey("users.identities.uid"), primary_key=True,
                                    nullable=False)
-  friend_id: Mapped[PyUUID] = Column(UUID(as_uuid=True), ForeignKey('users.identities.uid'), primary_key=True,
+  friend_id: Mapped[PyUUID] = Column(UUID(as_uuid=True), ForeignKey("users.identities.uid"), primary_key=True,
                                      nullable=False)
   created_at: Mapped[datetime] = Column(TIMESTAMP, nullable=False, server_default="CURRENT_TIMESTAMP")
   updated_at: Mapped[datetime] = Column(TIMESTAMP, nullable=False, server_default="CURRENT_TIMESTAMP")
@@ -33,7 +33,7 @@ class RelationshipModel(BaseTable):
 
   user: Mapped[IdentityModel] = relationship(
     "IdentityModel",
-    foreign_keys='RelationshipModel.user_id',
+    foreign_keys="RelationshipModel.user_id",
     uselist=False,
     backref=backref(
       "relationship",
@@ -45,6 +45,6 @@ class RelationshipModel(BaseTable):
 
   friend: Mapped[IdentityModel] = relationship(
     "IdentityModel",
-    foreign_keys='RelationshipModel.friend_id',
+    foreign_keys="RelationshipModel.friend_id",
     uselist=False
   )

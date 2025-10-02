@@ -11,13 +11,13 @@ from app.core.config_store import config
 from app.database import create_connection
 
 router = APIRouter(
-  prefix='/api/v1/auth',
-  tags=['auth']
+  prefix="/api/v1/auth",
+  tags=["auth"]
 )
 
 
 @router.get(
-  path='/authorize',
+  path="/authorize",
 )
 def authorize_access_token(
   at: str = Security(authorization_header)
@@ -35,7 +35,7 @@ def authorize_access_token(
 
 
 @router.post(
-  path='/refresh'
+  path="/refresh"
 )
 def refresh_access_token(
   WAUTHREF: Annotated[str | None, Cookie()] = None,
@@ -52,15 +52,15 @@ def refresh_access_token(
     }
   )
 
-  response.delete_cookie('WAUTHREF')
+  response.delete_cookie("WAUTHREF")
   response.set_cookie(
-    'WAUTHREF',
+    "WAUTHREF",
     rt,
     max_age=2592000,
     httponly=True,
-    samesite='strict',
-    secure=config['cookie']['secure'],
-    path='/api/v1/auth/refresh'
+    samesite="strict",
+    secure=config["cookie"]["secure"],
+    path="/api/v1/auth/refresh"
   )
 
   return response

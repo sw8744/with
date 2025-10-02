@@ -20,7 +20,7 @@ def test_follow_friend(
   friend, f_at = access_token_factory("friend")
 
   resp = client.post(
-    '/api/v1/user/following',
+    "/api/v1/user/following",
     headers={
       "Authorization": f"Bearer {u_at}"
     },
@@ -30,8 +30,8 @@ def test_follow_friend(
     }
   )
   assert resp.status_code == 200
-  assert resp.json()['code'] == 200
-  assert resp.json()['status'] == "OK"
+  assert resp.json()["code"] == 200
+  assert resp.json()["status"] == "OK"
 
   relation: RelationshipModel = (
     db.query(RelationshipModel)
@@ -55,14 +55,14 @@ def test_unfollow_following(
   _ = relation_factory(user, friend, RelationshipState.FOLLOWING)
 
   resp = client.delete(
-    '/api/v1/user/following/' + str(friend.uid),
+    "/api/v1/user/following/" + str(friend.uid),
     headers={
       "Authorization": f"Bearer {u_at}"
     }
   )
   assert resp.status_code == 200
-  assert resp.json()['code'] == 200
-  assert resp.json()['status'] == "OK"
+  assert resp.json()["code"] == 200
+  assert resp.json()["status"] == "OK"
 
   deleted_relation: RelationshipModel = (
     db.query(RelationshipModel)
@@ -79,14 +79,14 @@ def test_unfollow_null_following(
     access_token: str
 ):
   resp = client.delete(
-    '/api/v1/user/following/a2ffae9b-04be-4b29-a529-aa4e55146cc4',
+    "/api/v1/user/following/a2ffae9b-04be-4b29-a529-aa4e55146cc4",
     headers={
       "Authorization": f"Bearer {access_token}"
     }
   )
   assert resp.status_code == 404
-  assert resp.json()['code'] == 404
-  assert resp.json()['status'] == "Not found"
+  assert resp.json()["code"] == 404
+  assert resp.json()["status"] == "Not found"
 
 
 def test_query_relationship_following(
@@ -99,15 +99,15 @@ def test_query_relationship_following(
   _ = relation_factory(user, friend, RelationshipState.FOLLOWING)
 
   resp = client.get(
-    '/api/v1/user/following/' + str(friend.uid),
+    "/api/v1/user/following/" + str(friend.uid),
     headers={
       "Authorization": f"Bearer {u_at}"
     }
   )
   assert resp.status_code == 200
-  assert resp.json()['code'] == 200
-  assert resp.json()['status'] == "OK"
-  assert resp.json()['relationship'] == RelationshipState.FOLLOWING.value
+  assert resp.json()["code"] == 200
+  assert resp.json()["status"] == "OK"
+  assert resp.json()["relationship"] == RelationshipState.FOLLOWING.value
 
 
 def test_query_following_list(
@@ -134,9 +134,9 @@ def test_query_following_list(
   )
 
   assert resp.status_code == 200
-  assert resp.json()['code'] == 200
-  assert resp.json()['status'] == "OK"
-  assert list(resp.json()['followers']) == [{"uid": str(friend.uid), "name": friend.name} for friend in friends[1:3]][
+  assert resp.json()["code"] == 200
+  assert resp.json()["status"] == "OK"
+  assert list(resp.json()["followers"]) == [{"uid": str(friend.uid), "name": friend.name} for friend in friends[1:3]][
                                            ::-1]
 
 
@@ -172,7 +172,7 @@ def test_change_relationship_following(
   _ = relation_factory(user, friend, fr)
 
   resp = client.patch(
-    '/api/v1/user/following/' + str(friend.uid),
+    "/api/v1/user/following/" + str(friend.uid),
     headers={
       "Authorization": f"Bearer {u_at}"
     },
@@ -182,8 +182,8 @@ def test_change_relationship_following(
   )
   if exp_code == 200:
     assert resp.status_code == 200
-    assert resp.json()['code'] == 200
-    assert resp.json()['status'] == "OK"
+    assert resp.json()["code"] == 200
+    assert resp.json()["status"] == "OK"
 
     db.expire_all()
     new_relation: RelationshipModel = (
@@ -198,16 +198,16 @@ def test_change_relationship_following(
     assert new_relation.state == to
   elif exp_code == 400:
     assert resp.status_code == 400
-    assert resp.json()['code'] == 400
-    assert resp.json()['status'] == "Bad Request"
-    assert resp.json()['message'] == "Relationship change may not be done"
+    assert resp.json()["code"] == 400
+    assert resp.json()["status"] == "Bad Request"
+    assert resp.json()["message"] == "Relationship change may not be done"
 
 
 def test_change_relationship_null_following(
     access_token: str
 ):
   resp = client.patch(
-    '/api/v1/user/following/a2ffae9b-04be-4b29-a529-aa4e55146cc4',
+    "/api/v1/user/following/a2ffae9b-04be-4b29-a529-aa4e55146cc4",
     headers={
       "Authorization": f"Bearer {access_token}"
     },
@@ -216,5 +216,30 @@ def test_change_relationship_null_following(
     })
   )
   assert resp.status_code == 404
-  assert resp.json()['code'] == 404
-  assert resp.json()['status'] == "Not found"
+  assert resp.json()["code"] == 404
+  assert resp.json()["status"] == "Not found"
+
+
+def test_count_followers(
+  access_token_factory: Callable[[str], Tuple[IdentityModel, str]],
+  relation_factory: Callable[[IdentityModel, IdentityModel, RelationshipState], RelationshipModel],
+  db: Session
+):
+  user, u_at = access_token_factory("user")
+  friends: list[IdentityModel] = []
+  for i in range(5):
+    f, f_at = access_token_factory(f"f{i}")
+    _ = relation_factory(user, f, RelationshipState.FOLLOWING)
+    friends.append(f)
+
+  resp = client.get(
+    "/api/v1/user/following/count",
+    headers={
+      "Authorization": f"Bearer {u_at}"
+    }
+  )
+
+  assert resp.status_code == 200
+  assert resp.json()["code"] == 200
+  assert resp.json()["status"] == "OK"
+  assert resp.json()["count"] == len(friends)

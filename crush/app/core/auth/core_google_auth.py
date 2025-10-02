@@ -18,14 +18,14 @@ from app.schemas.user.identity import Identity
 
 def create_auth_url() -> (str, str):
   flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-    'client_secret.json',
-    scopes=config['auth']['oauth']['google']['scope']
+    "client_secret.json",
+    scopes=config["auth"]["oauth"]["google"]["scope"]
   )
 
-  flow.redirect_uri = config['auth']['oauth']['google']['redirect-uri']
+  flow.redirect_uri = config["auth"]["oauth"]["google"]["redirect-uri"]
 
   authorization_url, state = flow.authorization_url(
-    access_type=config['auth']['oauth']['google']['access-type'],
+    access_type=config["auth"]["oauth"]["google"]["access-type"],
   )
 
   return authorization_url, state
@@ -38,12 +38,12 @@ def google_login(
 ) -> (Optional[Identity], dict[str, any]):
   state = get_session_state(state_session_uuid)
   flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-    'client_secret.json',
-    scopes=config['auth']['oauth']['google']['scope'],
+    "client_secret.json",
+    scopes=config["auth"]["oauth"]["google"]["scope"],
     state=state
   )
 
-  flow.redirect_uri = config['auth']['oauth']['google']['redirect-uri']
+  flow.redirect_uri = config["auth"]["oauth"]["google"]["redirect-uri"]
 
   flow.fetch_token(authorization_response=url)
   token = flow.credentials.token

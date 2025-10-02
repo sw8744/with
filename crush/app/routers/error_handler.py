@@ -92,7 +92,7 @@ def http_validation_error_handler(request: Request, exc: ValueError):
 def http_request_validation_error_handler(request: Request, exc: RequestValidationError):
   log.warning("RequestValidationError: {}".format(exc))
   errors = {
-    err['loc'][-1]: err['msg'] for err in exc.errors()
+    err["loc"][-1]: err["msg"] for err in exc.errors()
   }
 
   return JSONResponse(

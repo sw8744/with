@@ -21,4 +21,4 @@ app.include_router(following.router)
 app.include_router(follower.router)
 add_error_handler(app)
 
-logger.info('Application started')
+logger.info("Application started")

@@ -31,14 +31,14 @@ class Identity(BaseModel):
   birthday: datetime = Field()
   role: list[str] = Field()
 
-  @field_serializer('uid')
+  @field_serializer("uid")
   def serialize_uid(self, uid: UUID):
     return str(uid)
 
-  @field_serializer('sex')
+  @field_serializer("sex")
   def serialize_sex(self, sex: SEX):
     return sex.value
 
-  @field_serializer('birthday')
+  @field_serializer("birthday")
   def serialize_birthday(self, birthday: datetime):
     return birthday.isoformat()

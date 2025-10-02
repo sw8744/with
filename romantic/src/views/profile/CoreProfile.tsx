@@ -42,7 +42,7 @@ function CoreProfile() {
       setIdentity(res.data.user);
     }).catch(err => {
       handleAxiosError(err, setPageState);
-    })
+    });
   }, []);
 
   if(pageState === PageState.LOADING) {

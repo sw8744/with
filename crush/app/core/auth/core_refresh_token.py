@@ -23,11 +23,11 @@ def use_refresh_token(
     logger.debug("Auth failed: Refresh token is invalid or unauthorized[{}]".format(e))
     raise HTTPException(status_code=401, detail="Refresh token is invalid or unauthorized")
 
-  if redis_refresh_token_blacklist_db1.exists(token.get('rti')):
+  if redis_refresh_token_blacklist_db1.exists(token.get("rti")):
     raise HTTPException(status_code=401, detail="Refresh token cannot be used")
   else:
     redis_refresh_token_blacklist_db1.set(
-      name=token.get('rti'),
+      name=token.get("rti"),
       value=1,
       ex=2419200
     )
