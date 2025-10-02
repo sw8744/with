@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 
 from app.models.users.IdentityModel import IdentityModel
 from app.models.users.RelationshipModel import RelationshipState, RelationshipModel
-from app.schemas.relationship.following_reqs import FollowRequest, FollowPatchRequest
+from app.schemas.relationship.follow import Following
+from app.schemas.relationship.follow_reqs import FollowRequest, FollowPatchRequest
 from app.schemas.user.identity import Identity
 
 RELATIONSHIP_FOLLOWING = [
@@ -21,6 +22,9 @@ def query_following(
   friend_id: UUID,
   db: Session
 ) -> RelationshipState | None:
+  if identity is None:
+    raise HTTPException(status_code=404, detail="User not found")
+
   relation = (
     db.query(RelationshipModel)
     .filter(
@@ -41,6 +45,9 @@ def follow(
   body: FollowRequest,
   db: Session
 ):
+  if identity is None:
+    raise HTTPException(status_code=404, detail="User not found")
+
   no_friend = (
                 db.query(IdentityModel)
                 .filter(IdentityModel.uid == body.friend_id)
@@ -65,6 +72,9 @@ def patch_relationship(
   body: FollowPatchRequest,
   db: Session
 ):
+  if identity is None:
+    raise HTTPException(status_code=404, detail="User not found")
+
   relation: RelationshipModel = (
     db.query(RelationshipModel)
     .filter(
@@ -89,6 +99,9 @@ def unfollow(
   friend_id: UUID,
   db: Session
 ):
+  if identity is None:
+    raise HTTPException(status_code=404, detail="User not found")
+
   relation = (
     db.query(RelationshipModel)
     .filter(
@@ -103,3 +116,37 @@ def unfollow(
 
   db.delete(relation)
   db.commit()
+
+
+def list_followings(identity, query, db):
+  if identity is None:
+    raise HTTPException(status_code=404, detail="User not found")
+
+  followings_query = (
+    db.query(RelationshipModel)
+    .filter(
+      RelationshipModel.user_id == identity.uid
+    )
+  )
+
+  if query.state is not None:
+    followings_query = followings_query.filter(RelationshipModel.state == query.state)
+  if query.head is not None:
+    head_subquery = (
+      db.query(RelationshipModel.updated_at)
+      .filter(
+        RelationshipModel.user_id == identity.uid,
+        RelationshipModel.friend_id == query.head
+      )
+      .subquery()
+    )
+    followings_query = followings_query.filter(RelationshipModel.created_at < head_subquery)
+
+  followings_query = (
+    followings_query
+    .order_by(RelationshipModel.updated_at.desc())
+    .limit(query.limit)
+  )
+
+  followings = followings_query.all()
+  return [Following(following) for following in followings]

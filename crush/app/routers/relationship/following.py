@@ -1,7 +1,8 @@
+from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter
-from fastapi.params import Security, Depends
+from fastapi.params import Security, Depends, Query
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
@@ -9,7 +10,7 @@ from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.relationship import core_following
 from app.core.user import core_user
 from app.database import create_connection
-from app.schemas.relationship.following_reqs import FollowRequest, FollowPatchRequest
+from app.schemas.relationship.follow_reqs import FollowRequest, FollowPatchRequest, ListingRelationshipRequest
 
 router = APIRouter(
   prefix='/api/v1/user/following'
@@ -34,6 +35,28 @@ def query_relationship(
       "code": 200,
       "status": "OK",
       "relationship": relation.value if relation is not None else -1
+    }
+  )
+
+
+@router.get(
+  path=''
+)
+def list_followings(
+  query: Annotated[ListingRelationshipRequest, Query()],
+  jwt: str = Security(authorization_header),
+  db: Session = Depends(create_connection)
+):
+  token = authorize_jwt(jwt)
+  identity = core_user.get_identity(token, db)
+  followings = core_following.list_followings(identity, query, db)
+
+  return JSONResponse(
+    status_code=200,
+    content={
+      "code": 200,
+      "status": "OK",
+      "followers": [following.model_dump() for following in followings]
     }
   )
 

@@ -1,53 +1,56 @@
 import {type ReactNode, useEffect, useState} from "react";
-import {apiAuth} from "../../core/axios/withAxios.ts";
+import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {userAPI} from "../../core/apiResponseInterfaces/user.ts";
 import {Button} from "../elements/Buttons.tsx";
-import {GearIcon, MapPinIcon, MapPinAndEllipseIcon, StarFilledIcon, MapFilledIcon} from "../../assets/svgs/svgs.ts";
-import {isAxiosError} from "axios";
+import {MapFilledIcon, MapPinAndEllipseIcon, StarFilledIcon} from "../../assets/svgs/svgs.ts";
 import type {Identity} from "../../core/model/User.ts";
-import type {interactionLikes} from "../../core/apiResponseInterfaces/interaction.ts";
+import {isPageError, PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
+import {Link, Outlet} from "react-router-dom";
 
 interface ProfileMenuButtonPropsType {
   children: ReactNode;
-  onClick: () => void;
+  to: string;
 }
 
 function ProfileMenuButton(
   {
     children,
-    onClick
-  }
+    to
+  }: ProfileMenuButtonPropsType
 ) {
   return (
-    <button
+    <Link
+      to={to}
       className={
         'text-center w-[50px] border-b py-2 fill-neutral-700 border-neutral-700 ' +
         ''
       }
-      onClick={onClick}
     >
       {children}
-    </button>
+    </Link>
   );
 }
 
 function CoreProfile() {
+  const [pageState, setPageState] = useState<PageState>(PageState.LOADING)
   const [identity, setIdentity] = useState<Identity>();
 
   useEffect(() => {
-    (async () => {
-      const userResp = await apiAuth.get<userAPI>('/user');
-      setIdentity(userResp.data.user);
-
-      const likesResp = await apiAuth.get<interactionLikes>('/api/v1/interaction/like');
-      const likedPlaceUids = likesResp.data.likes;
-
-    })().catch(err => {
-      if (isAxiosError(err)) {
-
-      }
-    });
+    apiAuth.get<userAPI>(
+      '/user'
+    ).then(res => {
+      setIdentity(res.data.user);
+    }).catch(err => {
+      handleAxiosError(err, setPageState);
+    })
   }, []);
+
+  if(pageState === PageState.LOADING) {
+
+  }
+  if(isPageError(pageState)) {
+
+  }
 
   return (
     <div className={'flex flex-col gap-2.5 m-5'}>
@@ -73,15 +76,18 @@ function CoreProfile() {
         <Button className={'!rounded-lg !py-1 w-full'} theme={'white'}>프로필 공유</Button>
       </div>
       <div className={'flex gap-3 justify-between px-5 mx-auto w-full max-w-[360px]'}>
-        <ProfileMenuButton onClick={() => {}}>
+        <ProfileMenuButton to={'/profile'}>
           <MapPinAndEllipseIcon className={'mx-auto'}/>
         </ProfileMenuButton>
-        <ProfileMenuButton onClick={() => {}}>
+        <ProfileMenuButton to={'/profile/liked'}>
           <StarFilledIcon className={'mx-auto'}/>
         </ProfileMenuButton>
-        <ProfileMenuButton onClick={() => {}}>
+        <ProfileMenuButton to={'/profile'}>
           <MapFilledIcon className={'mx-auto'}/>
         </ProfileMenuButton>
+      </div>
+      <div className={'mt-3'}>
+        <Outlet/>
       </div>
     </div>
   );

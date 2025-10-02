@@ -1,11 +1,12 @@
 import type ApiInterface from "./apiInterface.ts";
+import type {Place} from "../model/LocationModels.ts";
 
 type interactionLike = ApiInterface & {
   liked: boolean;
 }
 
 type interactionLikes = ApiInterface & {
-  likes: string[];
+  likes: Place[];
 }
 
 export type {

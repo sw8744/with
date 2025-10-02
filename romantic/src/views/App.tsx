@@ -11,6 +11,7 @@ import RegionShowcase from "./location/RegionShowcase.tsx";
 import PlaceShowcase from "./location/PlaceShowcase.tsx";
 import Locations from "./location/Locations.tsx";
 import CorePlan from "./plan/CorePlan.tsx";
+import LikedPlaces from "./profile/LikedPlaces.tsx";
 
 function App() {
   return (
@@ -27,7 +28,9 @@ function App() {
           <Route
             path={'/profile'}
             element={<CoreProfile/>}
-          />
+          >
+            <Route path={'liked'} element={<LikedPlaces/>}/>
+          </Route>
 
           <Route path={'/plan'}>
             <Route path={''} element={<CorePlan/>}/>

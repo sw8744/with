@@ -45,12 +45,7 @@ function PlaceShowcase() {
     setLikeOperationState(PageState.WORKING);
     if (likedPlace) {
       apiAuth.delete(
-        '/interaction/like',
-        {
-          params: {
-            placeId: placeUid
-          }
-        }
+        '/interaction/like/' + placeUid
       ).then(() => {
         setLikedPlace(false);
         setLikeOperationState(PageState.NORMAL);

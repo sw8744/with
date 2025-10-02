@@ -1,4 +1,4 @@
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {locationPlaceAPI, locationRegionAPI} from "../../core/apiResponseInterfaces/location.ts";
@@ -7,42 +7,13 @@ import type {Place, Region} from "../../core/model/LocationModels.ts";
 import {thumbnailUrl} from "../../core/model/ImageUrlProcessor.ts";
 import {SkeletonElement, SkeletonFrame} from "../elements/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
+import PlaceArea from "../elements/PlaceArea.tsx";
 
-interface InformationAreaPropsType {
-  place: Place
-}
 interface ThemeTagPropsType {
   emogi: string;
   name: string;
   color: string;
   textColor?: string | null;
-}
-
-function PlaceArea(
-  {place}: InformationAreaPropsType
-) {
-  const tUrl = thumbnailUrl(place.thumbnail);
-
-  return (
-    <Link
-      className={'w-full shadow-neutral-300 shadow rounded-xl overflow-clip flex flex-row'}
-      to={'/location/place/' + place.uid}
-    >
-      <img
-        src={tUrl}
-        className={
-          'h-[130px] w-1/2 object-cover ' +
-          '[mask-image:linear-gradient(to_right,black_70%,transparent)] ' +
-          '[mask-repeat:no-repeat] [mask-size:100%_100%]'
-        }
-      />
-
-      <div className={'px-3 py-3'}>
-        <p className={'font-bold text-lg'}>{place.name}</p>
-        <p className={'text-sm'}>{place.description}</p>
-      </div>
-    </Link>
-  );
 }
 
 function ThemeTag(

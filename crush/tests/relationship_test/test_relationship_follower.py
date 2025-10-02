@@ -77,6 +77,35 @@ def test_query_relationship_follower(
   assert resp.json()['relationship'] == RelationshipState.FRIEND.value
 
 
+def test_query_follower_list(
+  access_token_factory: Callable[[str], Tuple[IdentityModel, str]],
+  relation_factory: Callable[[IdentityModel, IdentityModel, RelationshipState], RelationshipModel],
+  db: Session
+):
+  user, u_at = access_token_factory("user")
+  friends: list[IdentityModel] = []
+  for i in range(5):
+    f, f_at = access_token_factory(f"f{i}")
+    _ = relation_factory(f, user, RelationshipState.FOLLOWING)
+    friends.append(f)
+
+  resp = client.get(
+    "/api/v1/user/follower",
+    headers={
+      "Authorization": f"Bearer {u_at}"
+    },
+    params={
+      "limit": 2,
+      "head": str(friends[3].uid)
+    }
+  )
+
+  assert resp.status_code == 200
+  assert resp.json()['code'] == 200
+  assert resp.json()['status'] == "OK"
+  assert list(resp.json()['followers']) == [{"uid": str(friend.uid), "name": friend.name} for friend in friends[1:3]][
+                                           ::-1]
+
 @pytest.mark.parametrize(
   "fr, to, exp_code",
   [
