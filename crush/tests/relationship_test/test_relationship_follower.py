@@ -106,6 +106,7 @@ def test_query_follower_list(
   assert list(resp.json()["followers"]) == [{"uid": str(friend.uid), "name": friend.name} for friend in friends[1:3]][
                                            ::-1]
 
+
 @pytest.mark.parametrize(
   "fr, to, exp_code",
   [

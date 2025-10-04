@@ -18,7 +18,6 @@ class Identity(BaseModel):
       role=identity_model.role
     )
 
-
   uid: UUID = Field()
   name: str = Field(
     min_length=1, max_length=64

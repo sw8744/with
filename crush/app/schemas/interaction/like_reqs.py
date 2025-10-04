@@ -9,7 +9,5 @@ class LikeSearchRequest(BaseModel):
   limit: int = Field(100, ge=0, le=100)
 
 
-
 class LikeRequest(BaseModel):
   place_id: UUID = Field(alias="placeId")
-

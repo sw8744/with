@@ -76,7 +76,7 @@ def test_unfollow_following(
 
 
 def test_unfollow_null_following(
-    access_token: str
+  access_token: str
 ):
   resp = client.delete(
     "/api/v1/user/following/a2ffae9b-04be-4b29-a529-aa4e55146cc4",
@@ -204,7 +204,7 @@ def test_change_relationship_following(
 
 
 def test_change_relationship_null_following(
-    access_token: str
+  access_token: str
 ):
   resp = client.patch(
     "/api/v1/user/following/a2ffae9b-04be-4b29-a529-aa4e55146cc4",

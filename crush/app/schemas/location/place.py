@@ -19,7 +19,6 @@ class Place(BaseModel):
       metadata=place_model.place_meta
     )
 
-
   uid: UUID = Field()
   name: str = Field(
     min_length=1, max_length=64

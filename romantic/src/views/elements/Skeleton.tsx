@@ -12,11 +12,16 @@ function SkeletonFrame(
 }
 
 function SkeletonElement(
-  {expW, expH, className}: { expW?: number | string, expH?: number | string, className?: string }
+  {expW, expH, className, pulse}: {
+    expW?: number | string,
+    expH?: number | string,
+    className?: string,
+    pulse?: boolean
+  }
 ) {
   return (
     <div
-      className={'bg-neutral-400' + (className ? ' ' + className : '')}
+      className={'bg-neutral-400' + (className ? ' ' + className : '') + (pulse ? ' animate-pulse' : '')}
       style={{
         width: expW,
         height: expH

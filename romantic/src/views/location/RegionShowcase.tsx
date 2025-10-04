@@ -7,7 +7,8 @@ import type {Place, Region} from "../../core/model/LocationModels.ts";
 import {thumbnailUrl} from "../../core/model/ImageUrlProcessor.ts";
 import {SkeletonElement, SkeletonFrame} from "../elements/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
-import PlaceArea from "../elements/PlaceArea.tsx";
+import {PlaceArea, PlaceAreaSkeleton} from "../elements/PlaceArea.tsx";
+
 
 interface ThemeTagPropsType {
   emogi: string;
@@ -117,27 +118,8 @@ function RegionShowcaseSkeleton() {
         <SkeletonElement expH={32} expW={500} className={'max-w-[70%]'}/>
       </div>
 
-
-      <div className={'flex flex-col justify-baseline items-center gap-4 mx-5 my-5'}>
-        <div className={'w-full shadow-neutral-300 shadow rounded-xl overflow-clip flex flex-row'}>
-          <SkeletonElement className={'w-1/2'} expH={130}/>
-
-          <div className={'px-3 py-3'}>
-            <SkeletonElement expH={20} expW={70}/>
-            <SkeletonElement expH={15} expW={170} className={'my-2'}/>
-            <SkeletonElement expH={15} expW={130}/>
-          </div>
-        </div>
-        <div className={'w-full shadow-neutral-300 shadow rounded-xl overflow-clip flex flex-row'}>
-          <SkeletonElement className={'w-1/2'} expH={130}/>
-
-          <div className={'px-3 py-3'}>
-            <SkeletonElement expH={20} expW={70}/>
-            <SkeletonElement expH={15} expW={170} className={'my-2'}/>
-            <SkeletonElement expH={15} expW={130}/>
-          </div>
-        </div>
-      </div>
+      <PlaceAreaSkeleton/>
+      <PlaceAreaSkeleton/>
     </SkeletonFrame>
   )
 }

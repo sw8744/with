@@ -83,8 +83,6 @@ def query_relationship(
   )
 
 
-
-
 @router.post(
   path=""
 )

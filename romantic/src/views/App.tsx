@@ -1,7 +1,6 @@
 import "../style/univ.css"
 import Footer from "./outline/Footer.tsx";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Header from "./outline/Header.tsx";
 import CoreLocation from "./location/CoreLocation.tsx";
 import CoreLogin from "./auth/authentication/login/CoreLogin.tsx";
 import GoogleRegister from "./auth/signup/GoogleRegister.tsx";
@@ -12,11 +11,12 @@ import PlaceShowcase from "./location/PlaceShowcase.tsx";
 import Locations from "./location/Locations.tsx";
 import CorePlan from "./plan/CorePlan.tsx";
 import LikedPlaces from "./profile/LikedPlaces.tsx";
+import MyPosts from "./profile/MyPosts.tsx";
+import MyTrips from "./profile/MyTrips.tsx";
 
 function App() {
   return (
     <BrowserRouter>
-      <Header/>
       <main className={'w-full sm:w-3/4 md:w-1/2 xl:w-[35%] mx-auto mb-[64.74px]'}>
         <Routes>
           <Route path={'/location'} element={<CoreLocation/>}>
@@ -29,7 +29,9 @@ function App() {
             path={'/profile'}
             element={<CoreProfile/>}
           >
+            <Route path={''} element={<MyPosts/>}/>
             <Route path={'liked'} element={<LikedPlaces/>}/>
+            <Route path={'trips'} element={<MyTrips/>}/>
           </Route>
 
           <Route path={'/plan'}>

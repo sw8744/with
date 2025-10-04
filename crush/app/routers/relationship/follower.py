@@ -60,6 +60,7 @@ def count_follower(
     }
   )
 
+
 @router.get(
   path="/{follower_id}"
 )
