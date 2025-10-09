@@ -129,14 +129,15 @@ def test_query_following_list(
     },
     params={
       "limit": 2,
-      "head": str(friends[3].uid)
+      "head": str(friends[3].uid),
+      "state": RelationshipState.FOLLOWING
     }
   )
 
   assert resp.status_code == 200
   assert resp.json()["code"] == 200
   assert resp.json()["status"] == "OK"
-  assert list(resp.json()["followers"]) == [{"uid": str(friend.uid), "name": friend.name} for friend in friends[1:3]][
+  assert list(resp.json()["followings"]) == [{"uid": str(friend.uid), "name": friend.name} for friend in friends[1:3]][
                                            ::-1]
 
 

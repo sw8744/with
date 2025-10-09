@@ -35,7 +35,7 @@ def list_followings(
     content={
       "code": 200,
       "status": "OK",
-      "followers": [following.model_dump() for following in followings]
+      "followings": [following.model_dump() for following in followings]
     }
   )
 

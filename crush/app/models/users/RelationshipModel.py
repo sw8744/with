@@ -10,7 +10,7 @@ from app.database import BaseTable, EnumAsValue
 from app.models.users.IdentityModel import IdentityModel
 
 
-class RelationshipState(enum.Enum):
+class RelationshipState(enum.IntEnum):
   BLOCKED = 0  # user 의 정보를 friend 에게 비공개
   FOLLOWING = 1  # user 가 friend 를 팔로우
   FRIEND = 2  # user가 friend를 초대할 수 있음
