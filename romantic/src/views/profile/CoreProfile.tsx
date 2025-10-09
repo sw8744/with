@@ -72,7 +72,7 @@ function CoreProfile() {
           <p className={'text-lg font-bold'}>233</p>
           <p className={'text-lg font-bold'}>{followers}</p>
           <p className={'text-lg font-bold'}>{followings}</p>
-          <p>장소</p>
+          <p>포스트</p>
           <p>팔로워</p>
           <p>팔로잉</p>
         </div>

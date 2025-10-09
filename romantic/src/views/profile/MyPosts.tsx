@@ -19,7 +19,7 @@ function MyPosts() {
 function MyPostSkeleton() {
   return (
     <SkeletonFrame>
-      <div className={'grid grid-cols-3 gap-1'}>
+      <div className={'grid grid-cols-3 gap-0.5'}>
         <SkeletonElement className={'aspect-3/4'}/>
         <SkeletonElement className={'aspect-3/4'}/>
         <SkeletonElement className={'aspect-3/4'}/>
