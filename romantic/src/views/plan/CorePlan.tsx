@@ -1,8 +1,11 @@
 import {useState} from "react";
-import {Button} from "../elements/Buttons.tsx";
 import PartySelector from "./PartySelector.tsx";
 import {AnimatePresence, motion} from "framer-motion";
 import type {FriendInformationType} from "../../core/apiResponseInterfaces/relationship.ts";
+import TimeSelector from "./TimeSelector.tsx";
+import RegionSelector from "./RegionSelector.tsx";
+import ThemeSelector from "./ThemeSelector.tsx";
+import PlaceSelector from "./PlaceSelector.tsx";
 
 
 function CorePlan() {
@@ -10,12 +13,15 @@ function CorePlan() {
   const [isForward, setIsForward] = useState<number>(1);
 
   const [selectedFriends, setSelectedFriends] = useState<FriendInformationType[]>([]);
+  const [regionsToGo, setRegionsToGo] = useState<string[]>([]);
+  const [theme, setTheme] = useState<string[]>([]);
+  const [placesToGo, setPlacesToGo] = useState<string[]>([]);
+  const [whenToGo, setWhenToGo] = useState<string>('');
 
   function prev() {
     setIsForward(-1);
     setStep(step - 1);
   }
-
   function next() {
     setIsForward(1);
     setStep(step + 1);
@@ -40,8 +46,8 @@ function CorePlan() {
   }
   const stepHeaders = [
     '누구랑 같이 놀아볼까요?',
-    '언제 놀러갈까요?',
     '어디로 놀러갈까요?',
+    '언제 놀러가는게 좋을까요?',
     '어떤 분위기로 놀아볼까요?',
     '이런 곳은 어떤가요?'
   ]
@@ -67,23 +73,50 @@ function CorePlan() {
             initial={"initial"}
             animate={"animate"}
             exit={"exit"}
-            className={'h-[calc(100%-40px-var(--spacing)*5)] flex flex-col gap-4'}
+            className={'h-full flex flex-col gap-4'}
           >
             <p className={'text-2xl font-bold'}>{stepHeaders[step]}</p>
-            {step === 0 && <PartySelector selectedFriends={selectedFriends} setSelectedFriends={setSelectedFriends}/>}
+            {step === 0 &&
+              <PartySelector
+                selectedFriends={selectedFriends}
+                setSelectedFriends={setSelectedFriends}
+                next={next}
+              />
+            }
+            {step === 1 &&
+              <RegionSelector
+                regionUUID={regionsToGo}
+                setRegionUUID={setRegionsToGo}
+                prev={prev}
+                next={next}
+              />
+            }
+            {step === 2 &&
+              <TimeSelector
+                selectedTime={whenToGo}
+                setSelectedTime={setWhenToGo}
+                prev={prev}
+                next={next}
+              />
+            }
+            {step === 3 &&
+              <ThemeSelector
+                themeUUID={theme}
+                setThemeUUID={setTheme}
+                prev={prev}
+                next={next}
+              />
+            }
+            {step === 4 &&
+              <PlaceSelector
+                placeUUID={placesToGo}
+                setPlaceUUID={setPlacesToGo}
+                prev={prev}
+                next={next}
+              />
+            }
           </motion.div>
         </AnimatePresence>
-        <div className={'flex justify-between'}>
-          {step !== 0 &&
-            <Button onClick={prev}>이전</Button>
-          }
-          {step === 0 &&
-            <p></p>
-          }
-          {step !== 4 &&
-            <Button onClick={next}>다음</Button>
-          }
-        </div>
       </div>
     </>
   );

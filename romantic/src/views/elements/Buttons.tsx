@@ -39,7 +39,7 @@ function Button(
     >
       {children}
     </button>
-  )
+  );
 }
 
 function ButtonLink(

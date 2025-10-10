@@ -8,11 +8,13 @@ import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/Skeleton
 import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {AnimatePresence, motion} from "framer-motion";
 import Spinner from "../elements/Spinner.tsx";
+import {Button} from "../elements/Buttons.tsx";
 
 function PartySelector(
-  {selectedFriends, setSelectedFriends}: {
-    selectedFriends: FriendInformationType[],
-    setSelectedFriends: (friends: FriendInformationType[]) => void
+  {selectedFriends, setSelectedFriends, next}: {
+    selectedFriends: FriendInformationType[];
+    setSelectedFriends: (friends: FriendInformationType[]) => void;
+    next: () => void
   }
 ) {
   const [friends, setFriends] = useState<FriendInformationType[]>([]);
@@ -180,6 +182,12 @@ function PartySelector(
         </div>
       </div>
       {friendFinder}
+      <div>
+        <p className={'text-center text-sm text-neutral-500 my-2'}>상대방이 나를 친구로 추가해야 초대할 수 있습니다.</p>
+        <div className={'flex justify-end'}>
+          <Button onClick={next}>다음</Button>
+        </div>
+      </div>
     </>
   );
 }
@@ -217,7 +225,7 @@ function FriendInList(
 
 function FriendsListSkeleton() {
   return (
-    <SkeletonFrame className={'flex flex-col gap-3'}>
+    <SkeletonFrame className={'flex-grow flex flex-col gap-3'}>
       <SkeletonUnit className={'flex gap-4 items-center relative'}>
         <SkeletonElement className={'w-10 h-10 aspect-1/1 rounded-full'}/>
         <SkeletonElement expH={20} expW={150}/>
