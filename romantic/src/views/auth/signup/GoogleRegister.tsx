@@ -4,7 +4,7 @@ import {Form, FormGroup} from "../../elements/Form.tsx";
 import {Button} from "../../elements/Buttons.tsx";
 import {useNavigate} from 'react-router-dom'
 import axios from "axios";
-import {CheckMarkIcon, XMarkIcon} from "../../../assets/svgs/svgs.ts";
+import {CheckmarkFillIcon, XMarkIcon} from "../../../assets/svgs/svgs.ts";
 import {check, lengthCheck, rangeCheck, regexCheck, verifyAll} from "../../../core/validation.ts";
 import type {authOAuthGoogleRegisterInfoAPI, userRegisterAPI} from "../../../core/apiResponseInterfaces/register.ts";
 import Alert from "../../elements/Alert.tsx";
@@ -92,7 +92,7 @@ function GoogleRegister() {
 
   let emailVerified = <XMarkIcon height={20} className={'mt-[-4px] fill-red-600'} title={'확인되지 않은 이메일입니다'}/>;
   if (vEmail == email) {
-    emailVerified = <CheckMarkIcon height={20} className={'mt-[-4px] fill-green-600'} title={'확인된 이메일입니다'}/>;
+    emailVerified = <CheckmarkFillIcon height={20} className={'mt-[-4px] fill-green-600'} title={'확인된 이메일입니다'}/>;
   }
 
   return (

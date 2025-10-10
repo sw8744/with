@@ -22,10 +22,10 @@ function LikedPlaces() {
     });
   }, []);
 
-  if(pageState === PageState.LOADING) {
+  if (pageState === PageState.LOADING) {
     return <LikedPlaceSkeleton/>
   }
-  if(isPageError(pageState)) {
+  if (isPageError(pageState)) {
     return <PageError pageState={pageState}/>
   }
 

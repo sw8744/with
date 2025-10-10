@@ -1,59 +1,89 @@
-import {type ReactNode, useState} from "react";
-import {DatePicker, Select} from "../elements/Inputs.tsx";
+import {useState} from "react";
+import {Button} from "../elements/Buttons.tsx";
+import PartySelector from "./PartySelector.tsx";
+import {AnimatePresence, motion} from "framer-motion";
+import type {FriendInformationType} from "../../core/apiResponseInterfaces/relationship.ts";
 
-interface StepFramePropsType {
-  children: ReactNode;
-  title: string;
-}
-
-function StepFrame(
-  {
-    children,
-    title
-  }: StepFramePropsType
-) {
-  return (
-    <div className={'m-5'}>
-      <p className={'text-xl font-medium'}>{title}</p>
-      <div className={'pl-4 mt-3'}>
-        {children}
-      </div>
-    </div>
-  );
-}
 
 function CorePlan() {
-  const [dateDate, setDateDate] = useState<string>('');
-  const [timeRange, setTimeRange] = useState<number>(0);
+  const [step, setStep] = useState<number>(0);
+  const [isForward, setIsForward] = useState<number>(1);
+
+  const [selectedFriends, setSelectedFriends] = useState<FriendInformationType[]>([]);
+
+  function prev() {
+    setIsForward(-1);
+    setStep(step - 1);
+  }
+
+  function next() {
+    setIsForward(1);
+    setStep(step + 1);
+  }
+
+  const motionVariants = {
+    initial: (direction: number) => ({
+      x: 10 * direction,
+      opacity: 0
+    }),
+    animate: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.2
+      }
+    },
+    exit: (direction: number) => ({
+      x: -10 * direction,
+      opacity: 0
+    })
+  }
+  const stepHeaders = [
+    '누구랑 같이 놀아볼까요?',
+    '언제 놀러갈까요?',
+    '어디로 놀러갈까요?',
+    '어떤 분위기로 놀아볼까요?',
+    '이런 곳은 어떤가요?'
+  ]
 
   return (
     <>
-      <div className={'flex flex-col'}>
-        <StepFrame
-          title={'누구와 함께하나요?'}
-        >
-          <p>friend selector</p>
-        </StepFrame>
-        <StepFrame
-          title={'언제 만나는게 좋을까요?'}
-        >
-          <div className={'flex gap-2'}>
-            <DatePicker value={dateDate} setter={setDateDate}/>
-            <Select
-              keys={[0, 1, 2, 3, 4]}
-              options={['시간대', '하루 종일', '오전에', '오후에', '깊은 밤에']}
-              value={timeRange}
-              setter={setTimeRange}
-              placeholder
-            />
-          </div>
-        </StepFrame>
-
-        <StepFrame
-          title={'어떤 느낌일까요?'}
-        >
-          <p>selector</p>
-        </StepFrame>
+      <div className={'flex gap-2'}>
+        <motion.div
+          key={'progress'}
+          className={'h-[4px] bg-neutral-700'}
+          animate={{
+            width: (step * 25) + '%',
+          }}
+        />
+      </div>
+      <div className={'flex flex-col gap-4 p-5 h-[calc(100vh-68.74px)]'}>
+        {/* 여기에 initial false 걸면 아래 skeletion animation 고장남 */}
+        <AnimatePresence mode={'wait'} custom={isForward}>
+          <motion.div
+            key={step}
+            custom={isForward}
+            variants={motionVariants}
+            initial={"initial"}
+            animate={"animate"}
+            exit={"exit"}
+            className={'h-[calc(100%-40px-var(--spacing)*5)] flex flex-col gap-4'}
+          >
+            <p className={'text-2xl font-bold'}>{stepHeaders[step]}</p>
+            {step === 0 && <PartySelector selectedFriends={selectedFriends} setSelectedFriends={setSelectedFriends}/>}
+          </motion.div>
+        </AnimatePresence>
+        <div className={'flex justify-between'}>
+          {step !== 0 &&
+            <Button onClick={prev}>이전</Button>
+          }
+          {step === 0 &&
+            <p></p>
+          }
+          {step !== 4 &&
+            <Button onClick={next}>다음</Button>
+          }
+        </div>
       </div>
     </>
   );

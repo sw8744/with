@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.models.users.IdentityModel import IdentityModel
 from app.models.users.RelationshipModel import RelationshipState, RelationshipModel
 from app.schemas.relationship.follow import Following
-from app.schemas.relationship.follow_reqs import FollowRequest, FollowPatchRequest
+from app.schemas.relationship.follow_reqs import FollowRequest, FollowPatchRequest, ListingRelationshipRequest
 from app.schemas.user.identity import Identity
 
 RELATIONSHIP_FOLLOWING = [
@@ -118,7 +118,11 @@ def unfollow(
   db.commit()
 
 
-def list_followings(identity, query, db):
+def list_followings(
+  identity: Identity,
+  query: ListingRelationshipRequest,
+  db: Session
+):
   if identity is None:
     raise HTTPException(status_code=404, detail="User not found")
 
@@ -130,7 +134,10 @@ def list_followings(identity, query, db):
   )
 
   if query.state is not None:
-    followings_query = followings_query.filter(RelationshipModel.state == query.state)
+    if query.up:
+      followings_query = followings_query.filter(RelationshipModel.state >= query.state)
+    else:
+      followings_query = followings_query.filter(RelationshipModel.state == query.state)
   if query.head is not None:
     head_subquery = (
       db.query(RelationshipModel.updated_at)
@@ -140,7 +147,7 @@ def list_followings(identity, query, db):
       )
       .subquery()
     )
-    followings_query = followings_query.filter(RelationshipModel.created_at < head_subquery)
+    followings_query = followings_query.filter(RelationshipModel.updated_at < head_subquery)
 
   followings_query = (
     followings_query

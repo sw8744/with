@@ -1,4 +1,5 @@
 import type {ChangeEvent} from "react";
+import {CheckmarkFillIcon, CircleIcon} from "../../assets/svgs/svgs.ts";
 
 interface TextInputPropsType {
   type?: 'text' | 'password' | 'email'
@@ -19,6 +20,16 @@ interface SelectPropsType {
   placeholder?: boolean;
   className?: string;
   disabled?: boolean;
+  error?: boolean;
+}
+
+interface CheckboxPropsType {
+  value: boolean;
+  setter?: (val: boolean) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  className?: string;
+  label?: string;
+  disable?: boolean;
   error?: boolean;
 }
 
@@ -83,7 +94,7 @@ function Select(
       onChange={onValueChange}
       value={value}
       className={
-          commonClass + ' pr-8' +
+        commonClass + ' pr-8' +
         (error ? ' border-red-300 shadow-red-300' : '') +
         (className ? ' ' + className : '')
       }
@@ -94,6 +105,51 @@ function Select(
       ))}
     </select>
   )
+}
+
+function Checkbox(
+  {
+    value, setter, onChange, className, label, disable, error
+  }: CheckboxPropsType
+) {
+  function onValueChange(e: ChangeEvent<HTMLInputElement>) {
+    setter?.(e.target.checked);
+    onChange?.(e);
+  }
+
+  return (
+    <label
+      className={
+        'cursor-pointer' +
+        (className ? ' ' + className : '')
+      }
+    >
+      <input
+        type={'checkbox'}
+        checked={value}
+        onChange={onValueChange}
+        className={'peer sr-only'}
+        disabled={disable}
+      />
+      <p>{label}</p>
+      {value &&
+        <CheckmarkFillIcon
+          className={
+            'w-[24px] h-[24px] fill-neutral-600' +
+            (error ? ' border-red-300 shadow-red-300' : '')
+          }
+        />
+      }
+      {!value &&
+        <CircleIcon
+          className={
+            'w-[24px] h-[24px] fill-neutral-600' +
+            (error ? ' border-red-300 shadow-red-300' : '')
+          }
+        />
+      }
+    </label>
+  );
 }
 
 function DatePicker(
@@ -124,5 +180,6 @@ function DatePicker(
 export {
   TextInput,
   Select,
+  Checkbox,
   DatePicker,
 }

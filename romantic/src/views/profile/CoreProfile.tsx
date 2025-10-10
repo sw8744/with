@@ -55,10 +55,10 @@ function CoreProfile() {
     });
   }, []);
 
-  if(pageState === PageState.LOADING) {
+  if (pageState === PageState.LOADING) {
     return <ProfileSkeleton/>
   }
-  if(isPageError(pageState)) {
+  if (isPageError(pageState)) {
     return <PageError pageState={pageState}/>;
   }
 
@@ -104,12 +104,12 @@ function ProfileSkeleton() {
     <div className={'flex flex-col gap-2.5 m-5'}>
       <div className={'flex justify-between mx-5 items-center'}>
         <div className={'w-1/4'}>
-          <SkeletonElement expH={28} expW={65} pulse/>
+          <SkeletonElement expH={28} expW={65}/>
         </div>
         <div className={'w-[60%] grid grid-cols-3 grid-rows-2'}>
-          <SkeletonElement expH={24} expW={60} pulse/>
-          <SkeletonElement expH={24} expW={60} pulse/>
-          <SkeletonElement expH={24} expW={60} pulse/>
+          <SkeletonElement expH={24} expW={60}/>
+          <SkeletonElement expH={24} expW={60}/>
+          <SkeletonElement expH={24} expW={60}/>
           <p>장소</p>
           <p>팔로워</p>
           <p>팔로잉</p>

@@ -111,7 +111,10 @@ def list_followers(
   )
 
   if query.state is not None:
-    followers_query = followers_query.filter(RelationshipModel.state == query.state)
+    if query.up:
+      followers_query = followers_query.filter(RelationshipModel.state >= query.state)
+    else:
+      followers_query = followers_query.filter(RelationshipModel.state == query.state)
   if query.head is not None:
     head_subquery = (
       db.query(RelationshipModel.updated_at)
@@ -121,7 +124,7 @@ def list_followers(
       )
       .subquery()
     )
-    followers_query = followers_query.filter(RelationshipModel.created_at < head_subquery)
+    followers_query = followers_query.filter(RelationshipModel.updated_at < head_subquery)
 
   followers_query = (
     followers_query

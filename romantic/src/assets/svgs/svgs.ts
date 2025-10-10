@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import RouteIcon from './point.topright.arrow.triangle.backward.to.point.bottomleft.filled.scurvepath.svg?react'
 import PersonIcon from './person.crop.circle.svg?react'
 import LocationIcon from './location.fill.svg?react'
@@ -5,7 +8,7 @@ import PhoneAndClockIcon from './phone.badge.clock.svg?react'
 import ClockIcon from './clock.svg?react'
 import CheckListIcon from './checklist.svg?react'
 import LogoGoogleIcon from './logo.google.svg?react'
-import CheckMarkIcon from './checkmark.circle.fill.svg?react'
+import CheckmarkFillIcon from './checkmark.circle.fill.svg?react'
 import XMarkIcon from './x.circle.fill.svg?react'
 import GearIcon from './gearshape.fill.svg?react'
 import PhoneAndCheckIcon from './phone.badge.checkmark.svg?react'
@@ -17,6 +20,8 @@ import StarIcon from './star.svg?react'
 import MapPinAndEllipseIcon from './mappin.and.ellipse.circle.fill.svg?react'
 import MapPinIcon from './mappin.svg?react'
 import MapFilledIcon from './map.fill.svg?react'
+import PlusIcon from './plus.svg?react'
+import CircleIcon from './circle.svg?react'
 
 export {
   RouteIcon,
@@ -28,7 +33,7 @@ export {
   ClockIcon,
   CheckListIcon,
   LogoGoogleIcon,
-  CheckMarkIcon,
+  CheckmarkFillIcon,
   XMarkIcon,
   GearIcon,
   CalendarBadgeIcon,
@@ -37,6 +42,7 @@ export {
   MapPinAndEllipseIcon,
   MapPinIcon,
   MapFilledIcon,
-
+  PlusIcon,
+  CircleIcon,
   InstagramIcon
 }
