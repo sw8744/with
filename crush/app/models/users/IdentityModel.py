@@ -6,7 +6,7 @@ from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql import UUID, VARCHAR, BOOLEAN, DATE, ARRAY
 from sqlalchemy.orm import Mapped
 
-from app.database import BaseTable, EnumAsValue
+from app.core.database.database import BaseTable, EnumAsValue
 
 
 class SEX(enum.Enum):

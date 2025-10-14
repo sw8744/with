@@ -5,6 +5,7 @@ from uuid import UUID
 from sqlalchemy.orm import Session
 
 from app.core.exceptions.exceptions import ItemNotFoundError
+from app.core.hangul.umso import 풀어쓰기
 from app.models.locations.RegionModel import RegionModel
 from app.schemas.location.region import Region
 from app.schemas.location.region_reqs import AddRegion, RegionSearchQuery, PatchRegion
@@ -39,9 +40,10 @@ def search_region(
       .all()
     )
   elif query.name is not None:
+    qname_umso = 풀어쓰기(query.name)
     regions_db = (
       db.query(RegionModel)
-      .filter(RegionModel.name.like("%" + query.name + "%"))
+      .filter(RegionModel.name_umso.like("%" + qname_umso + "%"))
       .limit(query.limit)
       .all()
     )

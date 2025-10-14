@@ -6,9 +6,9 @@ from sqlalchemy.orm import Session
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
+from app.core.database.database import create_connection
 from app.core.exceptions.exceptions import ItemNotFoundError
 from app.core.location import core_place
-from app.database import create_connection
 from app.schemas.location.place import Place
 from app.schemas.location.place_reqs import AddPlace, PlaceSearchQuery, PatchPlace
 

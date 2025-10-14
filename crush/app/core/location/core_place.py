@@ -5,6 +5,7 @@ from uuid import UUID
 from sqlalchemy.orm import Session
 
 from app.core.exceptions.exceptions import ItemNotFoundError
+from app.core.hangul.umso import 풀어쓰기
 from app.models.locations.PlaceModel import PlaceModel
 from app.schemas.location.place import Place
 from app.schemas.location.place_reqs import AddPlace, PatchPlace, PlaceSearchQuery
@@ -56,7 +57,8 @@ def search_place(
     )
   else:
     if q.name is not None:
-      query = query.filter(PlaceModel.name.like("%" + q.name + "%"))
+      qname_umso = 풀어쓰기(q.name)
+      query = query.filter(PlaceModel.name_umso.like("%" + qname_umso + "%"))
     if q.region_uid is not None:
       query = query.filter(PlaceModel.region_uid == q.region_uid)
     if q.address is not None:

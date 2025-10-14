@@ -5,8 +5,8 @@ from uuid import uuid4, UUID
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
+from app.core.database.database import redis_db0
 from app.core.user.core_jwt import get_sub
-from app.database import redis_db0
 from app.models.auth.GoogleAuth import GoogleAuthModel
 from app.models.users.IdentityModel import IdentityModel
 from app.schemas.user.identity import Identity

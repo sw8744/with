@@ -6,7 +6,7 @@ from sqlalchemy import Column, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP
 from sqlalchemy.orm import Mapped, relationship, backref
 
-from app.database import BaseTable, EnumAsValue
+from app.core.database.database import BaseTable, EnumAsValue
 from app.models.users.IdentityModel import IdentityModel
 
 

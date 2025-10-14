@@ -8,7 +8,7 @@ from starlette.responses import JSONResponse
 from app.core.auth import core_refresh_token
 from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.config_store import config
-from app.database import create_connection
+from app.core.database.database import create_connection
 
 router = APIRouter(
   prefix="/api/v1/auth",

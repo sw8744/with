@@ -5,9 +5,9 @@ from fastapi import APIRouter, Query, Depends, HTTPException
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
+from app.core.database.database import create_connection
 from app.core.exceptions.exceptions import ItemNotFoundError
 from app.core.location import core_region
-from app.database import create_connection
 from app.schemas.location.region import Region
 from app.schemas.location.region_reqs import AddRegion, RegionSearchQuery, PatchRegion
 

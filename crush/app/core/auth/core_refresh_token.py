@@ -2,11 +2,11 @@ from fastapi import HTTPException
 from jwt import InvalidTokenError
 from sqlalchemy.orm import Session
 
+from app.core.database.database import redis_refresh_token_blacklist_db1
 from app.core.logger import logger
 from app.core.user import core_jwt
 from app.core.user.core_jwt import get_sub
 from app.core.user.core_login import login
-from app.database import redis_refresh_token_blacklist_db1
 from app.models.users.IdentityModel import IdentityModel
 
 

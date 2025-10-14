@@ -11,9 +11,9 @@ from app.core.auth import core_google_auth
 from app.core.auth.core_google_auth import create_auth_url
 from app.core.auth.core_oauth import set_session_state
 from app.core.config_store import config
+from app.core.database.database import create_connection
 from app.core.user.core_login import login
 from app.core.user.core_user import create_signup_session
-from app.database import create_connection
 
 router = APIRouter(
   prefix="/api/v1/auth/oauth/google",

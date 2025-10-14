@@ -3,5 +3,7 @@
 .idea
 docker
 *_dev.yml
+*_prod.yml
 client_secret.json
 logs
+.DS_Store

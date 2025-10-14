@@ -7,9 +7,9 @@ from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
 from app.core.auth.core_authorization import authorization_header, authorize_jwt
+from app.core.database.database import create_connection
 from app.core.relationship import core_follower
 from app.core.user import core_user
-from app.database import create_connection
 from app.schemas.relationship.follow_reqs import FollowPatchRequest, ListingRelationshipRequest
 
 router = APIRouter(

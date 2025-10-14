@@ -52,7 +52,19 @@ def test_place_creation(
   assert dict(response.json()["content"]["metadata"]).get("parking", None) == False
   assert dict(response.json()["content"]["metadata"]).get("reservation", None) == True
 
-  db.query(PlaceModel).filter(PlaceModel.uid == response.json()["content"]["uid"]).delete()
+  new_place: PlaceModel = db.query(PlaceModel).filter(PlaceModel.uid == response.json()["content"]["uid"]).scalar()
+  assert new_place.name == "4233마음센터 연남점"
+  assert new_place.address == "서울 마포구 월드컵북로4길 43 지하1층"
+  assert new_place.description == "설명"
+  assert new_place.thumbnail == "thumbnail"
+  assert new_place.coordinate == [37.558147, 126.921673]
+  assert new_place.place_meta == {
+    "parking": False,
+    "reservation": True
+  }
+  assert new_place.name_umso == "4233ㅁㅏㅇㅡㅁㅅㅔㄴㅌㅓ ㅇㅕㄴㄴㅏㅁㅈㅓㅁ"
+
+  db.delete(new_place)
   db.commit()
 
 
@@ -62,7 +74,7 @@ def test_place_read_by_name(
   response = client.get(
     "/api/v1/location/place",
     params={
-      "name": "r0p0"
+      "name": "ㅣ역0장소0"
     }
   )
 
@@ -75,7 +87,7 @@ def test_place_read_by_address(
   response = client.get(
     "/api/v1/location/place",
     params={
-      "address": "r0p0"
+      "address": "주소-지역0장소0"
     }
   )
 
@@ -102,7 +114,7 @@ def test_place_read_limit(
   response = client.get(
     "/api/v1/location/place",
     params={
-      "name": "r0",
+      "name": "지역0",
       "limit": 2
     }
   )
@@ -178,6 +190,7 @@ def test_place_patch(
     "parking": True,
     "reservation": True,
   }
+  assert patched_place.name_umso == "ㅋㅔㅇㅣㅍㅏㅂ ㅅㅡㅋㅜㅔㅇㅓ ㅎㅗㅇㄷㅐ"
 
   db.delete(patched_place)
   db.commit()

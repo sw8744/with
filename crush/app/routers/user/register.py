@@ -7,9 +7,9 @@ from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
 from app.core.config_store import config
+from app.core.database.database import create_connection
 from app.core.user import core_user
 from app.core.user.core_login import login
-from app.database import create_connection
 from app.schemas.user.register_reqs import RegisterIdentityReq
 
 router = APIRouter(

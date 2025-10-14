@@ -3,7 +3,7 @@ from uuid import uuid4
 
 from fastapi import HTTPException
 
-from app.database import redis_db0
+from app.core.database.database import redis_db0
 
 
 def set_session_state(state: str) -> str:

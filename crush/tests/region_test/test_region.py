@@ -27,7 +27,13 @@ def test_region_creation(
   assert response.json()["content"]["description"] == "설명"
   assert response.json()["content"]["thumbnail"] == "thumbnail"
 
-  db.query(RegionModel).filter(RegionModel.uid == response.json()["content"]["uid"]).delete()
+  new_region: RegionModel = db.query(RegionModel).filter(RegionModel.uid == response.json()["content"]["uid"]).scalar()
+  assert new_region.name == "홍대/연남"
+  assert new_region.description == "설명"
+  assert new_region.thumbnail == "thumbnail"
+  assert new_region.name_umso == "ㅎㅗㅇㄷㅐ/ㅇㅕㄴㄴㅏㅁ"
+
+  db.delete(new_region)
   db.commit()
 
 
@@ -38,15 +44,15 @@ def test_region_read(
   response = client.get(
     "/api/v1/location/region",
     params={
-      "name": "1"
+      "name": "지역1"
     }
   )
   assert response.status_code == 200
   assert response.json()["code"] == 200
   assert response.json()["status"] == "OK"
   assert len(response.json()["content"]) == 1
-  assert response.json()["content"][0]["name"] == "n1"
-  assert response.json()["content"][0]["description"] == "d1"
+  assert response.json()["content"][0]["name"] == "이름-지역1"
+  assert response.json()["content"][0]["description"] == "설명-지역1"
   assert response.json()["content"][0]["thumbnail"] == "thumbnail"
   assert response.json()["content"][0]["uid"] == str(regions[1].uid)
 
@@ -58,7 +64,7 @@ def test_region_read_limit(
   response = client.get(
     "/api/v1/location/region",
     params={
-      "name": "n",
+      "name": "지역",
       "limit": 2
     }
   )
@@ -75,7 +81,7 @@ def test_region_patch(
   response = client.patch(
     "/api/v1/location/region/" + str(regions[0].uid),
     content=json.dumps({
-      "name": "a",
+      "name": "한글ing",
       "description": "a",
       "thumbnail": "a"
     })
@@ -86,9 +92,10 @@ def test_region_patch(
 
   db.expire_all()
   patched_region: RegionModel = db.query(RegionModel).get(regions[0].uid)
-  assert patched_region.name == "a"
+  assert patched_region.name == "한글ing"
   assert patched_region.description == "a"
   assert patched_region.thumbnail == "a"
+  assert patched_region.name_umso == "ㅎㅏㄴㄱㅡㄹing"
 
   db.delete(patched_region)
   db.commit()

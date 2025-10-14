@@ -22,6 +22,7 @@ function CorePlan() {
     setIsForward(-1);
     setStep(step - 1);
   }
+
   function next() {
     setIsForward(1);
     setStep(step + 1);
@@ -57,13 +58,13 @@ function CorePlan() {
       <div className={'flex gap-2'}>
         <motion.div
           key={'progress'}
-          className={'h-[4px] bg-neutral-700'}
+          className={'absolute left-0 top-0 w-screen rounded-r-full h-[4px] bg-neutral-700'}
           animate={{
-            width: (step * 25) + '%',
+            width: (step * 25.25) + '%',
           }}
         />
       </div>
-      <div className={'flex flex-col gap-4 p-5 h-[calc(100vh-68.74px)]'}>
+      <div className={'flex flex-col gap-4 mt-[4px] p-5 h-[calc(100vh-68.74px)]'}>
         {/* 여기에 initial false 걸면 아래 skeletion animation 고장남 */}
         <AnimatePresence mode={'wait'} custom={isForward}>
           <motion.div

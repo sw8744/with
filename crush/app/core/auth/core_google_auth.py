@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 
 from app.core.auth.core_oauth import get_session_state
 from app.core.config_store import config
-from app.database import redis_db0
+from app.core.database.database import redis_db0
 from app.models.auth.GoogleAuth import GoogleAuthModel
 from app.models.users.IdentityModel import IdentityModel
 from app.schemas.user.identity import Identity
