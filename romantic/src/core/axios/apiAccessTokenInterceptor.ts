@@ -39,7 +39,7 @@ async function resetAccessToken(
 
     return {
       name: resp.data.user.name,
-      uid: resp.data.user.uuid,
+      uid: resp.data.user.uid,
       accessToken: accessToken,
       role: resp.data.user.role
     }

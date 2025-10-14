@@ -1,19 +1,18 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import PartySelector from "./PartySelector.tsx";
 import {AnimatePresence, motion} from "framer-motion";
-import type {FriendInformationType} from "../../core/apiResponseInterfaces/relationship.ts";
 import TimeSelector from "./TimeSelector.tsx";
 import RegionSelector from "./RegionSelector.tsx";
 import ThemeSelector from "./ThemeSelector.tsx";
 import PlaceSelector from "./PlaceSelector.tsx";
+import {useDispatch} from "react-redux";
+import {plannerAction} from "../../core/redux/PlanReducer.ts";
 
 
 function CorePlan() {
   const [step, setStep] = useState<number>(0);
   const [isForward, setIsForward] = useState<number>(1);
 
-  const [selectedFriends, setSelectedFriends] = useState<FriendInformationType[]>([]);
-  const [regionsToGo, setRegionsToGo] = useState<string[]>([]);
   const [theme, setTheme] = useState<string[]>([]);
   const [placesToGo, setPlacesToGo] = useState<string[]>([]);
   const [whenToGo, setWhenToGo] = useState<string>('');
@@ -22,7 +21,6 @@ function CorePlan() {
     setIsForward(-1);
     setStep(step - 1);
   }
-
   function next() {
     setIsForward(1);
     setStep(step + 1);
@@ -53,6 +51,12 @@ function CorePlan() {
     '이런 곳은 어떤가요?'
   ]
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(plannerAction.clear());
+  }, []);
+
   return (
     <>
       <div className={'flex gap-2'}>
@@ -78,16 +82,10 @@ function CorePlan() {
           >
             <p className={'text-2xl font-bold'}>{stepHeaders[step]}</p>
             {step === 0 &&
-              <PartySelector
-                selectedFriends={selectedFriends}
-                setSelectedFriends={setSelectedFriends}
-                next={next}
-              />
+              <PartySelector next={next}/>
             }
             {step === 1 &&
               <RegionSelector
-                regionUUID={regionsToGo}
-                setRegionUUID={setRegionsToGo}
                 prev={prev}
                 next={next}
               />

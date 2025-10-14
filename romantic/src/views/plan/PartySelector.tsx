@@ -9,41 +9,24 @@ import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {AnimatePresence, motion} from "framer-motion";
 import Spinner from "../elements/Spinner.tsx";
 import {Button} from "../elements/Buttons.tsx";
+import {useDispatch} from "react-redux";
+import {plannerAction} from "../../core/redux/PlanReducer.ts";
 
 function PartySelector(
-  {selectedFriends, setSelectedFriends, next}: {
-    selectedFriends: FriendInformationType[];
-    setSelectedFriends: (friends: FriendInformationType[]) => void;
+  {next}: {
     next: () => void
   }
 ) {
+  const [selectedFriends, setSelectedFriends] = useState<FriendInformationType[]>([]);
   const [friends, setFriends] = useState<FriendInformationType[]>([]);
   const [headUUID, setHeadUUID] = useState<string>('');
   const [finishedLoading, setFinishedLoading] = useState<boolean>(false);
   const [pageState, setPageState] = useState<PageState>(PageState.LOADING);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+  const myUuid = useAppSelector(state => state.userInfoReducer.uid);
   const myName = useAppSelector(state => state.userInfoReducer.name);
-
-  useEffect(() => {
-    apiAuth.get<userFollowingGet>(
-      '/user/following',
-      {
-        params: {
-          limit: 30,
-          state: 1,
-          up: true
-        }
-      }
-    ).then(res => {
-      setFriends(res.data.followings);
-      setPageState(PageState.NORMAL);
-      if (res.data.followings.length < 30) setFinishedLoading(true);
-      else setHeadUUID(res.data.followings[res.data.followings.length - 1].uid);
-    }).catch(err => {
-      handleAxiosError(err, setPageState);
-    });
-  }, []);
+  const dispatch = useDispatch();
 
   function include(uuid: string, name: string) {
     const toAdd = {
@@ -88,6 +71,35 @@ function PartySelector(
       handleAxiosError(err, setPageState);
     });
   }
+
+  useEffect(() => {
+    apiAuth.get<userFollowingGet>(
+      '/user/following',
+      {
+        params: {
+          limit: 30,
+          state: 1,
+          up: true
+        }
+      }
+    ).then(res => {
+      setFriends(res.data.followings);
+      setPageState(PageState.NORMAL);
+      if (res.data.followings.length < 30) setFinishedLoading(true);
+      else setHeadUUID(res.data.followings[res.data.followings.length - 1].uid);
+    }).catch(err => {
+      handleAxiosError(err, setPageState);
+    });
+  }, []);
+  useEffect(() => {
+    setSelectedFriends([{
+      name: myName ?? '나',
+      uid: myUuid ?? ''
+    }]);
+  }, [myUuid, myName]);
+  useEffect(() => {
+    dispatch(plannerAction.setMember(selectedFriends));
+  }, [dispatch, selectedFriends]);
 
   let friendFinder = <></>;
   if (pageState === PageState.LOADING) {
@@ -151,14 +163,6 @@ function PartySelector(
     <>
       <div className={'w-full'}>
         <div className={'flex gap-3 overflow-x-auto'}>
-          <div className={'flex flex-col gap-2 items-center max-w-1/4'}>
-            <img
-              src={'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}
-              alt={myName ?? '나'}
-              className={'rounded-full h-16 w-16 cursor-pointer'}
-            />
-            <p className={'font-medium cursor-default'}>{myName}</p>
-          </div>
           <AnimatePresence mode={'popLayout'}>
             {selectedFriends.map((friend) => (
               <motion.div

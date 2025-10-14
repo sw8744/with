@@ -26,16 +26,18 @@ def test_recommendation(
     relation_factory(users[0][0], u[0], RelationshipState.FRIEND)
 
   for i in range(3):
-    for j in range(i + 1):
-      like_factory(users[i][0], places[j * 3 + i])
+    for j in range(3):
+      for k in range(j + 1):
+        like_factory(users[j][0], places[i * 3 + k])
 
   resp = client.get(
-    '/api/v1/recommendation/region',
+    '/api/v1/recommendation/place',
     headers={
       "Authorization": f"Bearer {users[0][1]}"
     },
     params={
-      "users": '.'.join([str(user[0].uid) for user in users])
+      "users": '.'.join([str(user[0].uid) for user in users]),
+      "regions": str(places[0].region_uid)
     }
   )
 
@@ -45,7 +47,7 @@ def test_recommendation(
   assert len(resp.json()["recommendation"]) == 3
   assert resp.json()["recommendation"] == [
     {
-      "region": str(places[i * 3].region.uid),
+      "place": str(places[i].uid),
       "score": 3 - i
     }
     for i in range(3)
@@ -72,12 +74,13 @@ def test_recommendation_of_not_friend(
       like_factory(users[i][0], places[j * 3 + i])
 
   resp = client.get(
-    '/api/v1/recommendation/region',
+    '/api/v1/recommendation/place',
     headers={
       "Authorization": f"Bearer {users[0][1]}"
     },
     params={
-      "users": '.'.join([str(user[0].uid) for user in users])
+      "users": '.'.join([str(user[0].uid) for user in users[1:]]),
+      "regions": str(places[0].region_uid)
     }
   )
 

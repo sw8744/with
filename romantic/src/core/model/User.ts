@@ -1,5 +1,5 @@
 type Identity = {
-  uuid: string;
+  uid: string;
   name: string;
   email: string;
   emailVerified: string;
