@@ -7,7 +7,7 @@ on:
       - "main"
 
 env:
-  CR_PAT: ${{ secrets.GITHUB_TOKEN }}
+  CR_PAT: ${{ secrets.GHCR_TOKEN }}
 
 jobs:
   build-publish-image:
@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: write
 
     steps:
       - name: Checkout repository
