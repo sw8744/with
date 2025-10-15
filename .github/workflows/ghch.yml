@@ -22,7 +22,7 @@ jobs:
 
       - name: Build docker image
         working-directory: ./crush
-        run: docker build -t crush .
+        run: docker build -t ghcr.io/miho73/crush:latest .
 
       - name: Docker login
         run: echo $CR_PAT | docker login ghcr.io -u miho73 --password-stdin
