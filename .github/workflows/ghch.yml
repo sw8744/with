@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Build docker image
-        run: docker build -t crush -p 42002:42002 .
+        run: docker build -t crush 42002:42002 .
 
       - name: Docker login
         run: echo $CR_PAT | docker login ghcr.io -u miho73 --password-stdin
