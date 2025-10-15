@@ -7,7 +7,7 @@ on:
       - "main"
 
 env:
-  CR_PAT: ${{ secrets.GHCR_TOKEN }}
+  CR_PAT: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build-publish-image:
