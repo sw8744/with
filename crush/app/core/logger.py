@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from logging.handlers import TimedRotatingFileHandler
 
 from app.core.config_store import config
 
@@ -25,12 +26,19 @@ if "terminal" in config_handler:
   handler.append(logging.StreamHandler(stream=sys.stdout))
 if "file" in config_handler:
   os.makedirs(os.path.dirname(log_file_path), exist_ok=True)
-  handler.append(logging.FileHandler(log_file_path, mode="a"))
+  handler.append(
+    TimedRotatingFileHandler(
+      log_file_path,
+      when="midnight",
+      backupCount=10,
+    )
+  )
 
 logging.basicConfig(
   level=log_level,
   format=config["log"]["format"],
-  handlers=handler
+  handlers=handler,
+
 )
 
 logger = logging.getLogger("crush")

@@ -1,7 +1,21 @@
+import os
+
 import yaml
 
 config = dict()
 
-with open("config_dev.yml", "r") as f:
+try:
+  mode = os.environ['mode']
+except KeyError:
+  raise EnvironmentError("Missing environmental variable: mode")
+
+if mode == 'dev':
+  path = 'config_dev.yml'
+elif mode == 'prod':
+  path = 'config_prod.yml'
+else:
+  raise EnvironmentError("Invalid mode")
+
+with open(path, "r") as f:
   config.update(yaml.load(f, Loader=yaml.FullLoader))
   ENV = config["env"]

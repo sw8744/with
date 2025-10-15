@@ -143,7 +143,7 @@ def http_auth_error_handler(request: Request, exc):
 
 
 def add_error_handler(app):
-  log.info("Adding error handlers")
+  log.info("Added error handlers")
   app.add_exception_handler(HTTPException, http_exception_handler)
   app.add_exception_handler(ValueError, http_value_error_handler)
   app.add_exception_handler(ValidationError, http_validation_error_handler)
