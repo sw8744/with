@@ -4,7 +4,6 @@ WORKDIR /home/with
 
 COPY ./app ./app
 COPY requirments.txt .
-COPY config_prod.yml .
 RUN mkdir logs
 
 RUN pip3 install --no-cache-dir --upgrade -r requirments.txt
