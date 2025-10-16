@@ -1,9 +1,9 @@
+import logging
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Query, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from app.core.database.database import create_connection
@@ -11,6 +11,8 @@ from app.core.exceptions.exceptions import ItemNotFoundError
 from app.core.location import core_place
 from app.schemas.location.place import Place
 from app.schemas.location.place_reqs import AddPlace, PlaceSearchQuery, PatchPlace
+
+log = logging.getLogger(__name__)
 
 router = APIRouter(
   prefix="/api/v1/location/place",
@@ -22,13 +24,13 @@ router = APIRouter(
   path="",
 )
 async def search_place(
-  query: Annotated[PlaceSearchQuery, Query()],
-  request: Request,
+  query: Annotated[PlaceSearchQuery, Depends()],
   db: Session = Depends(create_connection)
 ):
-  metadata = dict(request.query_params)
+  log.info("Searching place. query=[%s]", query)
 
-  places: list[Place] = core_place.search_place(query, metadata, db)
+  places: list[Place] = core_place.search_place(query, db)
+  log.info("Found %d places" % len(places))
 
   return JSONResponse({
     "code": 200,

@@ -1,4 +1,6 @@
 import logging
+import os
+from datetime import datetime
 
 from fastapi import FastAPI
 
@@ -12,7 +14,7 @@ from app.routers.user import register, user
 
 log = logging.getLogger(__name__)
 
-log.info(f"Server is running on {mode} mode")
+log.info("Environment: %s | Commit#: %s", mode, os.environ['commit'])
 
 app = FastAPI()
 
@@ -28,4 +30,4 @@ app.include_router(follower.router)
 app.include_router(recommendation.router)
 add_error_handler(app)
 
-log.info("Application started")
+log.info("Application started on %s", datetime.now().isoformat())

@@ -1,12 +1,12 @@
+import logging
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Query, Depends, HTTPException
+from fastapi import APIRouter, Query, Depends
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
 from app.core.database.database import create_connection
-from app.core.exceptions.exceptions import ItemNotFoundError
 from app.core.location import core_region
 from app.schemas.location.region import Region
 from app.schemas.location.region_reqs import AddRegion, RegionSearchQuery, PatchRegion
@@ -16,6 +16,7 @@ router = APIRouter(
   tags=["region"]
 )
 
+log = logging.getLogger(__name__)
 
 @router.get(
   path="",
@@ -24,7 +25,9 @@ async def search_region(
   query: Annotated[RegionSearchQuery, Query()],
   db: Session = Depends(create_connection)
 ):
+  log.info("Searching region. query=[%s]", query)
   regions: list[Region] = core_region.search_region(query, db)
+  log.info("Found %d regions" % len(regions))
 
   return JSONResponse({
     "code": 200,
@@ -42,7 +45,9 @@ async def add_region(
   region: AddRegion,
   db: Session = Depends(create_connection)
 ):
+  log.info("Adding region. data=[%s]", region)
   region: Region = core_region.add_region(region, db)
+  log.info("New region uid=%s, name=%s was committed", region.uid, region.name)
 
   return JSONResponse({
     "code": 201,
@@ -59,10 +64,9 @@ async def patch_region(
   query: PatchRegion,
   db: Session = Depends(create_connection)
 ):
-  try:
-    core_region.patch_region(region_id, query, db)
-  except ItemNotFoundError:
-    raise HTTPException(status_code=404, detail="No region was found")
+  log.info("Patching region. region_id=%s", region_id)
+  core_region.patch_region(region_id, query, db)
+  log.info("Patched region uid=%s was commited", region_id)
 
   return JSONResponse({
     "code": 200,
@@ -77,7 +81,9 @@ async def delete_region(
   region_id: UUID,
   db: Session = Depends(create_connection)
 ):
+  log.debug("Deleting region. region_id=%s", region_id)
   deleted = core_region.delete_region(region_id, db)
+  log.debug("Deleted region uid=%s was committed", region_id)
 
   return JSONResponse({
     "code": 200,

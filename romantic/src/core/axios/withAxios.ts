@@ -4,12 +4,12 @@ import {refreshAccessToken} from "./apiAccessTokenInterceptor.ts";
 import {PageState} from "../apiResponseInterfaces/apiInterface.ts";
 
 const api = axios.create({
-  baseURL: '/api/v1/',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 5000,
 });
 
 const apiAuth = axios.create({
-  baseURL: '/api/v1/',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 5000,
 });
 

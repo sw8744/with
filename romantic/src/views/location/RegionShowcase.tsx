@@ -5,7 +5,7 @@ import type {locationPlaceAPI, locationRegionAPI} from "../../core/apiResponseIn
 import {isPageError, PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
 import type {Place, Region} from "../../core/model/LocationModels.ts";
 import {thumbnailUrl} from "../../core/model/ImageUrlProcessor.ts";
-import {SkeletonElement, SkeletonFrame} from "../elements/Skeleton.tsx";
+import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
 import {PlaceArea, PlaceAreaSkeleton} from "../elements/PlaceArea.tsx";
 
@@ -54,6 +54,10 @@ function RegionShowcase() {
             }
           }
         );
+      if (regionResp.data.content.length === 0) {
+        setPageState(PageState.NOT_FOUND);
+        return;
+      }
       setRegionInfo(regionResp.data.content[0]);
 
       const placeResp =
@@ -110,16 +114,20 @@ function RegionShowcase() {
 function RegionShowcaseSkeleton() {
   return (
     <SkeletonFrame>
-      <SkeletonElement className={'w-full mb-10 aspect-video'}/>
+      <SkeletonUnit>
+        <SkeletonElement className={'w-full mb-10 aspect-video'} unit/>
+      </SkeletonUnit>
 
       <div className={'flex flex-col justify-baseline items-center gap-3'}>
-        <SkeletonElement expH={36} expW={100}/>
-        <SkeletonElement expH={28} expW={220} className={'max-w-[50%]'}/>
-        <SkeletonElement expH={32} expW={500} className={'max-w-[70%]'}/>
+        <SkeletonElement expH={36} expW={100} unit/>
+        <SkeletonElement expH={28} expW={220} className={'max-w-[50%]'} unit/>
+        <SkeletonElement expH={32} expW={500} className={'max-w-[70%]'} unit/>
       </div>
 
-      <PlaceAreaSkeleton/>
-      <PlaceAreaSkeleton/>
+      <div className={'flex flex-col justify-baseline items-center gap-4 mx-5 my-5'}>
+        <PlaceAreaSkeleton/>
+        <PlaceAreaSkeleton/>
+      </div>
     </SkeletonFrame>
   )
 }

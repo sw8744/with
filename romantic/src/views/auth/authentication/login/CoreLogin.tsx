@@ -12,7 +12,7 @@ function CoreLogin() {
         }
       >
         <ButtonLink
-          to={'/api/v1/auth/oauth/google'}
+          to={import.meta.env.VITE_API_BASE_URL + 'auth/oauth/google'}
           className={'w-full flex gap-[10px] px-[12px] py-[10px] justify-center items-center'}
           theme={'white'}
           reloadDocument

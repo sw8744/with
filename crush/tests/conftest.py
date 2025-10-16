@@ -152,8 +152,12 @@ def places(
         coordinate=[37.558147, 126.921673],
         region_uid=regions[i].uid,
         place_meta={
-          "parking": i == 0,
-          "reservation": j == 0,
+          "operation": {
+            "parking": i == 0,
+          },
+          "reservation": {
+            "required": j == 0
+          }
         },
         thumbnail="thumbnail"
       )

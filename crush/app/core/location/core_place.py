@@ -4,6 +4,7 @@ from uuid import UUID
 
 from sqlalchemy.orm import Session
 
+from app.core.database.database import jsonb_path_equals
 from app.core.exceptions.exceptions import ItemNotFoundError
 from app.core.hangul.umso import 풀어쓰기
 from app.models.locations.PlaceModel import PlaceModel
@@ -35,21 +36,26 @@ def add_place(
 
 # TODO: 허용 검색 쿼리 가변적으로 만들기
 ALLOWED_QUERY = {
-  "parking": bool,
-  "reservation": bool,
-  "contact": str,
-  "instagram": str
+  "operation.parking": bool,
+  "reservation.required": bool,
+  "reservation.method": str,
+  "reservation.web": str,
+  "reservation.tel": str,
+  "contact.instagram": str,
+  "contact.tel": str,
+  "contact.email": str,
+  "contact.web": str,
 }
 
 
 def search_place(
   q: PlaceSearchQuery,
-  meta: dict[str, str],
   db: Session
 ) -> list[Place]:
   query = db.query(PlaceModel)
 
   if q.uid is not None:
+    log.debug("Searching place with uid=%s", q.uid)
     places_db = (
       query
       .filter(PlaceModel.uid == q.uid)
@@ -57,39 +63,35 @@ def search_place(
     )
   else:
     if q.name is not None:
+      log.debug("Added name %s filter for place search", q.name)
       qname_umso = 풀어쓰기(q.name)
       query = query.filter(PlaceModel.name_umso.like("%" + qname_umso + "%"))
     if q.region_uid is not None:
+      log.debug("Added region %s filter for place search", q.region_uid)
       query = query.filter(PlaceModel.region_uid == q.region_uid)
     if q.address is not None:
+      log.debug("Added address %s filter for place search", q.address)
       query = query.filter(PlaceModel.address.like("%" + q.address + "%"))
-    if meta is not None:
-      for key in meta.keys():
-        type = ALLOWED_QUERY.get(key, None)
-        if type is not None:
-          try:
-            if type == bool:
-              val = meta[key] == "true"
-            elif type == str:
-              val = meta[key]
-            elif type == int:
-              val = int(meta[key])
-            else:
-              val = meta[key]
-          except:
-            val = meta[key]
-          query = query.filter(PlaceModel.place_meta.contains({key: val}))
+
+    if q.metadata != '':
+      meta_pairs = q.metadata.split(',')
+      meta = [meta_pair.split('=') for meta_pair in meta_pairs]
+      for mdata in meta:
+        key, value = mdata[0], mdata[1]
+        mtype = ALLOWED_QUERY.get(key, None)
+        if mtype is not None:
+          log.debug("Added metadata %s=%s filter for place search", key, value)
+
+          query = query.filter(
+            jsonb_path_equals(PlaceModel.place_meta, key, value)
+          )
 
     query = query.limit(q.limit)
+    log.debug("Query limit set to %d", q.limit)
+
     places_db = query.all()
 
-  places: list[Place] = []
-  for place in places_db:
-    places.append(
-      Place(place)
-    )
-
-  return places
+  return [Place(place) for place in places_db]
 
 
 def delete_place(
@@ -132,16 +134,6 @@ def patch_place(
   if query.thumbnail is not None:
     place.thumbnail = query.thumbnail
   if query.metadata is not None:
-    meta = {}
-    for key in query.metadata.keys():
-      type = ALLOWED_QUERY.get(key, None)
-      if (
-        query.metadata[key] is not None and
-        type is not None and
-        isinstance(query.metadata[key], type)
-      ):
-        meta[key] = query.metadata[key]
-
-    place.place_meta = meta
+    place.place_meta = query.metadata
 
   db.commit()

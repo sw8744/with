@@ -22,6 +22,9 @@ def set_session_state(state: str) -> str:
 
 
 def get_session_state(session_uuid: str) -> Optional[str]:
+  if session_uuid is None or redis_db0.exists(session_uuid) is None:
+    raise HTTPException(status_code=400, detail="Session UUID was not found")
+
   val = redis_db0.get(session_uuid)
   redis_db0.delete(session_uuid)
 

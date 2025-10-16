@@ -14,7 +14,7 @@ if mode == 'dev':
 elif mode == 'prod':
   path = 'config_prod.yml'
 else:
-  raise EnvironmentError("Invalid mode")
+  raise EnvironmentError(f"Invalid mode: {mode}")
 
 with open(path, "r") as f:
   config.update(yaml.load(f, Loader=yaml.FullLoader))

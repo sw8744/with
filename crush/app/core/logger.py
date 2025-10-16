@@ -37,9 +37,14 @@ if "file" in config_handler:
 logging.basicConfig(
   level=log_level,
   format=config["log"]["format"],
-  handlers=handler,
-
+  handlers=handler
 )
 
-logger = logging.getLogger("crush")
-logger.debug("Logger set")
+access_logger = logging.getLogger("uvicorn.access")
+access_logger.handlers = handler
+
+engine_logger = logging.getLogger("sqlalchemy.engine")
+engine_logger.handlers = handler
+
+logger = logging.getLogger(__name__)
+logger.debug("Logging has been initialized")

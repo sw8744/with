@@ -142,12 +142,25 @@ def http_auth_error_handler(request: Request, exc):
   )
 
 
+async def global_exception_handler(request: Request, exc: Exception):
+  log.exception(f"Unhandled exception: {exc}")
+  return JSONResponse(
+    status_code=500,
+    content={
+      "code": 500,
+      "status": "Internal Server Error",
+      "message": "Server currently unable to handle this request"
+    },
+  )
+
+
 def add_error_handler(app):
-  log.info("Added error handlers")
+  log.debug("Added error handlers")
   app.add_exception_handler(HTTPException, http_exception_handler)
   app.add_exception_handler(ValueError, http_value_error_handler)
   app.add_exception_handler(ValidationError, http_validation_error_handler)
   app.add_exception_handler(RequestValidationError, http_request_validation_error_handler)
   app.add_exception_handler(HTTP_500_INTERNAL_SERVER_ERROR, http_internal_server_error_handler)
   app.add_exception_handler(HTTP_404_NOT_FOUND, http_not_found_handler)
+  app.add_exception_handler(Exception, global_exception_handler)
   return app

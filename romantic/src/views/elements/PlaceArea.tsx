@@ -1,7 +1,7 @@
 import {thumbnailUrl} from "../../core/model/ImageUrlProcessor.ts";
 import {Link} from "react-router-dom";
 import type {Place} from "../../core/model/LocationModels.ts";
-import {SkeletonElement} from "./Skeleton.tsx";
+import {SkeletonElement, SkeletonUnit} from "./Skeleton.tsx";
 
 interface InformationAreaPropsType {
   place: Place
@@ -36,7 +36,7 @@ function PlaceArea(
 
 function PlaceAreaSkeleton() {
   return (
-    <div className={'w-full shadow-neutral-300 shadow rounded-xl overflow-clip flex flex-row'}>
+    <SkeletonUnit className={'w-full shadow-neutral-300 shadow rounded-xl overflow-clip flex flex-row'}>
       <SkeletonElement className={'w-1/2'} expH={130}/>
 
       <div className={'px-3 py-3'}>
@@ -44,7 +44,7 @@ function PlaceAreaSkeleton() {
         <SkeletonElement expH={15} expW={170} className={'my-2'}/>
         <SkeletonElement expH={15} expW={130}/>
       </div>
-    </div>
+    </SkeletonUnit>
   );
 }
 

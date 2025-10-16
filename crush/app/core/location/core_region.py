@@ -2,9 +2,9 @@ import logging
 from typing import Optional
 from uuid import UUID
 
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from app.core.exceptions.exceptions import ItemNotFoundError
 from app.core.hangul.umso import 풀어쓰기
 from app.models.locations.RegionModel import RegionModel
 from app.schemas.location.region import Region
@@ -34,6 +34,8 @@ def search_region(
   db: Session
 ) -> list[Region]:
   if query.uid is not None:
+    log.debug("Searching region with uid=%s", query.uid)
+
     regions_db = (
       db.query(RegionModel)
       .filter(RegionModel.uid == query.uid)
@@ -41,6 +43,8 @@ def search_region(
     )
   elif query.name is not None:
     qname_umso = 풀어쓰기(query.name)
+    log.debug("Searching region with name=%s", qname_umso)
+
     regions_db = (
       db.query(RegionModel)
       .filter(RegionModel.name_umso.like("%" + qname_umso + "%"))
@@ -48,15 +52,10 @@ def search_region(
       .all()
     )
   else:
+    log.debug("No condition available for region search")
     regions_db = []
 
-  regions: list[Region] = []
-  for region in regions_db:
-    regions.append(
-      Region(region)
-    )
-
-  return regions
+  return [Region(region) for region in regions_db]
 
 
 def delete_region(
@@ -80,17 +79,21 @@ def patch_region(
   region: Optional[RegionModel] = (
     db.query(RegionModel)
     .filter(RegionModel.uid == region_id)
-    .first()
+    .scalar()
   )
 
   if region is None:
-    raise ItemNotFoundError()
+    log.warning("Region %s was not found", region_id)
+    raise HTTPException(status_code=404, detail="Region not found")
 
   if query.name is not None:
+    log.debug("Applying change of name in region %s", region_id)
     region.name = query.name
   if query.description is not None:
+    log.debug("Applying change of description in region %s", region_id)
     region.description = query.description
   if query.thumbnail is not None:
+    log.debug("Applying change of thumbnail in region %s", region_id)
     region.thumbnail = query.thumbnail
 
   db.commit()

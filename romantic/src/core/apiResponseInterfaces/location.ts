@@ -2,11 +2,11 @@ import type ApiInterface from "./apiInterface.ts";
 import type {Place, Region} from "../model/LocationModels.ts";
 
 type locationRegionAPI = ApiInterface & {
-  content: [Region]
+  content: Region[]
 }
 
 type locationPlaceAPI = ApiInterface & {
-  content: [Place]
+  content: Place[]
 }
 
 export type {

@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.main import app
 from app.models.locations.PlaceModel import PlaceModel
+from app.schemas.location.place import Place
 
 client = TestClient(app)
 
@@ -14,13 +15,7 @@ def assert_place(response, place):
   assert response.json()["code"] == 200
   assert response.json()["status"] == "OK"
   assert len(response.json()["content"]) == 1
-  assert response.json()["content"][0]["name"] == place.name
-  assert response.json()["content"][0]["description"] == place.description
-  assert response.json()["content"][0]["address"] == place.address
-  assert response.json()["content"][0]["coordinate"] == place.coordinate
-  assert response.json()["content"][0]["uid"] == str(place.uid)
-  assert response.json()["content"][0]["thumbnail"] == place.thumbnail
-  assert dict(response.json()["content"][0]["metadata"]) == place.place_meta
+  assert response.json()["content"][0] == Place(place).model_dump()
 
 
 def test_place_creation(
@@ -35,8 +30,12 @@ def test_place_creation(
       "thumbnail": "thumbnail",
       "coordinate": [37.558147, 126.921673],
       "metadata": {
-        "parking": False,
-        "reservation": True
+        "operation": {
+          "parking": False,
+        },
+        "reservation": {
+          "required": True
+        }
       }
     })
   )
@@ -49,8 +48,14 @@ def test_place_creation(
   assert response.json()["content"]["description"] == "설명"
   assert response.json()["content"]["thumbnail"] == "thumbnail"
   assert response.json()["content"]["coordinate"] == [37.558147, 126.921673]
-  assert dict(response.json()["content"]["metadata"]).get("parking", None) == False
-  assert dict(response.json()["content"]["metadata"]).get("reservation", None) == True
+  assert dict(response.json()["content"]["metadata"]) == {
+    "operation": {
+      "parking": False,
+    },
+    "reservation": {
+      "required": True
+    }
+  }
 
   new_place: PlaceModel = db.query(PlaceModel).filter(PlaceModel.uid == response.json()["content"]["uid"]).scalar()
   assert new_place.name == "4233마음센터 연남점"
@@ -59,8 +64,12 @@ def test_place_creation(
   assert new_place.thumbnail == "thumbnail"
   assert new_place.coordinate == [37.558147, 126.921673]
   assert new_place.place_meta == {
-    "parking": False,
-    "reservation": True
+    "operation": {
+      "parking": False,
+    },
+    "reservation": {
+      "required": True
+    }
   }
   assert new_place.name_umso == "4233ㅁㅏㅇㅡㅁㅅㅔㄴㅌㅓ ㅇㅕㄴㄴㅏㅁㅈㅓㅁ"
 
@@ -94,14 +103,28 @@ def test_place_read_by_address(
   assert_place(response, places[0])
 
 
+def test_place_read_by_region(
+  places: list[PlaceModel]
+):
+  response = client.get(
+    "/api/v1/location/place",
+    params={
+      "regionUid": str(places[0].region_uid)
+    }
+  )
+
+  assert response.status_code == 200
+  assert response.json()["code"] == 200
+  assert response.json()["status"] == "OK"
+  assert response.json()["content"] == [Place(place).model_dump() for place in places[0:3]]
+
 def test_place_read_by_metadata(
   places: list[PlaceModel]
 ):
   response = client.get(
     "/api/v1/location/place",
     params={
-      "reservation": True,
-      "parking": True,
+      "metadata": "reservation.required=true,operation.parking=true"
     }
   )
 
@@ -145,7 +168,7 @@ def test_place_search_nothing_from_param(
   response = client.get(
     "/api/v1/location/place",
     params={
-      "instagram": "username"
+      "metadata": "contact.instagram=username"
     }
   )
 
@@ -196,7 +219,7 @@ def test_place_patch(
   db.commit()
 
 
-def test_place_patch_meta_not_set(
+def test_place_patch_meta_set(
   places: list[PlaceModel],
   db: Session
 ):
@@ -205,7 +228,6 @@ def test_place_patch_meta_not_set(
     content=json.dumps({
       "coordinate": [47.558147, 226.921673],
       "metadata": {
-        "parking": "True",
         "reservation": False
       }
     })

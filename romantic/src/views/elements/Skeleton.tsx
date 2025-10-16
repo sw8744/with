@@ -64,12 +64,26 @@ function SkeletonUnit(
 }
 
 function SkeletonElement(
-  {expW, expH, className}: {
+  {expW, expH, className, unit = false}: {
     expW?: number | string,
     expH?: number | string,
     className?: string,
+    unit?: boolean
   }
 ) {
+  if (unit) {
+    return (
+      <motion.div
+        className={'bg-neutral-300' + (className ? ' ' + className : '')}
+        style={{
+          width: expW,
+          height: expH
+        }}
+        variants={unitMotionVariants}
+      />
+    );
+  }
+
   return (
     <div
       className={'bg-neutral-300' + (className ? ' ' + className : '')}
