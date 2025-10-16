@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import APIRouter
 from fastapi.params import Security, Depends
 from sqlalchemy.orm import Session
@@ -6,6 +8,8 @@ from starlette.responses import JSONResponse
 from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection
 from app.core.user import core_user
+
+log = logging.getLogger(__name__)
 
 router = APIRouter(
   prefix="/api/v1/user",
@@ -20,7 +24,7 @@ def get_user(
   jwt: str = Security(authorization_header),
   db: Session = Depends(create_connection)
 ):
-  token: dict[str, any] = authorize_jwt(jwt)
+  token = authorize_jwt(jwt)
 
   identity = core_user.get_identity(token, db)
 

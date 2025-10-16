@@ -1,3 +1,4 @@
+import logging
 from typing import Annotated
 from uuid import UUID
 
@@ -12,8 +13,11 @@ from app.core.auth.core_google_auth import create_auth_url
 from app.core.auth.core_oauth import set_session_state
 from app.core.config_store import config
 from app.core.database.database import create_connection
+from app.core.hash import sha256
 from app.core.user.core_login import login
 from app.core.user.core_user import create_signup_session
+
+log = logging.getLogger(__name__)
 
 router = APIRouter(
   prefix="/api/v1/auth/oauth/google",
@@ -63,6 +67,7 @@ def callback_authentication(
         "sub": userinfo["sub"]
       }
     })
+    log.info("New google user %s registration session %s was created", userinfo['sub'], sha256(register_session_uuid))
 
     response = RedirectResponse("/register/google")
     response.delete_cookie("OAuthState")
@@ -77,6 +82,8 @@ def callback_authentication(
     db.rollback()
   else:
     access_token, refresh_token = login(identity)
+    log.info("Access token %s and refresh token %s was issued for user %s", sha256(access_token), sha256(refresh_token),
+             identity.uid)
 
     response = RedirectResponse("/login/set-token?at={}".format(access_token))
     response.delete_cookie("OAuthState")
@@ -91,6 +98,7 @@ def callback_authentication(
     )
     db.commit()
 
+  log.info("Identity %s successfully logged in using google", identity.uid)
   return response
 
 
@@ -102,6 +110,7 @@ def get_register_session(
   session: Annotated[UUID | None, Cookie()] = None
 ):
   content = core_google_auth.get_register_session(session)
+  log.info("Registration session %s was queried", sha256(str(session)))
 
   return JSONResponse(
     status_code=200,

@@ -5,6 +5,7 @@ from fastapi.security import APIKeyHeader
 from jwt import InvalidTokenError
 
 from app.core.user import core_jwt
+from app.core.user.core_jwt import get_sub
 
 log = logging.getLogger(__name__)
 
@@ -38,5 +39,5 @@ def authorize_jwt(token: str) -> dict[str, str]:
     log.warning("Auth failed: Access token is invalid or unauthorized")
     raise HTTPException(status_code=401, detail="Access token is invalid or unauthorized")
 
-  log.info("Authorized access token. sub=\"{}\"".format(jwt_body.get("sub")))
+  log.info("Authorized access token. jwt=%s, sub=%s", jwt_token, get_sub(jwt_body))
   return jwt_body

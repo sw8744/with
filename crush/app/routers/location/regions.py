@@ -45,7 +45,7 @@ async def add_region(
   region: AddRegion,
   db: Session = Depends(create_connection)
 ):
-  log.info("Adding region. data=[%s]", region)
+  log.info("Adding region. new_region=[%s]", region)
   region: Region = core_region.add_region(region, db)
   log.info("New region uid=%s, name=%s was committed", region.uid, region.name)
 

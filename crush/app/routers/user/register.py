@@ -1,3 +1,4 @@
+import logging
 from typing import Annotated
 from uuid import UUID
 
@@ -8,9 +9,12 @@ from starlette.responses import JSONResponse
 
 from app.core.config_store import config
 from app.core.database.database import create_connection
+from app.core.hash import sha256
 from app.core.user import core_user
 from app.core.user.core_login import login
 from app.schemas.user.register_reqs import RegisterIdentityReq
+
+log = logging.getLogger(__name__)
 
 router = APIRouter(
   prefix="/api/v1/user/register",
@@ -27,11 +31,15 @@ def register_user(
   session: Annotated[UUID | None, Cookie()] = None
 ):
   if session is not None:
+    log.info("Registration request includes session %s", sha256(str(session)))
     identity = core_user.register_using_session(application, session, db)
   else:
+    log.warning("Registration request with no session provided")
     raise HTTPException(status_code=400, detail="invalid register request")
 
   access_token, refresh_token = login(identity)
+  log.info("Access token %s and refresh token %s was issued for user %s", sha256(access_token), sha256(refresh_token),
+           identity.uid)
 
   response = JSONResponse(
     status_code=200,

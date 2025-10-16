@@ -1,4 +1,5 @@
 import json
+import logging
 from typing import Optional
 from uuid import uuid4, UUID
 
@@ -6,12 +7,14 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.database.database import redis_db0
+from app.core.hash import sha256
 from app.core.user.core_jwt import get_sub
 from app.models.auth.GoogleAuth import GoogleAuthModel
 from app.models.users.IdentityModel import IdentityModel
 from app.schemas.user.identity import Identity
 from app.schemas.user.register_reqs import RegisterIdentityReq
 
+log = logging.getLogger(__name__)
 
 def create_signup_session(
   application: dict[str, any]
@@ -19,6 +22,7 @@ def create_signup_session(
   session_uuid = str(uuid4())
 
   if redis_db0.exists(session_uuid) != 0:
+    log.warning("Registration session has crashed %s", sha256(session_uuid))
     raise HTTPException(500, "Session UUID crash")
 
   redis_db0.set(
@@ -26,6 +30,7 @@ def create_signup_session(
     value=json.dumps(application),
     ex=3600
   )
+  log.info("New registration session %s was saved", sha256(session_uuid))
 
   return session_uuid
 
@@ -43,6 +48,7 @@ def get_identity(
   )
 
   if iden is None:
+    log.warning("Identity %s was not found", uid)
     return None
   else:
     return Identity(iden)
@@ -55,6 +61,7 @@ def register_using_session(
 ) -> Identity:
   reg_session = redis_db0.get(str(reg_session_uuid))
   if reg_session is None:
+    log.warning("Registration session %s was not found", sha256(str(reg_session_uuid)))
     raise HTTPException(status_code=404, detail="Session not found")
 
   reg: dict[str, any] = json.loads(reg_session)
@@ -78,9 +85,11 @@ def register_using_session(
   if auth_ctx["type"] == "google":
     register_google_auth(identity.uid, auth_ctx, db)
   else:
+    log.warning("Invalid auth type %s", auth_ctx["type"])
     raise HTTPException(status_code=400, detail="Unknown authentication context")
 
   db.commit()
+  log.info("New user %s was committed", identity.uid)
 
   return Identity(identity)
 
@@ -94,5 +103,6 @@ def register_google_auth(
     user_id=uid,
     sub=auth_ctx["sub"]
   )
+  log.debug("Google auth model created for user %s, sub=%s", uid, auth_ctx["sub"])
 
   db.add(google_auth)

@@ -1,3 +1,4 @@
+import logging
 from uuid import UUID
 
 from fastapi import HTTPException
@@ -7,6 +8,8 @@ from app.models.users.RelationshipModel import RelationshipModel, RelationshipSt
 from app.schemas.relationship.follow import Follower
 from app.schemas.relationship.follow_reqs import FollowPatchRequest, ListingRelationshipRequest
 from app.schemas.user.identity import Identity
+
+log = logging.getLogger(__name__)
 
 RELATIONSHIP_FOLLOWER = [
   [False, False, False, False],
@@ -22,6 +25,7 @@ def query_follower(
   db: Session
 ) -> RelationshipModel | None:
   if identity is None:
+    log.warning("Identity is None and query_follower cannot be done")
     raise HTTPException(status_code=404, detail="User not found")
 
   relation = (
@@ -34,8 +38,10 @@ def query_follower(
   )
 
   if relation is None:
+    log.warning("Relationship %r<-%r was not found", identity.uid, follower_id)
     return None
 
+  log.info("Found relationship $r<-%r is %d", identity.uid, follower_id, relation.state.value)
   return relation.state
 
 
@@ -45,6 +51,7 @@ def unfollow(
   db: Session
 ):
   if identity is None:
+    log.warning("Identity is None and delete follower cannot be done")
     raise HTTPException(status_code=404, detail="User not found")
 
   relation: RelationshipModel = (
@@ -57,14 +64,18 @@ def unfollow(
   )
 
   if relation is None:
+    log.warning("Relationship %r<-%r was not found", identity.uid, follower_id)
     raise HTTPException(status_code=404, detail="Relationship was not found")
 
   # 차단중이면 차단 해제 불가
   if relation.state == RelationshipState.BLOCKED:
+    log.warning("Relationship %r<-%r was blocked", identity.uid, follower_id)
     raise HTTPException(status_code=400, detail="Relationship change may not be done")
 
   db.delete(relation)
   db.commit()
+
+  log.info("Deleted relationship %r<-%r was committed", identity.uid, follower_id)
 
 
 def patch_relationship(
@@ -74,6 +85,7 @@ def patch_relationship(
   db: Session
 ):
   if identity is None:
+    log.warning("Identity is None and update follower cannot be done")
     raise HTTPException(status_code=404, detail="User not found")
 
   relation: RelationshipModel = (
@@ -86,13 +98,18 @@ def patch_relationship(
   )
 
   if relation is None:
+    log.warning("Relationship %r<-%r was not found", identity.uid, follower_id)
     raise HTTPException(status_code=404, detail="Relationship was not found")
 
   if not RELATIONSHIP_FOLLOWER[relation.state.value][body.relationship.value]:
+    log.warning("Relationship %r<-%r change %d to %d is not allowed", identity.uid, follower_id, relation.state.value,
+                body.relationship.value)
     raise HTTPException(status_code=400, detail="Relationship change may not be done")
 
   relation.state = body.relationship
   db.commit()
+
+  log.info("Relationship %r<-%r=%d was updated", identity.uid, follower_id, relation.state)
 
 
 def list_followers(
@@ -101,6 +118,7 @@ def list_followers(
   db: Session
 ) -> list[Follower]:
   if identity is None:
+    log.warning("Identity is None and list_followers cannot be done")
     raise HTTPException(status_code=404, detail="User not found")
 
   followers_query = (
@@ -112,10 +130,13 @@ def list_followers(
 
   if query.state is not None:
     if query.up:
+      log.debug("Listing relationship closer than %d", query.state.value)
       followers_query = followers_query.filter(RelationshipModel.state >= query.state)
     else:
+      log.debug("Listing relationship of %d", query.state.value)
       followers_query = followers_query.filter(RelationshipModel.state == query.state)
   if query.head is not None:
+    log.debug("Listing relationship head is %r", query.head)
     head_subquery = (
       db.query(RelationshipModel.updated_at)
       .filter(
@@ -133,6 +154,8 @@ def list_followers(
   )
 
   followers = followers_query.all()
+  log.info("Found %d followers" % len(followers))
+
   return [Follower(follower) for follower in followers]
 
 
@@ -141,6 +164,7 @@ def count_follower(
   db: Session
 ):
   if identity is None:
+    log.warning("Identity is None and count_follower cannot be done")
     raise HTTPException(status_code=404, detail="User not found")
 
   cnt = (
@@ -148,5 +172,6 @@ def count_follower(
     .filter(RelationshipModel.friend_id == identity.uid)
     .count()
   )
+  log.info("Found %d followings of %s", cnt, identity.uid)
 
   return cnt

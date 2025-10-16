@@ -2,10 +2,10 @@ import logging
 from typing import Optional
 from uuid import UUID
 
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.database.database import jsonb_path_equals
-from app.core.exceptions.exceptions import ItemNotFoundError
 from app.core.hangul.umso import 풀어쓰기
 from app.models.locations.PlaceModel import PlaceModel
 from app.schemas.location.place import Place
@@ -115,25 +115,33 @@ def patch_place(
   place: Optional[PlaceModel] = (
     db.query(PlaceModel)
     .filter(PlaceModel.uid == place_id)
-    .first()
+    .scalar()
   )
 
   if place is None:
-    raise ItemNotFoundError()
+    log.warning("Place %s was not found", place_id)
+    raise HTTPException(status_code=404, detail="No region was found")
 
   if query.name is not None:
+    log.debug("Applying change of name in place %s", place_id)
     place.name = query.name
   if query.description is not None:
+    log.debug("Applying change of description in place %s", place_id)
     place.description = query.description
   if query.region_uid is not None:
+    log.debug("Applying change of region_uid in place %s", place_id)
     place.region_uid = query.region_uid
   if query.coordinate is not None:
+    log.debug("Applying change of coordinate in place %s", place_id)
     place.coordinate = query.coordinate
   if query.address is not None:
+    log.debug("Applying change of address in place %s", place_id)
     place.address = query.address
   if query.thumbnail is not None:
+    log.debug("Applying change of thumbnail in place %s", place_id)
     place.thumbnail = query.thumbnail
   if query.metadata is not None:
+    log.debug("Applying change of metadata in place %s", place_id)
     place.place_meta = query.metadata
 
   db.commit()

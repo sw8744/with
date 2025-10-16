@@ -1,3 +1,4 @@
+import logging
 from typing import Tuple
 from uuid import UUID
 
@@ -12,6 +13,7 @@ from app.models.locations.PlaceModel import PlaceModel
 from app.models.users.RelationshipModel import RelationshipState
 from app.schemas.user.identity import Identity
 
+log = logging.getLogger(__name__)
 
 def recommend_region_from_users(
   host: Identity,
@@ -24,6 +26,7 @@ def recommend_region_from_users(
       continue
     state = core_following.query_following(host, user, db)
     if state is None or state.value < RelationshipState.FRIEND.value:
+      log.warning("Illegal recommendation request. %r->%r=%d", host.uid, user, state.value)
       raise HTTPException(status_code=400, detail="Followee is not your friend")
 
   # host, users가 좋아한 place의 region 중 place의 수가 많은 것 순서로 쿼리
@@ -44,6 +47,7 @@ def recommend_region_from_users(
     ).all()
   )
 
+  log.info("Found %d recommended regions for %r", len(recommended_regions), by_users)
   return [{
     "region": str(region[0]),
     "score": region[1]
@@ -61,6 +65,7 @@ def recommend_place_from_users(
       continue
     state = core_following.query_following(host, user, db)
     if state is None or state.value < RelationshipState.FRIEND.value:
+      log.warning("Illegal recommendation request. %r->%r=%d", host, user, state.value)
       raise HTTPException(status_code=400, detail="Followee is not your friend")
 
   recommended_places: list[Row[Tuple[UUID, int]]] = (
@@ -82,6 +87,8 @@ def recommend_place_from_users(
       count(PlaceModel.uid).desc()
     ).all()
   )
+
+  log.info("Found %d recommended places for %r", len(recommended_places), by_users)
 
   return [{
     "place": str(place[0]),
