@@ -6,7 +6,7 @@ type recommendationRegion = ApiInterface & {
       region: string;
       score: number
     }
-  ]
+  ],
 }
 
 export type {

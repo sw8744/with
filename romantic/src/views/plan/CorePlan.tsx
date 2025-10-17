@@ -7,6 +7,7 @@ import ThemeSelector from "./ThemeSelector.tsx";
 import PlaceSelector from "./PlaceSelector.tsx";
 import {useDispatch} from "react-redux";
 import {plannerAction} from "../../core/redux/PlanReducer.ts";
+import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
 
 
 function CorePlan() {
@@ -16,6 +17,9 @@ function CorePlan() {
   const [theme, setTheme] = useState<string[]>([]);
   const [placesToGo, setPlacesToGo] = useState<string[]>([]);
   const [whenToGo, setWhenToGo] = useState<string>('');
+
+  const myUuid = useAppSelector(state => state.userInfoReducer.uid);
+  const myName = useAppSelector(state => state.userInfoReducer.name);
 
   function prev() {
     setIsForward(-1);
@@ -55,7 +59,12 @@ function CorePlan() {
 
   useEffect(() => {
     dispatch(plannerAction.clear());
-  }, []);
+
+    dispatch(plannerAction.setMember([{
+      name: myName ?? '나',
+      uid: myUuid ?? ''
+    }]));
+  }, [dispatch, myName, myUuid]);
 
   return (
     <>

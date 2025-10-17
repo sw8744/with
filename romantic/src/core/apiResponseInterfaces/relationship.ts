@@ -14,7 +14,7 @@ type FriendInformationType = {
 }
 
 type userFollowingGet = ApiInterface & {
-  followings: [FriendInformationType];
+  followings: FriendInformationType[];
 }
 
 enum Relationship {

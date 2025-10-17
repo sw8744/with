@@ -82,6 +82,10 @@ function PlaceShowcase() {
           }
         }
       );
+      if (placeResp.data.content.length === 0) {
+        setPageState(PageState.NOT_FOUND);
+        return;
+      }
       setPlaceInfo(placeResp.data.content[0]);
       setPageState(PageState.NORMAL);
 

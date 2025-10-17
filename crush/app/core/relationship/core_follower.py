@@ -41,7 +41,7 @@ def query_follower(
     log.warning("Relationship %r<-%r was not found", identity.uid, follower_id)
     return None
 
-  log.info("Found relationship $r<-%r is %d", identity.uid, follower_id, relation.state.value)
+  log.info("Found relationship %r<-%r is %d", identity.uid, follower_id, relation.state.value)
   return relation.state
 
 

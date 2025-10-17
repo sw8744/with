@@ -1,10 +1,11 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import type {FriendInformationType} from "../apiResponseInterfaces/relationship.ts";
+import type {Region} from "../model/LocationModels.ts";
 
 interface PlannerStateType {
   name: string | null;
   members: FriendInformationType[];
-  region: string[];
+  region: Region[];
 }
 
 const initialState: PlannerStateType = {
@@ -24,6 +25,9 @@ const plannerSlice = createSlice({
     },
     setMember: (state: PlannerStateType, action: PayloadAction<FriendInformationType[]>) => {
       state.members = action.payload;
+    },
+    setRegion: (state: PlannerStateType, action: PayloadAction<Region[]>) => {
+      state.region = action.payload;
     }
   }
 });

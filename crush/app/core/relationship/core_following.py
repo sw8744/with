@@ -39,10 +39,10 @@ def query_following(
   )
 
   if relation is None:
-    log.warning("Relationship $r->%r was not found", identity.uid, friend_id)
+    log.warning("Relationship %r->%r was not found", identity.uid, friend_id)
     return None
 
-  log.info("Found relationship $r->%r is %d", identity.uid, friend_id, relation.state.value)
+  log.info("Found relationship %r->%r is %d", identity.uid, friend_id, relation.state.value)
   return relation.state
 
 
@@ -95,11 +95,11 @@ def patch_relationship(
   )
 
   if relation is None:
-    log.warning("Relationship $r->%r was not found", identity.uid, friend_id)
+    log.warning("Relationship %r->%r was not found", identity.uid, friend_id)
     raise HTTPException(status_code=404, detail="Relationship was not found")
 
   if not RELATIONSHIP_FOLLOWING[relation.state.value][body.relationship.value]:
-    log.warning("Relationship $r->%r change %d to %d is escalating", identity.uid, friend_id, relation.state.value,
+    log.warning("Relationship %r->%r change %d to %d is escalating", identity.uid, friend_id, relation.state.value,
                 body.relationship.value)
     raise HTTPException(status_code=400, detail="Relationship change may not be done")
 
@@ -127,13 +127,13 @@ def unfollow(
   )
 
   if relation is None:
-    log.warning("Relationship $r->%r was not found", identity.uid, friend_id)
+    log.warning("Relationship %r->%r was not found", identity.uid, friend_id)
     raise HTTPException(status_code=404, detail="Relationship was not found")
 
   db.delete(relation)
   db.commit()
 
-  log.info("Removing relationship $r->%r was committed", identity.uid, relation.state.value)
+  log.info("Removing relationship %r->%r was committed", identity.uid, relation.state.value)
 
 
 def list_followings(

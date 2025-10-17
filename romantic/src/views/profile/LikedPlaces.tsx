@@ -47,6 +47,8 @@ function LikedPlaceSkeleton() {
       <div className={'flex flex-col gap-y-4'}>
         <PlaceAreaSkeleton/>
         <PlaceAreaSkeleton/>
+        <PlaceAreaSkeleton/>
+        <PlaceAreaSkeleton/>
       </div>
     </SkeletonFrame>
   )

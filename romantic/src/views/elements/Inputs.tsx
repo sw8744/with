@@ -28,7 +28,7 @@ interface CheckboxPropsType {
   setter?: (val: boolean) => void;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   className?: string;
-  label?: string;
+  children?: React.ReactNode;
   disable?: boolean;
   error?: boolean;
 }
@@ -109,7 +109,7 @@ function Select(
 
 function Checkbox(
   {
-    value, setter, onChange, className, label, disable, error
+    value, setter, onChange, className, children, disable, error
   }: CheckboxPropsType
 ) {
   function onValueChange(e: ChangeEvent<HTMLInputElement>) {
@@ -131,7 +131,7 @@ function Checkbox(
         className={'peer sr-only'}
         disabled={disable}
       />
-      <p>{label}</p>
+      {children}
       {value &&
         <CheckmarkFillIcon
           className={

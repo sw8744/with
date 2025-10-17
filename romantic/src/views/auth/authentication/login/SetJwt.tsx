@@ -25,8 +25,8 @@ function SetJwt() {
 
     resetAccessToken(accessToken)
       .then(credential => {
-        dispatch(userInfoAction.signIn(credential))
-        navigate('/')
+        dispatch(userInfoAction.signIn(credential));
+        navigate('/');
       })
       .catch(e => {
         switch (e) {

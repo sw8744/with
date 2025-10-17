@@ -17,15 +17,13 @@ function PartySelector(
     next: () => void
   }
 ) {
-  const [selectedFriends, setSelectedFriends] = useState<FriendInformationType[]>([]);
   const [friends, setFriends] = useState<FriendInformationType[]>([]);
   const [headUUID, setHeadUUID] = useState<string>('');
   const [finishedLoading, setFinishedLoading] = useState<boolean>(false);
   const [pageState, setPageState] = useState<PageState>(PageState.LOADING);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const myUuid = useAppSelector(state => state.userInfoReducer.uid);
-  const myName = useAppSelector(state => state.userInfoReducer.name);
+  const selectedFriends = useAppSelector(state => state.plannerReducer.members);
   const dispatch = useDispatch();
 
   function include(uuid: string, name: string) {
@@ -33,12 +31,12 @@ function PartySelector(
       uid: uuid,
       name: name
     };
-    setSelectedFriends([...selectedFriends, toAdd])
+    dispatch(plannerAction.setMember([...selectedFriends, toAdd]))
   }
 
   function exclude(uuid: string) {
     const newSelected = selectedFriends.filter(user => user.uid !== uuid);
-    setSelectedFriends(newSelected);
+    dispatch(plannerAction.setMember(newSelected));
   }
 
   function onScroll(e: React.UIEvent<HTMLDivElement>) {
@@ -83,28 +81,67 @@ function PartySelector(
         }
       }
     ).then(res => {
-      setFriends(res.data.followings);
-      setPageState(PageState.NORMAL);
+      setFriends(
+        loadAlreadySelectedFriends(res.data.followings)
+      );
+
       if (res.data.followings.length < 30) setFinishedLoading(true);
       else setHeadUUID(res.data.followings[res.data.followings.length - 1].uid);
+
+      setPageState(PageState.NORMAL);
     }).catch(err => {
       handleAxiosError(err, setPageState);
     });
   }, []);
-  useEffect(() => {
-    setSelectedFriends([{
-      name: myName ?? '나',
-      uid: myUuid ?? ''
-    }]);
-  }, [myUuid, myName]);
-  useEffect(() => {
-    dispatch(plannerAction.setMember(selectedFriends));
-  }, [dispatch, selectedFriends]);
+
+  function loadAlreadySelectedFriends(loaded: FriendInformationType[]): FriendInformationType[] {
+    const additionalFriend: FriendInformationType[] = [];
+
+    for (const friend of selectedFriends) {
+      let isExists = false;
+
+      for (const loadedFriend of loaded) {
+        if (loadedFriend.uid === friend.uid) {
+          isExists = true;
+          break;
+        }
+      }
+
+      if (isExists) {
+        let idx = 0;
+        for (const loadedFriend of loaded) {
+          if (friend.uid === loadedFriend.uid) {
+            break;
+          } else idx++;
+        }
+        loaded.splice(idx, 1);
+        additionalFriend.push(friend);
+      } else {
+        (async () => {
+          const res = await apiAuth.get<userFollowingGet>(
+            '/user/following',
+            {
+              params: {
+                head: friend.uid,
+                limit: 1,
+                state: 1,
+                up: true
+              }
+            }
+          );
+          if (res.data.followings.length !== 0) additionalFriend.push(res.data.followings[0]);
+        })().catch(err => {
+          handleAxiosError(err, setPageState);
+        });
+      }
+    }
+
+    return [...additionalFriend, ...loaded];
+  }
 
   let friendFinder = <></>;
-  if (pageState === PageState.LOADING) {
-    friendFinder = <FriendsListSkeleton/>;
-  } else if (isPageError(pageState)) {
+  if (pageState === PageState.LOADING) friendFinder = <FriendsListSkeleton/>;
+  else if (isPageError(pageState)) {
     friendFinder = (
       <div className={'flex-grow'}>
         <PageError pageState={pageState}/>
@@ -162,7 +199,7 @@ function PartySelector(
   return (
     <>
       <div className={'w-full'}>
-        <div className={'flex gap-3 overflow-x-auto'}>
+        <div className={'flex gap-3 overflow-x-auto overflow-y-hidden'}>
           <AnimatePresence mode={'popLayout'}>
             {selectedFriends.map((friend) => (
               <motion.div
@@ -211,19 +248,20 @@ function FriendInList(
   }
 
   return (
-    <div className={'flex gap-4 items-center relative'}>
-      <img
-        src={'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}
-        className={'w-10 h-10 aspect-1/1 rounded-full'}
-        alt={name}
-      />
-      <p className={'font-medium'}>{name}</p>
-      <Checkbox
-        value={selected}
-        onChange={changeParticipation}
-        className={'absolute right-0'}
-      />
-    </div>
+    <Checkbox
+      value={selected}
+      onChange={changeParticipation}
+      className={'flex gap-4 items-center justify-between'}
+    >
+      <div className={'flex gap-4 items-center'}>
+        <img
+          src={'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}
+          className={'w-10 h-10 aspect-1/1 rounded-full'}
+          alt={name}
+        />
+        <p className={'font-medium'}>{name}</p>
+      </div>
+    </Checkbox>
   );
 }
 
