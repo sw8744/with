@@ -16,7 +16,6 @@ function CorePlan() {
 
   const [theme, setTheme] = useState<string[]>([]);
   const [placesToGo, setPlacesToGo] = useState<string[]>([]);
-  const [whenToGo, setWhenToGo] = useState<string>('');
 
   const myUuid = useAppSelector(state => state.userInfoReducer.uid);
   const myName = useAppSelector(state => state.userInfoReducer.name);
@@ -101,8 +100,6 @@ function CorePlan() {
             }
             {step === 2 &&
               <TimeSelector
-                selectedTime={whenToGo}
-                setSelectedTime={setWhenToGo}
                 prev={prev}
                 next={next}
               />

@@ -22,6 +22,8 @@ import MapPinIcon from './mappin.svg?react'
 import MapFilledIcon from './map.fill.svg?react'
 import PlusIcon from './plus.svg?react'
 import CircleIcon from './circle.svg?react'
+import ChevronLeftIcon from './chevron.left.svg?react';
+import ChevronRightIcon from './chevron.right.svg?react'
 
 export {
   RouteIcon,
@@ -44,5 +46,7 @@ export {
   MapFilledIcon,
   PlusIcon,
   CircleIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
   InstagramIcon
 }

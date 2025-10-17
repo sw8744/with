@@ -1,5 +1,5 @@
-import type {ChangeEvent} from "react";
-import {CheckmarkFillIcon, CircleIcon} from "../../assets/svgs/svgs.ts";
+import {type ChangeEvent, useEffect, useState} from "react";
+import {CheckmarkFillIcon, ChevronLeftIcon, ChevronRightIcon, CircleIcon} from "../../assets/svgs/svgs.ts";
 
 interface TextInputPropsType {
   type?: 'text' | 'password' | 'email'
@@ -39,6 +39,15 @@ interface DatePickerPropsType {
   className?: string;
   disabled?: boolean;
   error?: boolean;
+}
+
+interface DateRangePickerPropsType {
+  fromValue: Date | null;
+  toValue: Date | null;
+  fromSetter: (val: Date | null) => void;
+  toSetter: (val: Date | null) => void;
+  className?: string;
+  disabled?: boolean;
 }
 
 const commonClass = (
@@ -152,11 +161,11 @@ function Checkbox(
   );
 }
 
+//TODO: 달력모양 picker로 구현하기
 function DatePicker(
   {
     className, value, setter, error, disabled
-  }
-  : DatePickerPropsType
+  }: DatePickerPropsType
 ) {
   function onValueChange(event: ChangeEvent<HTMLInputElement>) {
     setter(event.target.value);
@@ -177,9 +186,273 @@ function DatePicker(
   )
 }
 
+function DateRangePicker(
+  {
+    className, fromValue, toValue, fromSetter, toSetter, disabled
+  }: DateRangePickerPropsType
+) {
+  const [currentYear, setCurrentYear] = useState<number>(1970);
+  const [currentMonth, setCurrentMonth] = useState<number>(1);
+
+  useEffect(() => {
+    if (fromValue === null) {
+      const today = new Date();
+      setCurrentMonth(today.getMonth() + 1);
+      setCurrentYear(today.getFullYear());
+      return;
+    } else {
+      setCurrentMonth(fromValue.getMonth() + 1);
+      setCurrentYear(fromValue.getFullYear());
+    }
+  }, []);
+
+  const beginDayOfMonth = new Date(currentYear, currentMonth - 1, 1).getDay();
+  const daysOfMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+  function nextMonth() {
+    if (currentMonth === 12) {
+      setCurrentMonth(1);
+      setCurrentYear(currentYear + 1);
+    } else setCurrentMonth(currentMonth + 1);
+  }
+
+  function lastMonth() {
+    if (currentMonth === 1) {
+      setCurrentMonth(12);
+      setCurrentYear(currentYear - 1);
+      return;
+    }
+    setCurrentMonth(currentMonth - 1);
+  }
+
+  function getFromRelative(date: number) {
+    if (fromValue === null) return null;
+
+    const yearRelative = (
+      currentYear === fromValue.getFullYear() ? 0 :
+        currentYear < fromValue.getFullYear() ? -1 : 1
+    );
+    const monthRelative = (
+      currentMonth === fromValue.getMonth() + 1 ? 0 :
+        currentMonth < fromValue.getMonth() + 1 ? -1 : 1
+    );
+    return (
+      yearRelative === 0 ?
+        (monthRelative === 0 ?
+            (date < fromValue.getDate() ?
+                -1 : 1
+            ) : monthRelative
+        ) : yearRelative);
+  }
+
+  function getToRelative(date: number) {
+    if (toValue === null) return null;
+
+    const yearRelative = (
+      currentYear === toValue.getFullYear() ? 0 :
+        currentYear < toValue.getFullYear() ? -1 : 1
+    );
+    const monthRelative = (
+      currentMonth === toValue.getMonth() + 1 ? 0 :
+        currentMonth < toValue.getMonth() + 1 ? -1 : 1
+    );
+    return (
+      yearRelative === 0 ?
+        (monthRelative === 0 ?
+            (date < toValue.getDate() ?
+                -1 : 1
+            ) : monthRelative
+        ) : yearRelative);
+  }
+
+  function selectDay(date: number) {
+    const fromSelected = fromValue !== null;
+
+    // from이 안 골라지면 to도 안 골라진거니 일단 from 설정
+    if (!fromSelected) {
+      fromSetter(new Date(currentYear, currentMonth - 1, date));
+      toSetter(new Date(currentYear, currentMonth - 1, date));
+      return;
+    }
+
+    let relative = getFromRelative(date);
+    // from이 골라진 채로 from보다 이른 날짜 고르면 from 재설정
+    if (relative === -1) {
+      fromSetter(new Date(currentYear, currentMonth - 1, date));
+      toSetter(new Date(currentYear, currentMonth - 1, date));
+      return;
+    }
+
+    // from은 골랐고, date > from인데
+    if (relative === 1) {
+      // from을 골랐는데 to를 안 골랐을 수 없음. 무조건 not null. 근데 ts가 검사하라고 칼들고 협박하니까 일단 to로 셋
+      if (toValue === null) {
+        toSetter(new Date(currentYear, currentMonth - 1, date));
+        return;
+      }
+
+      relative = getToRelative(date);
+
+      // from 뒤의 날짜를 고르는데 from - to 밖이라면 to로 설정
+      if (relative === 1) {
+        toSetter(new Date(currentYear, currentMonth - 1, date));
+      }
+      // from - to 사이 날짜 고르면 거기를 from으로 재설정
+      else if (relative === -1) {
+        fromSetter(new Date(currentYear, currentMonth - 1, date));
+        toSetter(new Date(currentYear, currentMonth - 1, date));
+      }
+    }
+  }
+
+  const calender = [];
+
+  let dayCounter = 0;
+  for (let i = 0; i < beginDayOfMonth; i++) {
+    calender.push(<p></p>);
+    dayCounter++;
+  }
+
+  let isInRange = false;
+  const fromSelected = fromValue !== null;
+  const toSelected = toValue !== null;
+
+  const fromRelative = getFromRelative(1);
+  const toRelative = getToRelative(1);
+  if (fromRelative !== null && toRelative !== null && fromRelative === 1 && toRelative <= 0) isInRange = true;
+
+  for (let i = 1; i <= daysOfMonth; i++) {
+    let daySpecificClass = '';
+
+    if (dayCounter === 0) daySpecificClass = ' text-red-700';
+    else if (dayCounter === 6) daySpecificClass = ' text-blue-800';
+    else daySpecificClass = ' text-neutral-800'
+
+    const isFrom = fromSelected && (currentYear === fromValue.getFullYear() && currentMonth === fromValue.getMonth() + 1 && i === fromValue.getDate());
+    const isTo = toSelected && (currentYear === toValue.getFullYear() && currentMonth === toValue.getMonth() + 1 && i === toValue.getDate());
+
+    if (isFrom && !isTo) {
+      calender.push(
+        <div className={'my-1 bg-linear-to-r from-transparent from-50% via-blue-200 via-50% to-blue-100'}>
+          <button
+            className={
+              'w-[32px] p-1 mx-auto rounded-full ' +
+              'bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer' +
+              daySpecificClass
+            }
+            onClick={() => selectDay(i)}
+            disabled={disabled}
+          >{i}</button>
+        </div>
+      );
+      isInRange = true;
+    } else if (!isFrom && isTo) {
+      calender.push(
+        <div className={'my-1 bg-linear-to-r from-blue-100 via-blue-200 via-50% to-transparent to-50%'}>
+          <button
+            className={
+              'w-[32px] p-1 mx-auto rounded-full ' +
+              'bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer' +
+              daySpecificClass
+            }
+            onClick={() => selectDay(i)}
+            disabled={disabled}
+          >{i}</button>
+        </div>
+      );
+      isInRange = false;
+    } else if (isFrom && isTo) {
+      calender.push(
+        <div className={'my-1'}>
+          <button
+            className={
+              'w-[32px] p-1 mx-auto rounded-full ' +
+              'bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer' +
+              daySpecificClass
+            }
+            onClick={() => selectDay(i)}
+            disabled={disabled}
+          >{i}</button>
+        </div>
+      );
+    } else if (isInRange) {
+      calender.push(
+        <div className={'my-1 bg-blue-100'}>
+          <button
+            className={
+              'w-[32px] p-1 mx-auto rounded-full ' +
+              'hover:bg-blue-200 transition-colors cursor-pointer' +
+              daySpecificClass
+            }
+            onClick={() => selectDay(i)}
+            disabled={disabled}
+          >{i}</button>
+        </div>
+      );
+    } else {
+      calender.push(
+        <div className={'my-1'}>
+          <button
+            className={
+              'w-[32px] p-1 mx-auto rounded-full ' +
+              'hover:bg-neutral-200 transition-colors cursor-pointer' +
+              daySpecificClass
+            }
+            onClick={() => selectDay(i)}
+            disabled={disabled}
+          >{i}</button>
+        </div>
+      );
+    }
+    dayCounter++;
+    if (dayCounter === 7) dayCounter = 0;
+  }
+
+  return (
+    <div className={className}>
+      <div className={'flex justify-between mb-2'}>
+        <p className={'font-medium text-lg'}>{currentYear}년 {currentMonth}월</p>
+        <div className={'flex justify-between items-center gap-3'}>
+          <button
+            className={
+              'fill-neutral-600 w-[34px] aspect-square p-2 rounded-full ' +
+              'cursor-pointer hover:bg-neutral-200 transition-colors'
+            }
+            onClick={lastMonth}
+          >
+            <ChevronLeftIcon height={18}/>
+          </button>
+          <button
+            className={
+              'fill-neutral-600 w-[34px] aspect-square p-2 rounded-full ' +
+              'cursor-pointer hover:bg-neutral-200 transition-colors'
+            }
+            onClick={nextMonth}
+          >
+            <ChevronRightIcon height={18}/>
+          </button>
+        </div>
+      </div>
+      <div className={'flex justify-around mb-2 font-medium'}>
+        <p>일</p>
+        <p>월</p>
+        <p>화</p>
+        <p>수</p>
+        <p>목</p>
+        <p>금</p>
+        <p>토</p>
+      </div>
+      <div className={'grid grid-cols-7 grid-rows-5 text-center'}>
+        {calender}
+      </div>
+    </div>
+  );
+}
+
 export {
   TextInput,
   Select,
   Checkbox,
   DatePicker,
+  DateRangePicker
 }

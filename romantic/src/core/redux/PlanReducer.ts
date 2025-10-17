@@ -6,12 +6,16 @@ interface PlannerStateType {
   name: string | null;
   members: FriendInformationType[];
   region: Region[];
+  dateFrom: string;
+  dateTo: string;
 }
 
 const initialState: PlannerStateType = {
   name: "",
   members: [],
   region: [],
+  dateFrom: "",
+  dateTo: ""
 }
 
 const plannerSlice = createSlice({
@@ -28,6 +32,12 @@ const plannerSlice = createSlice({
     },
     setRegion: (state: PlannerStateType, action: PayloadAction<Region[]>) => {
       state.region = action.payload;
+    },
+    setDateFrom: (state: PlannerStateType, action: PayloadAction<string>) => {
+      state.dateFrom = action.payload;
+    },
+    setDateTo: (state: PlannerStateType, action: PayloadAction<string>) => {
+      state.dateTo = action.payload;
     }
   }
 });

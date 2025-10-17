@@ -63,7 +63,25 @@ apiAuth.interceptors.request.use(
   (err) => {
     return Promise.reject(err);
   }
-)
+);
+
+apiAuth.interceptors.response.use(
+  response => {
+    return response;
+  },
+  async err => {
+    const originalRequest = err.config;
+
+    if (err.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      const accessToken = await refreshAccessToken();
+      originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+
+      return apiAuth(originalRequest);
+    }
+  }
+);
 
 export {
   api,

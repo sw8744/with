@@ -11,6 +11,7 @@ import {AnimatePresence, motion} from "framer-motion";
 import {plannerAction} from "../../core/redux/PlanReducer.ts";
 import {PageError} from "../error/ErrorPage.tsx";
 import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/Skeleton.tsx";
+import {thumbnailUrl} from "../../core/model/ImageUrlProcessor.ts";
 
 function RegionSelector(
   {prev, next}: {
@@ -215,6 +216,8 @@ function RegionResult(
     toggleRegionSelected(region);
   }
 
+  const tu = thumbnailUrl(region.thumbnail);
+
   return (
     <motion.button
       layout
@@ -235,7 +238,7 @@ function RegionResult(
       onClick={selectRegion}
     >
       <img
-        src={region.thumbnail}
+        src={tu}
         alt={region.name + '의 썸네일'}
         className={
           'h-[130px] w-1/2 object-cover ' +
