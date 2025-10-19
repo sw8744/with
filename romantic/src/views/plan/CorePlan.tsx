@@ -14,7 +14,6 @@ function CorePlan() {
   const [step, setStep] = useState<number>(0);
   const [isForward, setIsForward] = useState<number>(1);
 
-  const [theme, setTheme] = useState<string[]>([]);
   const [placesToGo, setPlacesToGo] = useState<string[]>([]);
 
   const myUuid = useAppSelector(state => state.userInfoReducer.uid);
@@ -106,8 +105,6 @@ function CorePlan() {
             }
             {step === 3 &&
               <ThemeSelector
-                themeUUID={theme}
-                setThemeUUID={setTheme}
                 prev={prev}
                 next={next}
               />

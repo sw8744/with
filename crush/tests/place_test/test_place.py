@@ -1,10 +1,14 @@
 import json
+import random
 
+import numpy as np
+import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from app.main import app
 from app.models.locations.PlaceModel import PlaceModel
+from app.models.themes.PlaceThemeModel import PlaceThemeModel
 from app.schemas.location.place import Place
 
 client = TestClient(app)
@@ -18,9 +22,16 @@ def assert_place(response, place):
   assert response.json()["content"][0] == Place(place).model_dump()
 
 
+@pytest.mark.parametrize(
+  "theme_length",
+  [90, 100, 110]
+)
 def test_place_creation(
+  theme_length: int,
   db: Session
 ):
+  theme_vector = [random.uniform(0, 1) for _ in range(theme_length)]
+
   response = client.post(
     "/api/v1/location/place",
     content=json.dumps({
@@ -36,9 +47,15 @@ def test_place_creation(
         "reservation": {
           "required": True
         }
-      }
+      },
+      "theme": theme_vector,
     })
   )
+
+  if theme_length > 100:
+    assert response.status_code == 400
+    assert response.json()["code"] == 400
+    return
 
   assert response.status_code == 201
   assert response.json()["code"] == 201
@@ -72,6 +89,11 @@ def test_place_creation(
     }
   }
   assert new_place.name_umso == "4233ㅁㅏㅇㅡㅁㅅㅔㄴㅌㅓ ㅇㅕㄴㄴㅏㅁㅈㅓㅁ"
+
+  new_theme_vector = db.query(PlaceThemeModel).filter(
+    PlaceThemeModel.place_id == response.json()["content"]["uid"]).scalar()
+  theme_vector += [0.0] * (100 - theme_length)
+  assert np.isclose(new_theme_vector.theme, theme_vector).all()
 
   db.delete(new_place)
   db.commit()
@@ -178,10 +200,17 @@ def test_place_search_nothing_from_param(
   assert len(response.json()["content"]) == 0
 
 
+@pytest.mark.parametrize(
+  "theme_length",
+  [90, 100, 110]
+)
 def test_place_patch(
+  theme_length: int,
   places: list[PlaceModel],
   db: Session
 ):
+  new_theme = [random.uniform(0, 1) for _ in range(theme_length)]
+
   response = client.patch(
     "/api/v1/location/place/" + str(places[0].uid),
     content=json.dumps({
@@ -193,9 +222,15 @@ def test_place_patch(
       "metadata": {
         "parking": True,
         "reservation": True
-      }
+      },
+      "theme": new_theme,
     })
   )
+
+  if theme_length > 100:
+    assert response.status_code == 400
+    assert response.json()["code"] == 400
+    return
 
   assert response.status_code == 200
   assert response.json()["code"] == 200
@@ -214,6 +249,8 @@ def test_place_patch(
     "reservation": True,
   }
   assert patched_place.name_umso == "ㅋㅔㅇㅣㅍㅏㅂ ㅅㅡㅋㅜㅔㅇㅓ ㅎㅗㅇㄷㅐ"
+  new_theme += [0.0] * (100 - theme_length)
+  assert np.isclose(patched_place.theme.theme, new_theme).all()
 
   db.delete(patched_place)
   db.commit()

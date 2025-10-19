@@ -7,8 +7,9 @@ from fastapi import FastAPI
 from app.core.config_store import mode
 from app.routers.auth import GoogleOAuthRouter, AuthRouter
 from app.routers.error_handler import add_error_handler
-from app.routers.interaction import like, recommendation
+from app.routers.interaction import like
 from app.routers.location import places, regions
+from app.routers.recommendation import recommendation, theme
 from app.routers.relationship import following, follower
 from app.routers.user import register, user
 
@@ -28,6 +29,7 @@ app.include_router(like.router)
 app.include_router(following.router)
 app.include_router(follower.router)
 app.include_router(recommendation.router)
+app.include_router(theme.router)
 add_error_handler(app)
 
 log.info("Application started on %s", datetime.now().isoformat())

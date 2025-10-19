@@ -1,6 +1,7 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import type {FriendInformationType} from "../apiResponseInterfaces/relationship.ts";
 import type {Region} from "../model/LocationModels.ts";
+import type {Theme} from "../model/Theme.ts";
 
 interface PlannerStateType {
   name: string | null;
@@ -8,6 +9,7 @@ interface PlannerStateType {
   region: Region[];
   dateFrom: string;
   dateTo: string;
+  themes: Theme[];
 }
 
 const initialState: PlannerStateType = {
@@ -15,7 +17,8 @@ const initialState: PlannerStateType = {
   members: [],
   region: [],
   dateFrom: "",
-  dateTo: ""
+  dateTo: "",
+  themes: []
 }
 
 const plannerSlice = createSlice({
@@ -26,6 +29,9 @@ const plannerSlice = createSlice({
       state.name = initialState.name;
       state.members = initialState.members;
       state.region = initialState.region;
+      state.dateFrom = initialState.dateFrom;
+      state.dateTo = initialState.dateTo;
+      state.themes = initialState.themes;
     },
     setMember: (state: PlannerStateType, action: PayloadAction<FriendInformationType[]>) => {
       state.members = action.payload;
@@ -38,6 +44,9 @@ const plannerSlice = createSlice({
     },
     setDateTo: (state: PlannerStateType, action: PayloadAction<string>) => {
       state.dateTo = action.payload;
+    },
+    setTheme: (state: PlannerStateType, action: PayloadAction<Theme[]>) => {
+      state.themes = action.payload;
     }
   }
 });

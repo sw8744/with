@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Callable, Tuple
 
+import numpy as np
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
@@ -11,6 +12,7 @@ from app.core.user import core_jwt
 from app.models.interacrions.LikeModel import LikesModel
 from app.models.locations.PlaceModel import PlaceModel
 from app.models.locations.RegionModel import RegionModel
+from app.models.themes.PlaceThemeModel import PlaceThemeModel
 from app.models.users.IdentityModel import IdentityModel, SEX
 from app.models.users.RelationshipModel import RelationshipModel, RelationshipState
 
@@ -162,6 +164,13 @@ def places(
         thumbnail="thumbnail"
       )
       db.add(place)
+      db.flush()
+
+      theme = PlaceThemeModel(
+        place_id=place.uid,
+        theme=np.array([0.0] * 100, dtype=np.float32),
+      )
+      db.add(theme)
       places.append(place)
 
   db.commit()

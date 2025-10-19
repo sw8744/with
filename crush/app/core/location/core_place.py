@@ -2,12 +2,14 @@ import logging
 from typing import Optional
 from uuid import UUID
 
+import numpy as np
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.database.database import jsonb_path_equals
 from app.core.hangul.umso import 풀어쓰기
 from app.models.locations.PlaceModel import PlaceModel
+from app.models.themes.PlaceThemeModel import PlaceThemeModel
 from app.schemas.location.place import Place
 from app.schemas.location.place_reqs import AddPlace, PatchPlace, PlaceSearchQuery
 
@@ -29,6 +31,25 @@ def add_place(
   )
 
   db.add(place)
+  db.flush()
+
+  n_array = np.array(place_data.theme, dtype=np.float32)
+  theme_shape = len(n_array)
+  if theme_shape > 100:
+    raise HTTPException(
+      status_code=400,
+      detail=f"Theme shape must be 100"
+    )
+  elif theme_shape < 100:
+    padding_needed = 100 - theme_shape
+    n_array = np.pad(n_array, (0, padding_needed), mode='constant', constant_values=0.0)
+
+  place_theme: PlaceThemeModel = PlaceThemeModel(
+    place_id=place.uid,
+    theme=n_array
+  )
+  db.add(place_theme)
+
   db.commit()
 
   return Place(place)
@@ -143,5 +164,21 @@ def patch_place(
   if query.metadata is not None:
     log.debug("Applying change of metadata in place %s", place_id)
     place.place_meta = query.metadata
+
+  if query.theme is not None:
+    log.debug("Applying change of theme in place %s", place_id)
+    n_array = np.array(query.theme, dtype=np.float32)
+
+    theme_shape = len(n_array)
+    if theme_shape > 100:
+      raise HTTPException(
+        status_code=400,
+        detail=f"Theme shape must be 100"
+      )
+    elif theme_shape < 100:
+      padding_needed = 100 - theme_shape
+      n_array = np.pad(n_array, (0, padding_needed), mode='constant', constant_values=0.0)
+
+    place.theme.theme = n_array
 
   db.commit()

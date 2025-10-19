@@ -51,6 +51,10 @@ class AddPlace(BaseModel):
     default={}
   )
   region_uid: Optional[UUID] = Field(alias='regionUid', default=None)
+  theme: list[float] = Field(
+    default=[0] * 100,
+    min_length=0, max_length=100
+  )
 
 
 class PatchPlace(BaseModel):
@@ -77,4 +81,8 @@ class PatchPlace(BaseModel):
   )
   metadata: Optional[dict] = Field(
     default=None
+  )
+  theme: Optional[list[float]] = Field(
+    default=None,
+    min_length=0, max_length=100
   )

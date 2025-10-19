@@ -1,9 +1,7 @@
 import {Button} from "../elements/Buttons.tsx";
 
 function ThemeSelector(
-  {themeUUID, setThemeUUID, prev, next}: {
-    themeUUID: string[],
-    setThemeUUID: (regionList: string[]) => void,
+  {prev, next}: {
     prev: () => void;
     next: () => void;
   }
