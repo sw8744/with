@@ -3,7 +3,6 @@ import Footer from "./outline/Footer.tsx";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import CoreLocation from "./location/CoreLocation.tsx";
 import CoreLogin from "./auth/authentication/login/CoreLogin.tsx";
-import GoogleRegister from "./auth/signup/GoogleRegister.tsx";
 import SetJwt from "./auth/authentication/login/SetJwt.tsx";
 import CoreProfile from "./profile/CoreProfile.tsx";
 import RegionShowcase from "./location/RegionShowcase.tsx";
@@ -13,6 +12,7 @@ import CorePlan from "./plan/CorePlan.tsx";
 import LikedPlaces from "./profile/LikedPlaces.tsx";
 import MyPosts from "./profile/MyPosts.tsx";
 import MyTrips from "./profile/MyTrips.tsx";
+import CoreGoogleRegister from "./auth/signup/GoogleRegister/CoreGoogleRegister.tsx";
 
 function App() {
   return (
@@ -40,7 +40,7 @@ function App() {
 
           <Route
             path={'/register/google'}
-            element={<GoogleRegister/>}
+            element={<CoreGoogleRegister/>}
           />
 
           <Route

@@ -2,7 +2,7 @@ import pytest
 from sqlalchemy.orm import Session
 from typing_extensions import Generator
 
-from app.models.themes.ThemeModel import ThemeModel
+from app.models.preferences.ThemeModel import ThemeModel
 
 
 @pytest.fixture

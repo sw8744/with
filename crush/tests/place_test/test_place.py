@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.main import app
 from app.models.locations.PlaceModel import PlaceModel
-from app.models.themes.PlaceThemeModel import PlaceThemeModel
+from app.models.preferences.PlaceThemeModel import PlaceThemeModel
 from app.schemas.location.place import Place
 
 client = TestClient(app)

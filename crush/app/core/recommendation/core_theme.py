@@ -4,13 +4,12 @@ from typing import Optional
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from app.models.themes.ThemeModel import ThemeModel
+from app.core.recommendation.core_prefer_vector import MAX_FEATURES
+from app.models.preferences.ThemeModel import ThemeModel
 from app.schemas.recommendation.theme import Theme
 from app.schemas.recommendation.theme_reqs import ThemeSearchQuery, AddTheme, PatchTheme
 
 log = logging.getLogger(__name__)
-
-MAX_FEATURES = 100
 
 
 def get_themes(

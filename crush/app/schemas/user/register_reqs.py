@@ -14,3 +14,7 @@ class RegisterIdentityReq(BaseModel):
   ),
   sex: SEX = Field()
   birthday: datetime = Field()
+  prefer: list[float] = Field(
+    default=[0.0] * 100,
+    min_length=0, max_length=100
+  )

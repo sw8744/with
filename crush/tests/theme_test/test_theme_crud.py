@@ -3,7 +3,7 @@ import json
 from starlette.testclient import TestClient
 
 from app.main import app
-from app.models.themes.ThemeModel import ThemeModel
+from app.models.preferences.ThemeModel import ThemeModel
 
 client = TestClient(app)
 

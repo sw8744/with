@@ -6,6 +6,7 @@ interface ButtonPropsType {
   children: ReactNode;
   className?: string;
   theme?: 'default' | 'white' | 'clear';
+  disabled?: boolean;
 }
 
 interface LinkPropsType {
@@ -24,7 +25,7 @@ const themeClass = {
 
 function Button(
   {
-    children, onClick, className, theme
+    children, onClick, className, theme, disabled
   }: ButtonPropsType
 ) {
   return (
@@ -36,6 +37,7 @@ function Button(
         themeClass[theme ?? 'default'] +
         (className ? ' ' + className : '')
       }
+      disabled={disabled}
     >
       {children}
     </button>

@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from app.models.themes.ThemeModel import ThemeModel
+from app.models.preferences.ThemeModel import ThemeModel
 
 
 class Theme(BaseModel):

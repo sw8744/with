@@ -97,8 +97,8 @@ def callback_authentication(
       path="/api/v1/auth/refresh"
     )
     db.commit()
+    log.info("Identity %s successfully logged in using google", identity.uid)
 
-  log.info("Identity %s successfully logged in using google", identity.uid)
   return response
 
 

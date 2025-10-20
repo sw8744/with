@@ -66,10 +66,10 @@ function CorePlan() {
 
   return (
     <>
-      <div className={'flex gap-2'}>
+      <div>
         <motion.div
-          key={'progress'}
           className={'absolute left-0 top-0 w-screen rounded-r-full h-[4px] bg-neutral-700'}
+          initial={{width: 0}}
           animate={{
             width: (step * 25.25) + '%',
           }}

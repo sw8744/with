@@ -8,8 +8,10 @@ from sqlalchemy.orm import Session
 
 from app.core.database.database import redis_db0
 from app.core.hash import sha256
+from app.core.recommendation import core_prefer_vector
 from app.core.user.core_jwt import get_sub
 from app.models.auth.GoogleAuth import GoogleAuthModel
+from app.models.preferences.UserPrefer import UserPrefer
 from app.models.users.IdentityModel import IdentityModel
 from app.schemas.user.identity import Identity
 from app.schemas.user.register_reqs import RegisterIdentityReq
@@ -79,6 +81,13 @@ def register_using_session(
   )
   db.add(identity)
   db.flush()
+
+  n_array = core_prefer_vector.process_vector(application.prefer)
+  user_preference = UserPrefer(
+    user_id=identity.uid,
+    prefer=n_array
+  )
+  db.add(user_preference)
 
   auth_ctx = reg["auth"]
 
