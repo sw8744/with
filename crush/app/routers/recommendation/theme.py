@@ -40,9 +40,7 @@ def list_themes(
     content={
       'code': 200,
       'status': 'OK',
-      'themes': [
-        theme.model_dump() for theme in themes
-      ]
+      'themes': themes
     }
   )
 

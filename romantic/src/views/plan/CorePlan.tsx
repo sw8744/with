@@ -8,13 +8,13 @@ import PlaceSelector from "./PlaceSelector.tsx";
 import {useDispatch} from "react-redux";
 import {plannerAction} from "../../core/redux/PlanReducer.ts";
 import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
+import {PageStepperMotion} from "../../core/motionVariants.ts";
+import GeneratePlan from "./GeneratePlan.tsx";
 
 
 function CorePlan() {
   const [step, setStep] = useState<number>(0);
   const [isForward, setIsForward] = useState<number>(1);
-
-  const [placesToGo, setPlacesToGo] = useState<string[]>([]);
 
   const myUuid = useAppSelector(state => state.userInfoReducer.uid);
   const myName = useAppSelector(state => state.userInfoReducer.name);
@@ -29,23 +29,6 @@ function CorePlan() {
     setStep(step + 1);
   }
 
-  const motionVariants = {
-    initial: (direction: number) => ({
-      x: 10 * direction,
-      opacity: 0
-    }),
-    animate: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.2
-      }
-    },
-    exit: (direction: number) => ({
-      x: -10 * direction,
-      opacity: 0
-    })
-  }
   const stepHeaders = [
     '누구랑 같이 놀아볼까요?',
     '어디로 놀러갈까요?',
@@ -82,7 +65,7 @@ function CorePlan() {
           <motion.div
             key={step}
             custom={isForward}
-            variants={motionVariants}
+            variants={PageStepperMotion}
             initial={"initial"}
             animate={"animate"}
             exit={"exit"}
@@ -112,11 +95,12 @@ function CorePlan() {
             }
             {step === 4 &&
               <PlaceSelector
-                placeUUID={placesToGo}
-                setPlaceUUID={setPlacesToGo}
                 prev={prev}
                 next={next}
               />
+            }
+            {step === 5 &&
+              <GeneratePlan/>
             }
           </motion.div>
         </AnimatePresence>

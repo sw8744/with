@@ -1,8 +1,13 @@
 type Theme = {
-  name: string,
-  code: number
+  name: string;
+  color: string;
+}
+
+type ThemeMapping = {
+  [key: number]: Theme
 }
 
 export type {
-  Theme
+  Theme,
+  ThemeMapping,
 }

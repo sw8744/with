@@ -35,6 +35,8 @@ function SkeletonFrame(
 ) {
   return (
     <motion.div
+      key={'loading-skeleton'}
+      layout={'position'}
       role="status"
       className={className ?? ''}
       variants={frameMotionVariants}

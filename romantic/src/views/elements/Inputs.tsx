@@ -309,7 +309,7 @@ function DateRangePicker(
 
   let dayCounter = 0;
   for (let i = 0; i < beginDayOfMonth; i++) {
-    calender.push(<p></p>);
+    calender.push(<p key={i - 99}></p>);
     dayCounter++;
   }
 
@@ -333,7 +333,10 @@ function DateRangePicker(
 
     if (isFrom && !isTo) {
       calender.push(
-        <div className={'my-1 bg-linear-to-r from-transparent from-50% via-blue-200 via-50% to-blue-100'}>
+        <div
+          className={'my-1 bg-linear-to-r from-transparent from-50% via-blue-200 via-50% to-blue-100'}
+          key={i}
+        >
           <button
             className={
               'w-[32px] p-1 mx-auto rounded-full ' +
@@ -348,7 +351,10 @@ function DateRangePicker(
       isInRange = true;
     } else if (!isFrom && isTo) {
       calender.push(
-        <div className={'my-1 bg-linear-to-r from-blue-100 via-blue-200 via-50% to-transparent to-50%'}>
+        <div
+          className={'my-1 bg-linear-to-r from-blue-100 via-blue-200 via-50% to-transparent to-50%'}
+          key={i}
+        >
           <button
             className={
               'w-[32px] p-1 mx-auto rounded-full ' +
@@ -363,7 +369,10 @@ function DateRangePicker(
       isInRange = false;
     } else if (isFrom && isTo) {
       calender.push(
-        <div className={'my-1'}>
+        <div
+          className={'my-1'}
+          key={i}
+        >
           <button
             className={
               'w-[32px] p-1 mx-auto rounded-full ' +
@@ -377,7 +386,10 @@ function DateRangePicker(
       );
     } else if (isInRange) {
       calender.push(
-        <div className={'my-1 bg-blue-100'}>
+        <div
+          className={'my-1 bg-blue-100'}
+          key={i}
+        >
           <button
             className={
               'w-[32px] p-1 mx-auto rounded-full ' +
@@ -391,7 +403,10 @@ function DateRangePicker(
       );
     } else {
       calender.push(
-        <div className={'my-1'}>
+        <div
+          className={'my-1'}
+          key={i}
+        >
           <button
             className={
               'w-[32px] p-1 mx-auto rounded-full ' +

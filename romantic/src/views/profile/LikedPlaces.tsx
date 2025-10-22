@@ -4,7 +4,7 @@ import type {Place} from "../../core/model/LocationModels.ts";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {interactionLikes} from "../../core/apiResponseInterfaces/interaction.ts";
 import {PageError} from "../error/ErrorPage.tsx";
-import {PlaceArea, PlaceAreaSkeleton} from "../elements/PlaceArea.tsx";
+import {PlaceArea, PlaceAreaSkeleton} from "../elements/location/PlaceArea.tsx";
 import {SkeletonFrame} from "../elements/Skeleton.tsx";
 
 function LikedPlaces() {

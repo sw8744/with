@@ -18,7 +18,7 @@ interface LinkPropsType {
 }
 
 const themeClass = {
-  'default': 'bg-blue-500 !text-light shadow-sm shadow-neutral-200 hover:shadow-md hover:shadow-neutral-300',
+  'default': 'bg-blue-500 !text-light shadow-sm shadow-neutral-200 hover:shadow-md hover:shadow-neutral-300 disabled:bg-neutral-300 disabled:!shadow-sm disabled:!shadow-neutral-200',
   'white': 'bg-light border border-neutral-300 shadow-sm shadow-neutral-200 hover:shadow-md hover:shadow-neutral-300',
   'clear': 'bg-transparent border-none'
 }
@@ -33,7 +33,7 @@ function Button(
       onClick={onClick}
       className={
         'px-5 py-2 rounded-full ' +
-        'cursor-pointer transition-shadow transition-colors duration-200 ' +
+        'cursor-pointer transition duration-200 ' +
         themeClass[theme ?? 'default'] +
         (className ? ' ' + className : '')
       }

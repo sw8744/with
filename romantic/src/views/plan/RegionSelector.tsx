@@ -1,7 +1,7 @@
 import {Button} from "../elements/Buttons.tsx";
 import {TextInput} from "../elements/Inputs.tsx";
-import {type ReactNode, useEffect, useState} from "react";
-import {api, apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
+import {type ReactElement, useEffect, useState} from "react";
+import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {locationRegionAPI} from "../../core/apiResponseInterfaces/location.ts";
 import {isPageError, PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
 import type {recommendationRegion} from "../../core/apiResponseInterfaces/recommendation.ts";
@@ -12,6 +12,7 @@ import {plannerAction} from "../../core/redux/PlanReducer.ts";
 import {PageError} from "../error/ErrorPage.tsx";
 import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/Skeleton.tsx";
 import {thumbnailUrl} from "../../core/model/ImageUrlProcessor.ts";
+import {BlockListMotion} from "../../core/motionVariants.ts";
 
 function RegionSelector(
   {prev, next}: {
@@ -22,11 +23,10 @@ function RegionSelector(
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [recommendedCache, setRecommendedCache] = useState<Region[]>([]);
   const [pageState, setPageState] = useState(PageState.LOADING);
-  const [workState, setWorkState] = useState(PageState.NORMAL);
-  const regionSelected = useAppSelector(state => state.plannerReducer.region);
-
   const [regionsInList, setRegionsInList] = useState<Region[]>([]);
+
   const dispatch = useAppDispatch();
+  const regionSelected = useAppSelector(state => state.plannerReducer.region);
   const members = useAppSelector(state => state.plannerReducer.members);
 
   function toggleRegionSelection(region: Region) {
@@ -56,7 +56,7 @@ function RegionSelector(
       const recommendations = initialRecommendation.data.recommendation;
       const recommendedRegions: Region[] = []
       for (const recommendation of recommendations) {
-        const regionResp = await api.get<locationRegionAPI>(
+        const regionResp = await apiAuth.get<locationRegionAPI>(
           '/location/region',
           {
             params: {
@@ -92,7 +92,7 @@ function RegionSelector(
       return;
     }
 
-    api.get<locationRegionAPI>(
+    apiAuth.get<locationRegionAPI>(
       '/location/region',
       {
         params: {
@@ -105,7 +105,7 @@ function RegionSelector(
       );
       setPageState(PageState.NORMAL);
     }).catch(err => {
-      handleAxiosError(err, setWorkState);
+      handleAxiosError(err, setPageState);
     });
   }, [searchQuery]);
 
@@ -133,7 +133,7 @@ function RegionSelector(
         additionalRegion.push(selectedRegion);
       } else {
         (async () => {
-          const sRegion = await api.get<locationRegionAPI>(
+          const sRegion = await apiAuth.get<locationRegionAPI>(
             '/location/region',
             {
               params: {
@@ -143,7 +143,7 @@ function RegionSelector(
           );
           additionalRegion.push(sRegion.data.content[0]);
         })().catch(err => {
-          handleAxiosError(err, setWorkState);
+          handleAxiosError(err, setPageState);
         });
       }
     });
@@ -151,55 +151,57 @@ function RegionSelector(
     return [...additionalRegion, ...loadedRegions];
   }
 
-  if (isPageError(pageState)) return <PageError pageState={pageState}/>;
 
-  let searchResult: ReactNode;
-  if (pageState === PageState.LOADING) searchResult = <RegionSelectorSkeleton/>;
-  else if (pageState === PageState.NORMAL) {
-    const searchedElements: ReactNode[] = [];
-
-    regionsInList.forEach((region, index) => {
-      searchedElements.push(
-        <RegionResult
-          region={region}
-          toggleRegionSelected={toggleRegionSelection}
-          selected={regionSelected.includes(region)}
-          key={index}
-        />
-      );
-
-      searchResult = (
-        <div className={'flex-1 flex flex-col gap-3 my-2'}>{searchedElements}</div>
-      )
-    });
+  const regions: ReactElement[] = [];
+  if (pageState === PageState.LOADING) regions.push(<RegionSelectorSkeleton/>);
+  else if (isPageError(pageState)) regions.push(<PageError pageState={pageState}/>);
+  else {
     if (regionsInList.length == 0) {
-      searchResult = (
-        <div>
-          <p className={'text-center font-medium text-xl my-1'}>검색결과가 없습니다.</p>
-          <p className={'text-center text-lg my-1'}>놀러가고 싶은 지역을 검색해보세요</p>
-        </div>
+      regions.push(
+        <motion.div
+          key={'noresult'}
+          layout={'position'}
+          variants={BlockListMotion}
+          className={'my-3'}
+        >
+          <p className={'text-center font-medium text-lg my-1'}>검색결과가 없습니다.</p>
+          <p className={'text-center my-1'}>놀러가고 싶은 지역을 찾아보세요</p>
+        </motion.div>
       );
+    } else {
+      regionsInList.forEach((region, index) => {
+        regions.push(
+          <RegionResult
+            region={region}
+            toggleRegionSelected={toggleRegionSelection}
+            selected={regionSelected.includes(region)}
+            key={index}
+          />
+        );
+      });
     }
   }
 
   return (
     <>
-      <div className={'h-full flex flex-col'}>
+      <div className={'h-full'}>
         <TextInput
+          placeholder={'놀러갈 지역 찾아보기'}
           value={searchQuery}
           setter={setSearchQuery}
         />
         <div className={'flex-1 flex flex-col gap-3 my-2'}>
           <AnimatePresence mode={'popLayout'}>
-            {searchResult}
+            {regions}
           </AnimatePresence>
         </div>
       </div>
-      <div>
-        <div className={'flex justify-between'}>
+      <div className={'flex justify-between'}>
           <Button onClick={prev}>이전</Button>
-          <Button onClick={next}>다음</Button>
-        </div>
+        <Button
+          onClick={next}
+          disabled={regionSelected.length == 0}
+        >다음</Button>
       </div>
     </>
   );
@@ -220,15 +222,9 @@ function RegionResult(
 
   return (
     <motion.button
-      layout
       key={region.uid}
-      initial={{opacity: 0}}
-      animate={{opacity: 1}}
-      exit={{opacity: 0}}
-      transition={{
-        duration: 0.2,
-        ease: 'easeInOut'
-      }}
+      layout={'position'}
+      variants={BlockListMotion}
       className={
         'w-full rounded-2xl overflow-clip ' +
         'shadow-neutral-300 shadow hover:shadow-md transition-all duration-300 ' +

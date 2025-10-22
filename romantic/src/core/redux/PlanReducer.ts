@@ -1,24 +1,26 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import type {FriendInformationType} from "../apiResponseInterfaces/relationship.ts";
-import type {Region} from "../model/LocationModels.ts";
-import type {Theme} from "../model/Theme.ts";
+import type {Place, Region} from "../model/LocationModels.ts";
+import type {ThemeMapping} from "../model/Theme.ts";
 
 interface PlannerStateType {
   name: string | null;
   members: FriendInformationType[];
   region: Region[];
+  places: Place[];
   dateFrom: string;
   dateTo: string;
-  themes: Theme[];
+  themes: ThemeMapping;
 }
 
 const initialState: PlannerStateType = {
   name: "",
   members: [],
   region: [],
+  places: [],
   dateFrom: "",
   dateTo: "",
-  themes: []
+  themes: {}
 }
 
 const plannerSlice = createSlice({
@@ -29,6 +31,7 @@ const plannerSlice = createSlice({
       state.name = initialState.name;
       state.members = initialState.members;
       state.region = initialState.region;
+      state.places = initialState.places;
       state.dateFrom = initialState.dateFrom;
       state.dateTo = initialState.dateTo;
       state.themes = initialState.themes;
@@ -45,8 +48,11 @@ const plannerSlice = createSlice({
     setDateTo: (state: PlannerStateType, action: PayloadAction<string>) => {
       state.dateTo = action.payload;
     },
-    setTheme: (state: PlannerStateType, action: PayloadAction<Theme[]>) => {
+    setTheme: (state: PlannerStateType, action: PayloadAction<ThemeMapping>) => {
       state.themes = action.payload;
+    },
+    setPlaces: (state: PlannerStateType, action: PayloadAction<Place[]>) => {
+      state.places = action.payload;
     }
   }
 });

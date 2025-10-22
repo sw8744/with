@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 def get_themes(
   query: ThemeSearchQuery,
   db: Session
-) -> list[Theme]:
+) -> dict[int, dict[str, str]]:
   q = db.query(ThemeModel)
 
   if query.uid is not None:
@@ -27,7 +27,14 @@ def get_themes(
 
   themes = q.all()
 
-  return [Theme(theme) for theme in themes]
+  ret_dict = {}
+  for theme in themes:
+    ret_dict[theme.uid] = {
+      "name": theme.name,
+      "color": theme.color,
+    }
+
+  return ret_dict
 
 
 def set_theme(

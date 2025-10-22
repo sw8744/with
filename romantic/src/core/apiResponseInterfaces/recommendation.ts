@@ -9,6 +9,16 @@ type recommendationRegion = ApiInterface & {
   ],
 }
 
+type recommendationPlace = ApiInterface & {
+  recommendation: [
+    {
+      place: string;
+      score: number
+    }
+  ],
+}
+
 export type {
-  recommendationRegion
+  recommendationRegion,
+  recommendationPlace
 }

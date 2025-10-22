@@ -186,13 +186,17 @@ function PartySelector(
     animate: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.17
-      }
     },
     exit: {
       opacity: 0,
       y: 3
+    },
+    transition: {
+      duration: 0.2,
+      ease: 'easeInOut',
+      layout: {
+        type: "spring", stiffness: 400, damping: 30
+      }
     }
   }
 
@@ -204,7 +208,7 @@ function PartySelector(
             {selectedFriends.map((friend) => (
               <motion.div
                 key={friend.uid}
-                layout
+                layout={'position'}
                 variants={partyListMotionVariants}
                 initial={"initial"}
                 animate={"animate"}

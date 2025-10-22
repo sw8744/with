@@ -6,6 +6,7 @@ import {api} from "../../../../core/axios/withAxios.ts";
 import type {userRegisterAPI} from "../../../../core/apiResponseInterfaces/register.ts";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import {PageStepperMotion} from "../../../../core/motionVariants.ts";
 
 function CoreGoogleRegister() {
   const [isForward, setIsForward] = useState<number>(1);
@@ -73,24 +74,6 @@ function CoreGoogleRegister() {
 
   const navigate = useNavigate();
 
-  const motionVariants = {
-    initial: (direction: number) => ({
-      x: 10 * direction,
-      opacity: 0
-    }),
-    animate: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.2
-      }
-    },
-    exit: (direction: number) => ({
-      x: -10 * direction,
-      opacity: 0
-    })
-  }
-
   return (
     <>
       <div>
@@ -108,7 +91,7 @@ function CoreGoogleRegister() {
           <motion.div
             key={step}
             custom={isForward}
-            variants={motionVariants}
+            variants={PageStepperMotion}
             initial={"initial"}
             animate={"animate"}
             exit={"exit"}

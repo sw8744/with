@@ -7,7 +7,7 @@ import type {Place, Region} from "../../core/model/LocationModels.ts";
 import {thumbnailUrl} from "../../core/model/ImageUrlProcessor.ts";
 import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
-import {PlaceArea, PlaceAreaSkeleton} from "../elements/PlaceArea.tsx";
+import {PlaceArea, PlaceAreaSkeleton} from "../elements/location/PlaceArea.tsx";
 
 
 interface ThemeTagPropsType {

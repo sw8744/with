@@ -53,7 +53,7 @@ function TimeSelector(
               exit={{opacity: 0}}
               transition={{
                 duration: 0.2,
-                ease: "easeInOut"
+                ease: 'easeInOut'
               }}
               className={'flex justify-end'}
             >
@@ -70,28 +70,24 @@ function TimeSelector(
         <AnimatePresence>
           {dateTo === '' &&
             <motion.p
-              className={'text-center text-sm text-neutral-500 my-2'}
               initial={{opacity: 0}}
-              animate={{
-                opacity: 1,
-                transition: {
-                  duration: 0.2,
-                  ease: "easeInOut"
-                }
-              }}
+              animate={{opacity: 1}}
               exit={{opacity: 0}}
+              transition={{
+                duration: 0.2,
+                ease: 'easeInOut'
+              }}
+              className={'text-center text-sm text-neutral-500 my-2'}
             >아직 결정을 못했다면 나중에 투표로 결정할 수 있어요</motion.p>
           }
         </AnimatePresence>
         <div className={'flex justify-between'}>
           <Button onClick={prev}>이전</Button>
-          <AnimatePresence mode={'popLayout'}>
-            {dateTo === '' ? (
-              <Button onClick={next}>나중에 결정</Button>
-            ) : (
-              <Button onClick={next}>다음</Button>
-            )}
-          </AnimatePresence>
+          {dateTo === '' ? (
+            <Button onClick={next}>나중에 결정</Button>
+          ) : (
+            <Button onClick={next}>다음</Button>
+          )}
         </div>
       </div>
     </>
