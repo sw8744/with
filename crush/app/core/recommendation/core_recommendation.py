@@ -15,6 +15,7 @@ from app.schemas.user.identity import Identity
 
 log = logging.getLogger(__name__)
 
+
 def recommend_region_from_users(
   host: Identity,
   by_users: list[UUID],

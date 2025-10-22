@@ -9,6 +9,7 @@ from typing_extensions import Generator
 
 from app.core.config_store import config
 from app.core.user import core_jwt
+from app.core.user.core_jwt import Role
 from app.models.interacrions.LikeModel import LikesModel
 from app.models.locations.PlaceModel import PlaceModel
 from app.models.locations.RegionModel import RegionModel
@@ -65,17 +66,20 @@ def identity(
 @pytest.fixture
 def identity_factory(
   db: Session
-) -> Generator[Callable[[str], IdentityModel]]:
+) -> Generator[Callable[[str, *Role], IdentityModel]]:
   test_users: list[IdentityModel] = []
 
-  def create_user(name: str = "test") -> IdentityModel:
+  def create_user(
+    name: str = "test",
+    roles: Tuple[Role] = ()
+  ) -> IdentityModel:
     iden = IdentityModel(
       name=name,
       email="test@test.com",
       email_verified=True,
       sex=SEX.MALE,
       birthday=datetime.today(),
-      role=["core:user"]
+      role=[Role.CORE_USER.value] + [role.value for role in roles]
     )
     db.add(iden)
     db.commit()
@@ -102,9 +106,12 @@ def access_token(
 @pytest.fixture
 def access_token_factory(
   identity_factory
-) -> Callable[[str], Tuple[IdentityModel, str]]:
-  def create_access_token(name: str = "test") -> Tuple[IdentityModel, str]:
-    identity = identity_factory(name)
+) -> Callable[[str, *Role], Tuple[IdentityModel, str]]:
+  def create_access_token(
+    name: str = "test",
+    *roles: Role
+  ) -> Tuple[IdentityModel, str]:
+    identity = identity_factory(name, roles)
     access_token = core_jwt.create_access_token(identity.uid, identity.role)
     return identity, access_token
 

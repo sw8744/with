@@ -9,6 +9,7 @@ from app.core.hash import sha256
 
 log = logging.getLogger(__name__)
 
+
 def set_session_state(state: str) -> str:
   session_uuid = str(uuid4())
 

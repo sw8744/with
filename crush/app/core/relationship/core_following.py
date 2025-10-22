@@ -75,6 +75,7 @@ def follow(
 
   log.info("Relationship %r->%r=%d was commited", identity.uid, body.friend_id, relation.state.value)
 
+
 def patch_relationship(
   identity: Identity,
   friend_id: UUID,

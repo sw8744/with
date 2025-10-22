@@ -6,7 +6,7 @@ from jwt import InvalidTokenError
 
 from app.core.hash import sha256
 from app.core.user import core_jwt
-from app.core.user.core_jwt import get_sub
+from app.core.user.core_jwt import get_sub, Role, include_role
 
 log = logging.getLogger(__name__)
 
@@ -38,6 +38,10 @@ def authorize_jwt(token: str) -> dict[str, str]:
 
   if not jwt_body:
     log.warning("Auth failed: Access token is invalid or unauthorized")
+    raise HTTPException(status_code=401, detail="Access token is invalid or unauthorized")
+
+  if not include_role(jwt_body, Role.CORE_USER):
+    log.warning("Auth failed: Access token absents core:user role")
     raise HTTPException(status_code=401, detail="Access token is invalid or unauthorized")
 
   log.info("Authorized access token. jwt=%s, sub=%s", sha256(jwt_token), get_sub(jwt_body))

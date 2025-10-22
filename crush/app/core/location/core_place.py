@@ -33,7 +33,7 @@ def add_place(
   db.add(place)
   db.flush()
 
-  n_array = core_prefer_vector.process_vector(place_data.vector)
+  n_array = core_prefer_vector.process_vector(place_data.theme)
 
   place_theme: PlaceThemeModel = PlaceThemeModel(
     place_id=place.uid,

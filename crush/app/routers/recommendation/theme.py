@@ -2,13 +2,15 @@ import logging
 from typing import Annotated
 
 from fastapi import APIRouter
-from fastapi.params import Depends
+from fastapi.params import Depends, Security
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
+from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection
 from app.core.recommendation import core_theme
-from app.schemas.recommendation.theme_reqs import ThemeSearchQuery, AddTheme, PatchTheme
+from app.core.user.core_jwt import require_role, Role
+from app.schemas.recommendation.theme_reqs import ThemeSearchQuery, SetTheme
 
 log = logging.getLogger(__name__)
 
@@ -23,8 +25,12 @@ router = APIRouter(
 )
 def list_themes(
   query: Annotated[ThemeSearchQuery, Depends()],
+  jwt: str = Security(authorization_header),
   db: Session = Depends(create_connection)
 ):
+  token = authorize_jwt(jwt)
+  require_role(token, Role.CORE_USER)
+
   log.info("Searching themes. query=[%s]", query)
   themes = core_theme.get_themes(query, db)
   log.info("Found %d themes", len(themes))
@@ -44,40 +50,23 @@ def list_themes(
 @router.post(
   path=""
 )
-def add_theme(
-  theme: AddTheme,
+def set_theme(
+  theme: SetTheme,
+  jwt: str = Security(authorization_header),
   db: Session = Depends(create_connection)
 ):
-  log.info("Adding theme. theme=[%s]", theme)
-  new_theme = core_theme.add_theme(theme, db)
-  log.info("New theme uid=%d, name=%d was committed", )
+  token = authorize_jwt(jwt)
+  require_role(token, Role.THEME_EDIT)
 
-  return JSONResponse(
-    status_code=201,
-    content={
-      'code': 201,
-      'status': 'CREATED',
-      'theme': new_theme.model_dump()
-    }
-  )
-
-
-@router.patch(
-  path="/{theme_id}"
-)
-def patch_theme(
-  theme_id: int,
-  patch_info: PatchTheme,
-  db: Session = Depends(create_connection)
-):
-  log.info("Patching theme. theme_id=%d", theme_id)
-  core_theme.patch_theme(theme_id, patch_info, db)
-  log.info("Patched theme uid=%d was committed", theme_id)
+  log.info("Setting theme. theme=[%s]", theme)
+  new_theme = core_theme.set_theme(theme, db)
+  log.info("Theme uid=%d, name=%d was committed", )
 
   return JSONResponse(
     status_code=200,
     content={
       'code': 200,
-      'status': 'OK'
+      'status': 'OK',
+      'theme': new_theme.model_dump()
     }
   )

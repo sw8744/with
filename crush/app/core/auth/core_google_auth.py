@@ -19,6 +19,7 @@ from app.schemas.user.identity import Identity
 
 log = logging.getLogger(__name__)
 
+
 def create_auth_url() -> (str, str):
   flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
     "client_secret.json",

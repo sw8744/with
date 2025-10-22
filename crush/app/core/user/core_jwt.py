@@ -2,18 +2,19 @@ import logging
 import re
 import uuid
 from datetime import datetime, timedelta, timezone
+from enum import Enum
 from typing import Optional
 from uuid import UUID
 
 import jwt
 from fastapi import HTTPException
-from jwt import InvalidTokenError
 
 from app.core.config_store import config
 
 KST = timezone(timedelta(hours=9))
 
 log = logging.getLogger(__name__)
+
 
 def create_access_token(user_id: UUID, role: list[str]) -> str:
   payload = {
@@ -50,22 +51,6 @@ def create_refresh_token(user_id: UUID) -> str:
     key=config["security"]["jwt_secret"],
     algorithm="HS256",
   )
-
-
-def validate_access_token(token: str) -> bool:
-  try:
-    jwt.decode(
-      jwt=token,
-      key=config["security"]["jwt_secret"],
-      algorithms=["HS256"],
-      verify_signature=True,
-      issuer="with",
-      require=["aud", "exp", "iat", "iss", "sub"],
-      audience=["crush"]
-    )
-  except InvalidTokenError:
-    return False
-  return True
 
 
 def decode_access_token(token: str) -> dict:
@@ -112,3 +97,43 @@ def get_aud(token: dict) -> Optional[list[str]]:
   if aud is None:
     return []
   return aud
+
+
+class Role(Enum):
+  CORE_USER = 'core:user'
+
+  PLACE_ADD = 'place:add'
+  PLACE_EDIT = 'place:edit'
+  PLACE_DELETE = 'place:delete'
+
+  REGION_ADD = 'region:add'
+  REGION_EDIT = 'region:edit'
+  REGION_DELETE = 'region:delete'
+
+  THEME_EDIT = 'theme:edit'
+
+
+def require_role(token: dict, *permissions: Role):
+  scope = token.get("scope")
+  if scope is None:
+    raise HTTPException(status_code=403, detail="Forbidden")
+
+  log.debug("checking role %r in %r", permissions, scope)
+
+  for permission in permissions:
+    if permission.value not in scope:
+      raise HTTPException(status_code=403, detail="Forbidden")
+
+
+def include_role(token: dict, *permissions: Role) -> bool:
+  scope = token.get("scope")
+  if scope is None:
+    return False
+
+  log.debug("checking role %r in %r", permissions, scope)
+
+  for permission in permissions:
+    if permission.value not in scope:
+      return False
+
+  return True

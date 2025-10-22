@@ -13,6 +13,7 @@ def themes(
 
   for i in range(3):
     theme = ThemeModel(
+      uid=i + 96,
       name=f"t{i}",
       color=f"{i}" * 6
     )

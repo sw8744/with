@@ -18,6 +18,7 @@ from app.schemas.user.register_reqs import RegisterIdentityReq
 
 log = logging.getLogger(__name__)
 
+
 def create_signup_session(
   application: dict[str, any]
 ) -> str:

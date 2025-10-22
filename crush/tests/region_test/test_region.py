@@ -1,8 +1,8 @@
 import json
 
 from fastapi.testclient import TestClient
-from sqlalchemy.orm import Session
 
+from app.core.user.core_jwt import Role
 from app.main import app
 from app.models.locations.RegionModel import RegionModel
 
@@ -10,10 +10,14 @@ client = TestClient(app)
 
 
 def test_region_creation(
-  db: Session
+  access_token_factory,
+  db
 ):
+  _, i_at = access_token_factory("test", Role.REGION_ADD)
+
   response = client.post(
     "/api/v1/location/region",
+    headers={"Authorization": f"Bearer {i_at}"},
     content=json.dumps({
       "name": "홍대/연남",
       "description": "설명",
@@ -37,12 +41,37 @@ def test_region_creation(
   db.commit()
 
 
-def test_region_read(
-  regions: list[RegionModel],
-  db: Session
+def test_region_creation_without_role(
+  access_token_factory,
+  db
 ):
+  _, i_at = access_token_factory("test", Role.CORE_USER)
+
+  response = client.post(
+    "/api/v1/location/region",
+    headers={"Authorization": f"Bearer {i_at}"},
+    content=json.dumps({
+      "name": "홍대/연남",
+      "description": "설명",
+      "thumbnail": "thumbnail"
+    })
+  )
+
+  assert response.status_code == 403
+  assert response.json()["code"] == 403
+  assert response.json()["message"] == "Forbidden"
+
+
+def test_region_read(
+  access_token_factory,
+  regions,
+  db
+):
+  _, i_at = access_token_factory("test", Role.CORE_USER)
+
   response = client.get(
     "/api/v1/location/region",
+    headers={"Authorization": f"Bearer {i_at}"},
     params={
       "name": "지역1"
     }
@@ -58,11 +87,15 @@ def test_region_read(
 
 
 def test_region_read_limit(
-  regions: list[RegionModel],
-  db: Session
+  access_token_factory,
+  regions,
+  db
 ):
+  _, i_at = access_token_factory("test", Role.CORE_USER)
+
   response = client.get(
     "/api/v1/location/region",
+    headers={"Authorization": f"Bearer {i_at}"},
     params={
       "name": "지역",
       "limit": 2
@@ -75,11 +108,15 @@ def test_region_read_limit(
 
 
 def test_region_patch(
-  regions: list[RegionModel],
-  db: Session
+  access_token_factory,
+  regions,
+  db
 ):
+  _, i_at = access_token_factory("test", Role.REGION_EDIT)
+
   response = client.patch(
     "/api/v1/location/region/" + str(regions[0].uid),
+    headers={"Authorization": f"Bearer {i_at}"},
     content=json.dumps({
       "name": "한글ing",
       "description": "a",
@@ -101,12 +138,53 @@ def test_region_patch(
   db.commit()
 
 
-def test_region_delete(
-  regions: list[RegionModel],
-  db: Session
+def test_patch_null_region(
+  access_token_factory,
 ):
+  _, i_at = access_token_factory("test", Role.REGION_EDIT)
+
+  response = client.patch(
+    "/api/v1/location/region/a2ffae9b-04be-4b29-a529-aa4e55146cc4",
+    headers={"Authorization": f"Bearer {i_at}"},
+    content=json.dumps({
+      "name": "신촌"
+    })
+  )
+  assert response.status_code == 404
+
+
+def test_region_patch_without_role(
+  access_token_factory,
+  regions,
+  db
+):
+  _, i_at = access_token_factory("test", Role.CORE_USER)
+
+  response = client.patch(
+    "/api/v1/location/region/" + str(regions[0].uid),
+    headers={"Authorization": f"Bearer {i_at}"},
+    content=json.dumps({
+      "name": "한글ing",
+      "description": "a",
+      "thumbnail": "a"
+    })
+  )
+
+  assert response.status_code == 403
+  assert response.json()["code"] == 403
+  assert response.json()["message"] == "Forbidden"
+
+
+def test_region_delete(
+  access_token_factory,
+  regions,
+  db
+):
+  _, i_at = access_token_factory("test", Role.REGION_DELETE)
+
   response = client.delete(
     "/api/v1/location/region/" + str(regions[0].uid),
+    headers={"Authorization": f"Bearer {i_at}"}
   )
   assert response.status_code == 200
   assert response.json()["code"] == 200
@@ -115,19 +193,30 @@ def test_region_delete(
   assert db.query(RegionModel).filter(RegionModel.uid == regions[0].uid).scalar() is None
 
 
-def test_patch_null_region():
-  response = client.patch(
-    "/api/v1/location/region/a2ffae9b-04be-4b29-a529-aa4e55146cc4",
-    content=json.dumps({
-      "name": "신촌"
-    })
-  )
-  assert response.status_code == 404
+def test_region_delete_without_role(
+  access_token_factory,
+  regions,
+  db
+):
+  _, i_at = access_token_factory("test", Role.CORE_USER)
 
-
-def test_delete_null_region():
   response = client.delete(
-    "/api/v1/location/region/a2ffae9b-04be-4b29-a529-aa4e55146cc4"
+    "/api/v1/location/region/" + str(regions[0].uid),
+    headers={"Authorization": f"Bearer {i_at}"}
+  )
+  assert response.status_code == 403
+  assert response.json()["code"] == 403
+  assert response.json()["message"] == "Forbidden"
+
+
+def test_delete_null_region(
+  access_token_factory,
+):
+  _, i_at = access_token_factory("test", Role.REGION_DELETE)
+
+  response = client.delete(
+    "/api/v1/location/region/a2ffae9b-04be-4b29-a529-aa4e55146cc4",
+    headers={"Authorization": f"Bearer {i_at}"}
   )
   assert response.status_code == 200
   assert response.json()["code"] == 200

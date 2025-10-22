@@ -11,11 +11,17 @@ class ThemeSearchQuery(BaseModel):
   )
 
 
-class AddTheme(BaseModel):
+class SetTheme(BaseModel):
+  uid: int = Field(
+    default=None,
+    ge=0, le=99
+  )
   name: str = Field(
+    default=None,
     min_length=1, max_length=32
   )
   color: str = Field(
+    default=None,
     min_length=6, max_length=6
   )
 

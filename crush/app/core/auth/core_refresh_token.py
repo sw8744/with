@@ -14,6 +14,7 @@ from app.models.users.IdentityModel import IdentityModel
 
 log = logging.getLogger(__name__)
 
+
 def use_refresh_token(
   refresh_token: str,
   db: Session

@@ -23,6 +23,7 @@ function CorePlan() {
     setIsForward(-1);
     setStep(step - 1);
   }
+
   function next() {
     setIsForward(1);
     setStep(step + 1);

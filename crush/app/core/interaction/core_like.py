@@ -11,6 +11,7 @@ from app.schemas.user.identity import Identity
 
 log = logging.getLogger(__name__)
 
+
 def like_place(
   identity: Identity,
   body: LikeRequest,
@@ -68,6 +69,7 @@ def dislike_place(
   db.commit()
 
   log.info("User %r dislike place %r was committed", identity.uid, place_id)
+
 
 def list_liked(
   identity: Identity,

@@ -4,10 +4,9 @@ from typing import Optional
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from app.core.recommendation.core_prefer_vector import MAX_FEATURES
 from app.models.preferences.ThemeModel import ThemeModel
 from app.schemas.recommendation.theme import Theme
-from app.schemas.recommendation.theme_reqs import ThemeSearchQuery, AddTheme, PatchTheme
+from app.schemas.recommendation.theme_reqs import ThemeSearchQuery, SetTheme, PatchTheme
 
 log = logging.getLogger(__name__)
 
@@ -31,26 +30,38 @@ def get_themes(
   return [Theme(theme) for theme in themes]
 
 
-def add_theme(
-  theme: AddTheme,
+def set_theme(
+  theme: SetTheme,
   db: Session
 ) -> Theme:
-  themes = (
+  existing_theme: ThemeModel = (
     db.query(ThemeModel)
-    .count()
-  )
-  if themes > MAX_FEATURES:
-    raise HTTPException(status_code=400, detail="Features limit exceeded")
-
-  theme_model = ThemeModel(
-    name=theme.name,
-    color=theme.color,
+    .filter(ThemeModel.uid == theme.uid)
+    .scalar()
   )
 
-  db.add(theme_model)
-  db.commit()
-
-  return Theme(theme_model)
+  if existing_theme is None:
+    if theme.name is None or theme.color is None:
+      raise HTTPException(status_code=400, detail="Theme name and color is required")
+    log.debug("Adding theme. theme=[%s]", theme)
+    theme_model = ThemeModel(
+      uid=theme.uid,
+      name=theme.name,
+      color=theme.color,
+    )
+    db.add(theme_model)
+    db.commit()
+    return Theme(theme_model)
+  else:
+    log.debug("Patching theme. theme_id=%d", theme.uid)
+    if theme.name is not None:
+      log.debug("Applying change of name in theme %d", existing_theme.uid)
+      existing_theme.name = theme.name
+    if theme.color is not None:
+      log.debug("Applying change of color in theme %d", existing_theme.uid)
+      existing_theme.color = theme.color
+    db.commit()
+    return Theme(existing_theme)
 
 
 def patch_theme(

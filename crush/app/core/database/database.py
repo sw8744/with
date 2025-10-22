@@ -55,6 +55,7 @@ def jsonb_path_equals(column, path_string, target_value):
 
   return path_expression.astext == str(target_value)
 
+
 redis_db0 = redis.Redis(
   host=config["database"]["redis"]["host"],
   port=config["database"]["redis"]["port"],
