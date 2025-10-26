@@ -178,16 +178,17 @@ function PlaceSelector(
             key={place.uid}
             layout={'position'}
             variants={BlockListMotion}
-            className={'cursor-pointer'}
+            className={
+              'w-full rounded-2xl overflow-clip ' +
+              'shadow-neutral-300 shadow hover:shadow-md transition-all duration-300 ' +
+              'flex flex-row cursor-pointer' +
+              (placeSelected.includes(place) ? ' bg-amber-200' : '')
+            }
             onClick={() => togglePlaceSelection(place)}
           >
             <PlaceAreaShow
               key={index}
               place={place}
-              className={
-                'shadow-neutral-300 shadow hover:shadow-md transition-all duration-300 ' +
-                (placeSelected.includes(place) ? ' bg-amber-200' : '')
-              }
             />
           </motion.button>
         );

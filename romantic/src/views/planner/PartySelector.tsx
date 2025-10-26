@@ -11,6 +11,7 @@ import Spinner from "../elements/Spinner.tsx";
 import {Button} from "../elements/Buttons.tsx";
 import {useDispatch} from "react-redux";
 import {plannerAction} from "../../core/redux/PlanReducer.ts";
+import {HorizontalListMotionVariants} from "../../core/motionVariants.ts";
 
 function PartySelector(
   {next}: {
@@ -178,28 +179,6 @@ function PartySelector(
     }
   }
 
-  const partyListMotionVariants = {
-    initial: {
-      opacity: 0,
-      y: 3
-    },
-    animate: {
-      opacity: 1,
-      y: 0,
-    },
-    exit: {
-      opacity: 0,
-      y: 3
-    },
-    transition: {
-      duration: 0.2,
-      ease: 'easeInOut',
-      layout: {
-        type: "spring", stiffness: 400, damping: 30
-      }
-    }
-  }
-
   return (
     <>
       <div className={'w-full'}>
@@ -209,7 +188,7 @@ function PartySelector(
               <motion.div
                 key={friend.uid}
                 layout={'position'}
-                variants={partyListMotionVariants}
+                variants={HorizontalListMotionVariants}
                 initial={"initial"}
                 animate={"animate"}
                 exit={"exit"}

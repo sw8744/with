@@ -8,11 +8,12 @@ import CoreProfile from "./profile/CoreProfile.tsx";
 import RegionShowcase from "./location/RegionShowcase.tsx";
 import PlaceShowcase from "./location/PlaceShowcase.tsx";
 import Locations from "./location/Locations.tsx";
-import CorePlan from "./plan/CorePlan.tsx";
+import CorePlanner from "./planner/CorePlanner.tsx";
 import LikedPlaces from "./profile/LikedPlaces.tsx";
 import MyPosts from "./profile/MyPosts.tsx";
 import MyTrips from "./profile/MyTrips.tsx";
 import CoreGoogleRegister from "./auth/signup/GoogleRegister/CoreGoogleRegister.tsx";
+import CorePlan from "./plan/CorePlan.tsx";
 
 function App() {
   return (
@@ -35,7 +36,8 @@ function App() {
           </Route>
 
           <Route path={'/plan'}>
-            <Route path={''} element={<CorePlan/>}/>
+            <Route path={''} element={<CorePlanner/>}/>
+            <Route path={':planUUID'} element={<CorePlan/>}/>
           </Route>
 
           <Route

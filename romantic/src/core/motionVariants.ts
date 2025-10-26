@@ -36,7 +36,29 @@ const PageStepperMotion = {
   }
 }
 
+const HorizontalListMotionVariants = {
+  initial: {
+    opacity: 0,
+    y: 3
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+  },
+  exit: {
+    opacity: 0,
+    y: 3
+  },
+  transition: {
+    duration: 0.2,
+    ease: 'easeInOut',
+    layout: {
+      type: "spring", stiffness: 400, damping: 30
+    }
+  }
+}
+
 
 export {
-  BlockListMotion, PageStepperMotion
+  BlockListMotion, PageStepperMotion, HorizontalListMotionVariants
 }

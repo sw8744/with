@@ -24,28 +24,42 @@ function Dialog(
         <motion.div
           className={
             'w-screen h-screen absolute left-0 top-0 z-50 ' +
-            'bg-[#0008] flex justify-center items-center'
+            'bg-[#0008] flex flex-col justify-end'
           }
           initial={{
-            opacity: 0
+            opacity: 0,
           }}
           animate={{
             opacity: 1,
-            transition: {
-              duration: 0.15
-            }
           }}
           exit={{
-            opacity: 0
+            opacity: 0,
+          }}
+          transition={{
+            duration: 0.2,
+            ease: 'easeInOut'
           }}
           onClick={whenBackgroundClicked}
         >
-          <div
-            className={'px-3 py-2 min-w-1/2 rounded-2xl flex flex-col gap-3 bg-light'}
+          <motion.div
+            initial={{
+              translateY: '100%'
+            }}
+            animate={{
+              translateY: 0
+            }}
+            exit={{
+              translateY: 0
+            }}
+            transition={{
+              duration: 0.2,
+              ease: 'easeInOut'
+            }}
+            className={'px-5 py-3 max-w-[500px] w-full mx-auto rounded-t-2xl flex flex-col gap-3 bg-light'}
             onClick={e => e.stopPropagation()}
           >
             {children}
-          </div>
+          </motion.div>
         </motion.div>
       }
     </AnimatePresence>

@@ -457,7 +457,7 @@ function DateRangePicker(
         <p>금</p>
         <p>토</p>
       </div>
-      <div className={'grid grid-cols-7 grid-rows-5 text-center'}>
+      <div className={'grid grid-cols-7 text-center'}>
         {calender}
       </div>
     </div>

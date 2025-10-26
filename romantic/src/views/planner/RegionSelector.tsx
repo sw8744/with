@@ -197,7 +197,7 @@ function RegionSelector(
         </div>
       </div>
       <div className={'flex justify-between'}>
-          <Button onClick={prev}>이전</Button>
+        <Button onClick={prev}>이전</Button>
         <Button
           onClick={next}
           disabled={regionSelected.length == 0}

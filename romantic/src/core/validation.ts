@@ -39,9 +39,15 @@ function regexCheck(value: string, exp: RegExp) {
   return exp.test(value);
 }
 
+function uuidCheck(value: string) {
+  const uuidExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+  return regexCheck(value, uuidExp);
+}
+
 export {
   verifyAll, check,
   lengthCheck,
   rangeCheck,
   regexCheck,
+  uuidCheck
 }
