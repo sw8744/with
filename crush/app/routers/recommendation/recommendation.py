@@ -13,12 +13,12 @@ from app.schemas.recommendation.recommendation_reqs import RecommendByUsersParam
 
 router = APIRouter(
   prefix="/api/v1/recommendation",
-  tags=['recommendation']
+  tags=["recommendation"]
 )
 
 
 @router.get(
-  path='/region'
+  path="/region"
 )
 def recommend_region_from_users(
   users: Annotated[RecommendByUsersParam, Query()],
@@ -41,7 +41,7 @@ def recommend_region_from_users(
 
 
 @router.get(
-  path='/place'
+  path="/place"
 )
 def recommend_place_from_users(
   cond: Annotated[RecommendByUserFromRegionParam, Query()],

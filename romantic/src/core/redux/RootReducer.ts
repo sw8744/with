@@ -1,10 +1,11 @@
 import {combineReducers} from "redux";
 import userInfoReducer from "./UserInfoReducer.ts";
-import plannerReducer from "./PlanReducer.ts";
+import plannerReducer from "./PlannerReducer.ts";
 import {configureStore} from "@reduxjs/toolkit";
+import planReducer from "./PlanReducer.ts";
 
 const rootReducer = combineReducers({
-  userInfoReducer, plannerReducer
+  userInfoReducer, plannerReducer, planReducer
 });
 
 const store = configureStore({

@@ -19,8 +19,8 @@ async function resetAccessToken(
   let authResp
   try {
     authResp = await api.get<authAuthorizeAPI>(
-      '/auth/authorize',
-      {headers: {'Authorization': `Bearer ${accessToken}`}}
+      "/auth/authorize",
+      {headers: {"Authorization": `Bearer ${accessToken}`}}
     );
   } catch (err) {
     if (axios.isAxiosError(err)) {
@@ -33,8 +33,8 @@ async function resetAccessToken(
 
   try {
     const resp = await api.get<userAPI>(
-      '/user',
-      {headers: {'Authorization': `Bearer ${accessToken}`}}
+      "/user",
+      {headers: {"Authorization": `Bearer ${accessToken}`}}
     );
 
     return {
@@ -55,7 +55,7 @@ async function resetAccessToken(
 async function refreshAccessToken(): Promise<string> {
   // TODO: ADD CSRF PREVENT TOKEN BEFORE REFRESH
   const resp = await api.post<authRefreshAPI>(
-    '/auth/refresh'
+    "/auth/refresh"
   );
 
   const credential = await resetAccessToken(resp.data.accessToken);

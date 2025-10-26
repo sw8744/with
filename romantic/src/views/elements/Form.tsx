@@ -18,9 +18,9 @@ function Form(
   return (
     <div
       className={
-        'flex flex-col gap-3 items-center ' +
-        'px-5 w-full' +
-        (className ? ' ' + className : '')
+        "flex flex-col gap-3 items-center " +
+        "px-5 w-full" +
+        (className ? " " + className : "")
       }
     >
       {children}
@@ -34,12 +34,12 @@ function FormGroup(
   return (
     <div
       className={
-        'flex flex-col gap-1 items-baseline w-full max-w-[300px]' +
-        (className ? ' ' + className : '')
+        "flex flex-col gap-1 items-baseline w-full max-w-[300px]" +
+        (className ? " " + className : "")
       }
     >
-      <div className={'flex gap-1.5 items-center'}>
-        <p className={'pl-2 font-bold'}>{name}</p>
+      <div className={"flex gap-1.5 items-center"}>
+        <p className={"pl-2 font-bold"}>{name}</p>
         {sidecar}
       </div>
       {children}

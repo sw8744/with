@@ -18,7 +18,7 @@ log = logging.getLogger(__name__)
 
 def create_access_token(user_id: UUID, role: list[str]) -> str:
   payload = {
-    "aud": ['crush'],
+    "aud": ["crush"],
     "sub": str(user_id),
     "exp": datetime.now(KST) + timedelta(minutes=10),
     "iat": datetime.now(KST),
@@ -76,7 +76,7 @@ def decode_refresh_token(token: str) -> dict:
     audience=["crush"],
   )
 
-  if 'auth:refresh' not in decoded.get("scope"):
+  if "auth:refresh" not in decoded.get("scope"):
     log.warning("Auth failed: Refresh token is invalid or unauthorized. scope does not includes 'auth:refresh'")
     raise HTTPException(status_code=401, detail="Refresh token is invalid or unauthorized")
 
@@ -100,17 +100,17 @@ def get_aud(token: dict) -> Optional[list[str]]:
 
 
 class Role(Enum):
-  CORE_USER = 'core:user'
+  CORE_USER = "core:user"
 
-  PLACE_ADD = 'place:add'
-  PLACE_EDIT = 'place:edit'
-  PLACE_DELETE = 'place:delete'
+  PLACE_ADD = "place:add"
+  PLACE_EDIT = "place:edit"
+  PLACE_DELETE = "place:delete"
 
-  REGION_ADD = 'region:add'
-  REGION_EDIT = 'region:edit'
-  REGION_DELETE = 'region:delete'
+  REGION_ADD = "region:add"
+  REGION_EDIT = "region:edit"
+  REGION_DELETE = "region:delete"
 
-  THEME_EDIT = 'theme:edit'
+  THEME_EDIT = "theme:edit"
 
 
 def require_role(token: dict, *permissions: Role):

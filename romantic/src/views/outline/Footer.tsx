@@ -13,7 +13,7 @@ function FooterMenu(
   return (
     <Link
       to={props.to}
-      className={'py-4 flex flex-col justify-center items-center'}
+      className={"py-4 flex flex-col justify-center items-center"}
     >
       {props.icon}
     </Link>
@@ -24,32 +24,32 @@ function Footer() {
   return (
     <footer
       className={
-        'fixed bottom-0 left-0 ' +
-        'w-full grid grid-cols-3 bg-light ' +
-        'border-t border-t-neutral-300'
+        "fixed bottom-0 left-0 " +
+        "w-full grid grid-cols-3 bg-light " +
+        "border-t border-t-neutral-300"
       }
     >
       <FooterMenu
-        to={'/plan'}
+        to={"/plan"}
         icon={
           <RouteIcon
-            className={'fill-neutral-700'}
+            className={"fill-neutral-700"}
           />
         }
       />
       <FooterMenu
-        to={'/location'}
+        to={"/location"}
         icon={
           <LocationIcon
-            className={'fill-neutral-700'}
+            className={"fill-neutral-700"}
           />
         }
       />
       <FooterMenu
-        to={'/profile'}
+        to={"/profile"}
         icon={
           <PersonIcon
-            className={'fill-neutral-700'}
+            className={"fill-neutral-700"}
           />
         }
       />

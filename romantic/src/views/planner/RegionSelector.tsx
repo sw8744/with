@@ -8,7 +8,7 @@ import type {recommendationRegion} from "../../core/apiResponseInterfaces/recomm
 import type {Region} from "../../core/model/LocationModels.ts";
 import {useAppDispatch, useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {AnimatePresence, motion} from "framer-motion";
-import {plannerAction} from "../../core/redux/PlanReducer.ts";
+import {plannerAction} from "../../core/redux/PlannerReducer.ts";
 import {PageError} from "../error/ErrorPage.tsx";
 import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/Skeleton.tsx";
 import {thumbnailUrl} from "../../core/model/ImageUrlProcessor.ts";
@@ -20,7 +20,7 @@ function RegionSelector(
     next: () => void;
   }
 ) {
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [recommendedCache, setRecommendedCache] = useState<Region[]>([]);
   const [pageState, setPageState] = useState(PageState.LOADING);
   const [regionsInList, setRegionsInList] = useState<Region[]>([]);
@@ -45,10 +45,10 @@ function RegionSelector(
   useEffect(() => {
     (async () => {
       const initialRecommendation = await apiAuth.get<recommendationRegion>(
-        '/recommendation/region',
+        "/recommendation/region",
         {
           params: {
-            users: members.map((u) => u.uid).join('.'),
+            users: members.map((u) => u.uid).join("."),
           }
         }
       );
@@ -57,7 +57,7 @@ function RegionSelector(
       const recommendedRegions: Region[] = []
       for (const recommendation of recommendations) {
         const regionResp = await apiAuth.get<locationRegionAPI>(
-          '/location/region',
+          "/location/region",
           {
             params: {
               uid: recommendation.region
@@ -84,7 +84,7 @@ function RegionSelector(
 
     setPageState(PageState.WORKING);
 
-    if (searchQuery == '') {
+    if (searchQuery == "") {
       setRegionsInList(
         loadAlreadySelectedRegion(recommendedCache)
       );
@@ -93,7 +93,7 @@ function RegionSelector(
     }
 
     apiAuth.get<locationRegionAPI>(
-      '/location/region',
+      "/location/region",
       {
         params: {
           name: searchQuery
@@ -134,7 +134,7 @@ function RegionSelector(
       } else {
         (async () => {
           const sRegion = await apiAuth.get<locationRegionAPI>(
-            '/location/region',
+            "/location/region",
             {
               params: {
                 uid: selectedRegion,
@@ -159,13 +159,13 @@ function RegionSelector(
     if (regionsInList.length == 0) {
       regions.push(
         <motion.div
-          key={'noresult'}
-          layout={'position'}
+          key={"noresult"}
+          layout={"position"}
           variants={BlockListMotion}
-          className={'my-3'}
+          className={"my-3"}
         >
-          <p className={'text-center font-medium text-lg my-1'}>검색결과가 없습니다.</p>
-          <p className={'text-center my-1'}>놀러가고 싶은 지역을 찾아보세요</p>
+          <p className={"text-center font-medium text-lg my-1"}>검색결과가 없습니다.</p>
+          <p className={"text-center my-1"}>놀러가고 싶은 지역을 찾아보세요</p>
         </motion.div>
       );
     } else {
@@ -184,19 +184,19 @@ function RegionSelector(
 
   return (
     <>
-      <div className={'h-full'}>
+      <div className={"h-full"}>
         <TextInput
-          placeholder={'놀러갈 지역 찾아보기'}
+          placeholder={"놀러갈 지역 찾아보기"}
           value={searchQuery}
           setter={setSearchQuery}
         />
-        <div className={'flex-1 flex flex-col gap-3 my-2'}>
-          <AnimatePresence mode={'popLayout'}>
+        <div className={"flex-1 flex flex-col gap-3 my-2"}>
+          <AnimatePresence mode={"popLayout"}>
             {regions}
           </AnimatePresence>
         </div>
       </div>
-      <div className={'flex justify-between'}>
+      <div className={"flex justify-between"}>
         <Button onClick={prev}>이전</Button>
         <Button
           onClick={next}
@@ -223,29 +223,29 @@ function RegionResult(
   return (
     <motion.button
       key={region.uid}
-      layout={'position'}
+      layout={"position"}
       variants={BlockListMotion}
       className={
-        'w-full rounded-2xl overflow-clip ' +
-        'shadow-neutral-300 shadow hover:shadow-md transition-all duration-300 ' +
-        'flex flex-row cursor-pointer' +
-        (selected ? ' bg-amber-200' : '')
+        "w-full rounded-2xl overflow-clip " +
+        "shadow-neutral-300 shadow hover:shadow-md transition-all duration-300 " +
+        "flex flex-row cursor-pointer" +
+        (selected ? " bg-amber-200" : "")
       }
       onClick={selectRegion}
     >
       <img
         src={tu}
-        alt={region.name + '의 썸네일'}
+        alt={region.name + "의 썸네일"}
         className={
-          'h-[130px] w-1/2 object-cover ' +
-          '[mask-image:linear-gradient(to_right,black_70%,transparent)] ' +
-          '[mask-repeat:no-repeat] [mask-size:100%_100%]'
+          "h-[130px] w-1/2 object-cover " +
+          "[mask-image:linear-gradient(to_right,black_70%,transparent)] " +
+          "[mask-repeat:no-repeat] [mask-size:100%_100%]"
         }
       />
 
-      <div className={'px-3 py-3'}>
-        <p className={'font-bold text-lg text-left'}>{region.name}</p>
-        <p className={'text-sm text-left'}>{region.description}</p>
+      <div className={"px-3 py-3"}>
+        <p className={"font-bold text-lg text-left"}>{region.name}</p>
+        <p className={"text-sm text-left"}>{region.description}</p>
       </div>
     </motion.button>
   );
@@ -253,7 +253,7 @@ function RegionResult(
 
 function RegionSelectorSkeleton() {
   return (
-    <SkeletonFrame className={'flex-1 flex flex-col gap-3 mt-3 mb-3'}>
+    <SkeletonFrame className={"flex-1 flex flex-col gap-3 mt-3 mb-3"}>
       <RegionInListSkeleton/>
       <RegionInListSkeleton/>
       <RegionInListSkeleton/>
@@ -263,12 +263,12 @@ function RegionSelectorSkeleton() {
 
 function RegionInListSkeleton() {
   return (
-    <SkeletonUnit className={'w-full shadow-neutral-300 shadow rounded-xl overflow-clip flex flex-row'}>
-      <SkeletonElement className={'w-1/2'} expH={130}/>
+    <SkeletonUnit className={"w-full shadow-neutral-300 shadow rounded-xl overflow-clip flex flex-row"}>
+      <SkeletonElement className={"w-1/2"} expH={130}/>
 
-      <div className={'px-3 py-3'}>
+      <div className={"px-3 py-3"}>
         <SkeletonElement expH={20} expW={70}/>
-        <SkeletonElement expH={15} expW={170} className={'my-2'}/>
+        <SkeletonElement expH={15} expW={170} className={"my-2"}/>
         <SkeletonElement expH={15} expW={130}/>
       </div>
     </SkeletonUnit>

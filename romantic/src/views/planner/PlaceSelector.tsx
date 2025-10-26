@@ -9,7 +9,7 @@ import {useAppDispatch, useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {PlaceAreaShow, PlaceAreaSkeleton} from "../elements/location/PlaceArea.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
 import {SkeletonFrame} from "../elements/Skeleton.tsx";
-import {plannerAction} from "../../core/redux/PlanReducer.ts";
+import {plannerAction} from "../../core/redux/PlannerReducer.ts";
 import {TextInput} from "../elements/Inputs.tsx";
 import {motion} from "motion/react";
 import {AnimatePresence} from "framer-motion";
@@ -21,7 +21,7 @@ function PlaceSelector(
     next: () => void;
   }
 ) {
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [recommendedCache, setRecommendedCache] = useState<Place[]>([]);
   const [pageState, setPageState] = useState(PageState.LOADING);
   const [placeInList, setPlaceInList] = useState<Place[]>([]);
@@ -47,11 +47,11 @@ function PlaceSelector(
   useEffect(() => {
     (async () => {
       const initialRecommendation = await apiAuth.get<recommendationPlace>(
-        '/recommendation/place',
+        "/recommendation/place",
         {
           params: {
-            users: members.map((u) => u.uid).join('.'),
-            regions: regions.map((r) => r.uid).join('.'),
+            users: members.map((u) => u.uid).join("."),
+            regions: regions.map((r) => r.uid).join("."),
           }
         }
       );
@@ -60,7 +60,7 @@ function PlaceSelector(
       const recommendedPlaces: Place[] = []
       for (const recommendation of recommendations) {
         const placeResp = await apiAuth.get<locationPlaceAPI>(
-          '/location/place',
+          "/location/place",
           {
             params: {
               uid: recommendation.place
@@ -87,7 +87,7 @@ function PlaceSelector(
 
     setPageState(PageState.WORKING);
 
-    if (searchQuery == '') {
+    if (searchQuery == "") {
       setPlaceInList(
         loadAlreadySelectedPlace(recommendedCache)
       );
@@ -96,7 +96,7 @@ function PlaceSelector(
     }
 
     apiAuth.get<locationPlaceAPI>(
-      '/location/place',
+      "/location/place",
       {
         params: {
           name: searchQuery
@@ -137,7 +137,7 @@ function PlaceSelector(
       } else {
         (async () => {
           const sPlace = await apiAuth.get<locationPlaceAPI>(
-            '/location/place',
+            "/location/place",
             {
               params: {
                 uid: selectedPlace,
@@ -161,14 +161,14 @@ function PlaceSelector(
     if (placeInList.length === 0) {
       places.push(
         <motion.div
-          key={'noresult'}
-          layout={'position'}
+          key={"noresult"}
+          layout={"position"}
           variants={BlockListMotion}
-          className={'my-3'}
+          className={"my-3"}
         >
-          <p className={'text-center font-medium text-lg my-1'}>검색결과가 없습니다.</p>
-          <p className={'text-center my-1'}>놀러가고 싶은 장소를 찾아보세요</p>
-          <p className={'text-center my-1'}>앞서 선택한 지역에 있는 장소만 나와요</p>
+          <p className={"text-center font-medium text-lg my-1"}>검색결과가 없습니다.</p>
+          <p className={"text-center my-1"}>놀러가고 싶은 장소를 찾아보세요</p>
+          <p className={"text-center my-1"}>앞서 선택한 지역에 있는 장소만 나와요</p>
         </motion.div>
       );
     } else {
@@ -176,13 +176,13 @@ function PlaceSelector(
         places.push(
           <motion.button
             key={place.uid}
-            layout={'position'}
+            layout={"position"}
             variants={BlockListMotion}
             className={
-              'w-full rounded-2xl overflow-clip ' +
-              'shadow-neutral-300 shadow hover:shadow-md transition-all duration-300 ' +
-              'flex flex-row cursor-pointer' +
-              (placeSelected.includes(place) ? ' bg-amber-200' : '')
+              "w-full rounded-2xl overflow-clip " +
+              "shadow-neutral-300 shadow hover:shadow-md transition-all duration-300 " +
+              "flex flex-row cursor-pointer" +
+              (placeSelected.includes(place) ? " bg-amber-200" : "")
             }
             onClick={() => togglePlaceSelection(place)}
           >
@@ -198,19 +198,19 @@ function PlaceSelector(
 
   return (
     <>
-      <div className={'h-full'}>
+      <div className={"h-full"}>
         <TextInput
-          placeholder={'놀러갈 장소 찾아보기'}
+          placeholder={"놀러갈 장소 찾아보기"}
           value={searchQuery}
           setter={setSearchQuery}
         />
-        <div className={'flex-1 flex flex-col gap-3 my-2'}>
-          <AnimatePresence mode={'popLayout'}>
+        <div className={"flex-1 flex flex-col gap-3 my-2"}>
+          <AnimatePresence mode={"popLayout"}>
             {places}
           </AnimatePresence>
         </div>
       </div>
-      <div className={'flex justify-between'}>
+      <div className={"flex justify-between"}>
         <Button onClick={prev}>이전</Button>
         <Button onClick={next}>만들기</Button>
       </div>
@@ -220,7 +220,7 @@ function PlaceSelector(
 
 function PlaceSelectorSkeleton() {
   return (
-    <SkeletonFrame className={'flex-1 flex flex-col gap-3 mt-3 mb-3'}>
+    <SkeletonFrame className={"flex-1 flex flex-col gap-3 mt-3 mb-3"}>
       <PlaceAreaSkeleton/>
       <PlaceAreaSkeleton/>
       <PlaceAreaSkeleton/>

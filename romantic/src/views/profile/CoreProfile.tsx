@@ -25,8 +25,8 @@ function ProfileMenuButton(
     <Link
       to={to}
       className={
-        'text-center w-[50px] border-b py-2 fill-neutral-700 border-neutral-700 ' +
-        ''
+        "text-center w-[50px] border-b py-2 fill-neutral-700 border-neutral-700 " +
+        ""
       }
     >
       {children}
@@ -42,9 +42,9 @@ function CoreProfile() {
 
   useEffect(() => {
     Promise.all([
-      apiAuth.get<userAPI>('/user'),
-      apiAuth.get<userFollowingCount>('/user/following/count'),
-      apiAuth.get<userFollowerCount>('/user/follower/count')
+      apiAuth.get<userAPI>("/user"),
+      apiAuth.get<userFollowingCount>("/user/following/count"),
+      apiAuth.get<userFollowerCount>("/user/follower/count")
     ]).then(([respUser, respFollowings, respFollowers]) => {
       setIdentity(respUser.data.user);
       setFollowers(respFollowers.data.count);
@@ -63,36 +63,36 @@ function CoreProfile() {
   }
 
   return (
-    <div className={'flex flex-col gap-2.5 m-5'}>
-      <div className={'flex justify-between mx-5 items-center'}>
-        <div className={'w-1/4'}>
-          <p className={'text-xl font-bold'}>{identity?.name}</p>
+    <div className={"flex flex-col gap-2.5 m-5"}>
+      <div className={"flex justify-between mx-5 items-center"}>
+        <div className={"w-1/4"}>
+          <p className={"text-xl font-bold"}>{identity?.name}</p>
         </div>
-        <div className={'w-[60%] grid grid-cols-3 grid-rows-2'}>
-          <p className={'text-lg font-bold'}>233</p>
-          <p className={'text-lg font-bold'}>{followers}</p>
-          <p className={'text-lg font-bold'}>{followings}</p>
+        <div className={"w-[60%] grid grid-cols-3 grid-rows-2"}>
+          <p className={"text-lg font-bold"}>233</p>
+          <p className={"text-lg font-bold"}>{followers}</p>
+          <p className={"text-lg font-bold"}>{followings}</p>
           <p>포스트</p>
           <p>팔로워</p>
           <p>팔로잉</p>
         </div>
       </div>
-      <div className={'flex gap-3'}>
-        <Button className={'!rounded-lg !py-1 w-full'} theme={'white'}>프로필 수정</Button>
-        <Button className={'!rounded-lg !py-1 w-full'} theme={'white'}>프로필 공유</Button>
+      <div className={"flex gap-3"}>
+        <Button className={"!rounded-lg !py-1 w-full"} theme={"white"}>프로필 수정</Button>
+        <Button className={"!rounded-lg !py-1 w-full"} theme={"white"}>프로필 공유</Button>
       </div>
-      <div className={'flex gap-3 justify-between px-5 mx-auto w-full max-w-[360px]'}>
-        <ProfileMenuButton to={'/profile'}>
-          <MapFilledIcon className={'mx-auto'} height={24}/>
+      <div className={"flex gap-3 justify-between px-5 mx-auto w-full max-w-[360px]"}>
+        <ProfileMenuButton to={"/profile"}>
+          <MapFilledIcon className={"mx-auto"} height={24}/>
         </ProfileMenuButton>
-        <ProfileMenuButton to={'/profile/liked'}>
-          <StarFilledIcon className={'mx-auto'} height={24}/>
+        <ProfileMenuButton to={"/profile/liked"}>
+          <StarFilledIcon className={"mx-auto"} height={24}/>
         </ProfileMenuButton>
-        <ProfileMenuButton to={'/profile/trips'}>
-          <MapPinAndEllipseIcon className={'mx-auto'} height={24}/>
+        <ProfileMenuButton to={"/profile/trips"}>
+          <MapPinAndEllipseIcon className={"mx-auto"} height={24}/>
         </ProfileMenuButton>
       </div>
-      <div className={'mt-3'}>
+      <div className={"mt-3"}>
         <Outlet/>
       </div>
     </div>
@@ -101,12 +101,12 @@ function CoreProfile() {
 
 function ProfileSkeleton() {
   return (
-    <div className={'flex flex-col gap-2.5 m-5'}>
-      <div className={'flex justify-between mx-5 items-center'}>
-        <div className={'w-1/4'}>
+    <div className={"flex flex-col gap-2.5 m-5"}>
+      <div className={"flex justify-between mx-5 items-center"}>
+        <div className={"w-1/4"}>
           <SkeletonElement expH={28} expW={65}/>
         </div>
-        <div className={'w-[60%] grid grid-cols-3 grid-rows-2'}>
+        <div className={"w-[60%] grid grid-cols-3 grid-rows-2"}>
           <SkeletonElement expH={24} expW={60}/>
           <SkeletonElement expH={24} expW={60}/>
           <SkeletonElement expH={24} expW={60}/>
@@ -115,22 +115,22 @@ function ProfileSkeleton() {
           <p>팔로잉</p>
         </div>
       </div>
-      <div className={'flex gap-3'}>
-        <Button className={'!rounded-lg !py-1 w-full'} theme={'white'}>프로필 수정</Button>
-        <Button className={'!rounded-lg !py-1 w-full'} theme={'white'}>프로필 공유</Button>
+      <div className={"flex gap-3"}>
+        <Button className={"!rounded-lg !py-1 w-full"} theme={"white"}>프로필 수정</Button>
+        <Button className={"!rounded-lg !py-1 w-full"} theme={"white"}>프로필 공유</Button>
       </div>
-      <div className={'flex gap-3 justify-between px-5 mx-auto w-full max-w-[360px]'}>
-        <ProfileMenuButton to={'/profile'}>
-          <MapFilledIcon className={'mx-auto'} height={24}/>
+      <div className={"flex gap-3 justify-between px-5 mx-auto w-full max-w-[360px]"}>
+        <ProfileMenuButton to={"/profile"}>
+          <MapFilledIcon className={"mx-auto"} height={24}/>
         </ProfileMenuButton>
-        <ProfileMenuButton to={'/profile/liked'}>
-          <StarFilledIcon className={'mx-auto'} height={24}/>
+        <ProfileMenuButton to={"/profile/liked"}>
+          <StarFilledIcon className={"mx-auto"} height={24}/>
         </ProfileMenuButton>
-        <ProfileMenuButton to={'/profile/trips'}>
-          <PersonIcon className={'mx-auto'} height={24}/>
+        <ProfileMenuButton to={"/profile/trips"}>
+          <PersonIcon className={"mx-auto"} height={24}/>
         </ProfileMenuButton>
       </div>
-      <div className={'mt-3'}>
+      <div className={"mt-3"}>
         <Outlet/>
       </div>
     </div>

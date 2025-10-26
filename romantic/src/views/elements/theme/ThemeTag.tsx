@@ -5,9 +5,9 @@ function ThemeTag(
 ) {
   return (
     <span
-      className={'px-4 py-1 rounded-full text-neutral-50'}
+      className={"px-4 py-1 rounded-full text-neutral-50"}
       style={{
-        backgroundColor: '#' + theme.color,
+        backgroundColor: "#" + theme.color,
       }}
     >
       {theme.name}

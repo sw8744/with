@@ -2,14 +2,14 @@ import {type ChangeEvent, useEffect, useState} from "react";
 import {CheckmarkFillIcon, ChevronLeftIcon, ChevronRightIcon, CircleIcon} from "../../assets/svgs/svgs.ts";
 
 interface TextInputPropsType {
-  type?: 'text' | 'password' | 'email'
+  type?: "text" | "password" | "email"
   value: string;
   setter: (val: string) => void;
   placeholder?: string;
   className?: string;
   error?: boolean;
   disabled?: boolean;
-  autocomplete?: 'name' | 'bday-year' | 'bday-month' | 'bday-day' | 'email' | 'username' | 'new-password' | 'current-password' | 'one-time-code' | 'sex' | 'url';
+  autocomplete?: "name" | "bday-year" | "bday-month" | "bday-day" | "email" | "username" | "new-password" | "current-password" | "one-time-code" | "sex" | "url";
 }
 
 interface SelectPropsType {
@@ -34,11 +34,14 @@ interface CheckboxPropsType {
 }
 
 interface DatePickerPropsType {
-  value: string;
-  setter: (val: string) => void;
+  value: string[];
+  setter: (val: string[]) => void;
   className?: string;
   disabled?: boolean;
   error?: boolean;
+  multiple?: boolean;
+  fromDate?: Date | null;
+  toDate?: Date | null;
 }
 
 interface DateRangePickerPropsType {
@@ -51,11 +54,11 @@ interface DateRangePickerPropsType {
 }
 
 const commonClass = (
-  'px-5 py-2 w-full rounded-full border border-neutral-300 ' +
-  'border shadow-sm shadow-neutral-200 ' +
-  'hover:shadow-md hover:shadow-neutral-300 ' +
-  'outline-blue-400 focus:outline-1 focus:border-blue-400 focus:shadow-md focus:shadow-neutral-300 ' +
-  'transition-shadow transition-colors duration-200'
+  "px-5 py-2 w-full rounded-full border border-neutral-300 " +
+  "border shadow-sm shadow-neutral-200 " +
+  "hover:shadow-md hover:shadow-neutral-300 " +
+  "outline-blue-400 focus:outline-1 focus:border-blue-400 focus:shadow-md focus:shadow-neutral-300 " +
+  "transition-shadow transition-colors duration-200"
 );
 
 function TextInput(
@@ -69,17 +72,17 @@ function TextInput(
 
   return (
     <input
-      type={type ?? 'text'}
+      type={type ?? "text"}
       value={value}
       onChange={onValueChange}
       className={
         commonClass +
-        (error ? ' border-red-300 shadow-red-300' : '') +
-        (type == 'password' && value != '' ? ' tracking-[-5px]' : '') +
-        (className ? ' ' + className : '')
+        (error ? " border-red-300 shadow-red-300" : "") +
+        (type == "password" && value != "" ? " tracking-[-5px]" : "") +
+        (className ? " " + className : "")
       }
-      placeholder={placeholder ?? ''}
-      autoComplete={autocomplete ?? 'off'}
+      placeholder={placeholder ?? ""}
+      autoComplete={autocomplete ?? "off"}
       disabled={disabled}
     />
   )
@@ -103,9 +106,9 @@ function Select(
       onChange={onValueChange}
       value={value}
       className={
-        commonClass + ' pr-8' +
-        (error ? ' border-red-300 shadow-red-300' : '') +
-        (className ? ' ' + className : '')
+        commonClass + " pr-8" +
+        (error ? " border-red-300 shadow-red-300" : "") +
+        (className ? " " + className : "")
       }
       disabled={disabled}
     >
@@ -129,31 +132,31 @@ function Checkbox(
   return (
     <label
       className={
-        'cursor-pointer' +
-        (className ? ' ' + className : '')
+        "cursor-pointer" +
+        (className ? " " + className : "")
       }
     >
       <input
-        type={'checkbox'}
+        type={"checkbox"}
         checked={value}
         onChange={onValueChange}
-        className={'peer sr-only'}
+        className={"peer sr-only"}
         disabled={disable}
       />
       {children}
       {value &&
         <CheckmarkFillIcon
           className={
-            'w-[24px] h-[24px] fill-neutral-600' +
-            (error ? ' border-red-300 shadow-red-300' : '')
+            "w-[24px] h-[24px] fill-neutral-600" +
+            (error ? " border-red-300 shadow-red-300" : "")
           }
         />
       }
       {!value &&
         <CircleIcon
           className={
-            'w-[24px] h-[24px] fill-neutral-600' +
-            (error ? ' border-red-300 shadow-red-300' : '')
+            "w-[24px] h-[24px] fill-neutral-600" +
+            (error ? " border-red-300 shadow-red-300" : "")
           }
         />
       }
@@ -161,29 +164,160 @@ function Checkbox(
   );
 }
 
-//TODO: 달력모양 picker로 구현하기
 function DatePicker(
   {
-    className, value, setter, error, disabled
+    className, value, setter, error, disabled, multiple, fromDate, toDate
   }: DatePickerPropsType
 ) {
-  function onValueChange(event: ChangeEvent<HTMLInputElement>) {
-    setter(event.target.value);
+  const [currentYear, setCurrentYear] = useState<number>(1970);
+  const [currentMonth, setCurrentMonth] = useState<number>(1);
+
+  useEffect(() => {
+    if (fromDate) {
+      setCurrentYear(fromDate.getFullYear());
+      setCurrentMonth(fromDate.getMonth() + 1);
+    } else {
+      const today = new Date();
+      setCurrentMonth(today.getMonth() + 1);
+      setCurrentYear(today.getFullYear());
+    }
+  }, []);
+
+  const beginDayOfMonth = new Date(currentYear, currentMonth - 1, 1).getDay();
+  const daysOfMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+  function getRelative(date: number, fix: Date) {
+    const yearRelative = (
+      currentYear === fix.getFullYear() ? 0 :
+        currentYear < fix.getFullYear() ? -1 : 1
+    );
+    const monthRelative = (
+      currentMonth === fix.getMonth() + 1 ? 0 :
+        currentMonth < fix.getMonth() + 1 ? -1 : 1
+    );
+    return (
+      yearRelative === 0 ?
+        (monthRelative === 0 ?
+            (date == fix.getDate() ? 0 :
+                date < fix.getDate() ? -1 : 1
+            ) : monthRelative
+        ) : yearRelative);
+  }
+
+  function nextMonth() {
+    if (currentMonth === 12) {
+      setCurrentMonth(1);
+      setCurrentYear(currentYear + 1);
+    } else setCurrentMonth(currentMonth + 1);
+  }
+
+  function lastMonth() {
+    if (currentMonth === 1) {
+      setCurrentMonth(12);
+      setCurrentYear(currentYear - 1);
+      return;
+    }
+    setCurrentMonth(currentMonth - 1);
+  }
+
+  function selectDay(i: number) {
+    if (multiple) {
+      if (value.includes(`${currentYear}-${currentMonth}-${i}`)) setter(value.filter(v => v !== `${currentYear}-${currentMonth}-${i}`));
+      else setter([...value, `${currentYear}-${currentMonth}-${i}`]);
+    } else {
+      setter([`${currentYear}-${currentMonth}-${i}`]);
+    }
+  }
+
+  const calender = [];
+
+  let dayCounter = 0;
+  for (let i = 0; i < beginDayOfMonth; i++) {
+    calender.push(<p key={i - 99}></p>);
+    dayCounter++;
+  }
+
+  let isInRange = false;
+  for (let i = 1; i <= daysOfMonth; i++) {
+    let daySpecificClass = "";
+
+    isInRange = (
+      !!(
+        fromDate && toDate &&
+        getRelative(i, fromDate) >= 0 &&
+        getRelative(i, toDate) <= 0
+      )
+    );
+
+    if (dayCounter === 0) daySpecificClass = " text-red-700 disabled:text-red-300";
+    else if (dayCounter === 6) daySpecificClass = " text-blue-800 disabled:text-blue-300";
+    else daySpecificClass = " text-neutral-800 disabled:text-neutral-400"
+
+    if (value.includes(`${currentYear}-${currentMonth}-${i}`)) {
+      daySpecificClass += " bg-blue-200 hover:!bg-blue-300";
+    }
+
+    calender.push(
+      <div
+        className={"my-1"}
+        key={currentMonth + "-" + i}
+      >
+        <button
+          className={
+            "w-[32px] p-1 mx-auto rounded-full " +
+            "hover:bg-neutral-200 disabled:!bg-transparent disabled:cursor-default " +
+            "transition-colors cursor-pointer " +
+            daySpecificClass
+          }
+          onClick={() => selectDay(i)}
+          disabled={disabled || !isInRange}
+        >{i}</button>
+      </div>
+    );
+
+    dayCounter++;
+    if (dayCounter === 7) dayCounter = 0;
   }
 
   return (
-    <input
-      type={"date"}
-      value={value}
-      onChange={onValueChange}
-      className={
-        commonClass +
-        (error ? ' border-red-300 shadow-red-300' : '') +
-        (className ? ' ' + className : '')
-      }
-      disabled={disabled}
-    />
-  )
+    <div className={className + (error ? " border shadow border-red-300 shadow-red-300" : "")}>
+      <div className={"flex justify-between items-center mb-2"}>
+        <p className={"font-medium text-lg px-3 py-2"}>{currentYear}년 {currentMonth}월</p>
+        <div className={"flex justify-between items-center gap-3 px-1"}>
+          <button
+            className={
+              "fill-neutral-600 w-[34px] aspect-square p-2 rounded-full " +
+              "cursor-pointer hover:bg-neutral-200 transition-colors"
+            }
+            onClick={lastMonth}
+          >
+            <ChevronLeftIcon height={18}/>
+          </button>
+          <button
+            className={
+              "fill-neutral-600 w-[34px] aspect-square p-2 rounded-full " +
+              "cursor-pointer hover:bg-neutral-200 transition-colors"
+            }
+            onClick={nextMonth}
+          >
+            <ChevronRightIcon height={18}/>
+          </button>
+        </div>
+      </div>
+      <div className={"flex justify-around mb-2 font-medium"}>
+        <p>일</p>
+        <p>월</p>
+        <p>화</p>
+        <p>수</p>
+        <p>목</p>
+        <p>금</p>
+        <p>토</p>
+      </div>
+      <div className={"grid grid-cols-7 text-center"}>
+        {calender}
+      </div>
+    </div>
+  );
 }
 
 function DateRangePicker(
@@ -239,8 +373,8 @@ function DateRangePicker(
     return (
       yearRelative === 0 ?
         (monthRelative === 0 ?
-            (date < fromValue.getDate() ?
-                -1 : 1
+            (date == fromValue.getDate() ? 0 :
+                date < fromValue.getDate() ? -1 : 1
             ) : monthRelative
         ) : yearRelative);
   }
@@ -259,8 +393,8 @@ function DateRangePicker(
     return (
       yearRelative === 0 ?
         (monthRelative === 0 ?
-            (date < toValue.getDate() ?
-                -1 : 1
+            (date == toValue.getDate() ? 0 :
+                date < toValue.getDate() ? -1 : 1
             ) : monthRelative
         ) : yearRelative);
   }
@@ -322,11 +456,11 @@ function DateRangePicker(
   if (fromRelative !== null && toRelative !== null && fromRelative === 1 && toRelative <= 0) isInRange = true;
 
   for (let i = 1; i <= daysOfMonth; i++) {
-    let daySpecificClass = '';
+    let daySpecificClass = "";
 
-    if (dayCounter === 0) daySpecificClass = ' text-red-700';
-    else if (dayCounter === 6) daySpecificClass = ' text-blue-800';
-    else daySpecificClass = ' text-neutral-800'
+    if (dayCounter === 0) daySpecificClass = " text-red-700";
+    else if (dayCounter === 6) daySpecificClass = " text-blue-800";
+    else daySpecificClass = " text-neutral-800"
 
     const isFrom = fromSelected && (currentYear === fromValue.getFullYear() && currentMonth === fromValue.getMonth() + 1 && i === fromValue.getDate());
     const isTo = toSelected && (currentYear === toValue.getFullYear() && currentMonth === toValue.getMonth() + 1 && i === toValue.getDate());
@@ -334,13 +468,13 @@ function DateRangePicker(
     if (isFrom && !isTo) {
       calender.push(
         <div
-          className={'my-1 bg-linear-to-r from-transparent from-50% via-blue-200 via-50% to-blue-100'}
-          key={i}
+          className={"my-1 bg-linear-to-r from-transparent from-50% via-blue-200 via-50% to-blue-100"}
+          key={currentMonth + "-" + i}
         >
           <button
             className={
-              'w-[32px] p-1 mx-auto rounded-full ' +
-              'bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer' +
+              "w-[32px] p-1 mx-auto rounded-full " +
+              "bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer" +
               daySpecificClass
             }
             onClick={() => selectDay(i)}
@@ -352,13 +486,13 @@ function DateRangePicker(
     } else if (!isFrom && isTo) {
       calender.push(
         <div
-          className={'my-1 bg-linear-to-r from-blue-100 via-blue-200 via-50% to-transparent to-50%'}
-          key={i}
+          className={"my-1 bg-linear-to-r from-blue-100 via-blue-200 via-50% to-transparent to-50%"}
+          key={currentMonth + "-" + i}
         >
           <button
             className={
-              'w-[32px] p-1 mx-auto rounded-full ' +
-              'bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer' +
+              "w-[32px] p-1 mx-auto rounded-full " +
+              "bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer" +
               daySpecificClass
             }
             onClick={() => selectDay(i)}
@@ -370,13 +504,13 @@ function DateRangePicker(
     } else if (isFrom && isTo) {
       calender.push(
         <div
-          className={'my-1'}
-          key={i}
+          className={"my-1"}
+          key={currentMonth + "-" + i}
         >
           <button
             className={
-              'w-[32px] p-1 mx-auto rounded-full ' +
-              'bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer' +
+              "w-[32px] p-1 mx-auto rounded-full " +
+              "bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer" +
               daySpecificClass
             }
             onClick={() => selectDay(i)}
@@ -387,13 +521,13 @@ function DateRangePicker(
     } else if (isInRange) {
       calender.push(
         <div
-          className={'my-1 bg-blue-100'}
-          key={i}
+          className={"my-1 bg-blue-100"}
+          key={currentMonth + "-" + i}
         >
           <button
             className={
-              'w-[32px] p-1 mx-auto rounded-full ' +
-              'hover:bg-blue-200 transition-colors cursor-pointer' +
+              "w-[32px] p-1 mx-auto rounded-full " +
+              "hover:bg-blue-200 transition-colors cursor-pointer" +
               daySpecificClass
             }
             onClick={() => selectDay(i)}
@@ -404,13 +538,13 @@ function DateRangePicker(
     } else {
       calender.push(
         <div
-          className={'my-1'}
-          key={i}
+          className={"my-1"}
+          key={currentMonth + "-" + i}
         >
           <button
             className={
-              'w-[32px] p-1 mx-auto rounded-full ' +
-              'hover:bg-neutral-200 transition-colors cursor-pointer' +
+              "w-[32px] p-1 mx-auto rounded-full " +
+              "hover:bg-neutral-200 transition-colors cursor-pointer" +
               daySpecificClass
             }
             onClick={() => selectDay(i)}
@@ -425,13 +559,13 @@ function DateRangePicker(
 
   return (
     <div className={className}>
-      <div className={'flex justify-between mb-2'}>
-        <p className={'font-medium text-lg'}>{currentYear}년 {currentMonth}월</p>
-        <div className={'flex justify-between items-center gap-3'}>
+      <div className={"flex justify-between mb-2"}>
+        <p className={"font-medium text-lg"}>{currentYear}년 {currentMonth}월</p>
+        <div className={"flex justify-between items-center gap-3"}>
           <button
             className={
-              'fill-neutral-600 w-[34px] aspect-square p-2 rounded-full ' +
-              'cursor-pointer hover:bg-neutral-200 transition-colors'
+              "fill-neutral-600 w-[34px] aspect-square p-2 rounded-full " +
+              "cursor-pointer hover:bg-neutral-200 transition-colors"
             }
             onClick={lastMonth}
           >
@@ -439,8 +573,8 @@ function DateRangePicker(
           </button>
           <button
             className={
-              'fill-neutral-600 w-[34px] aspect-square p-2 rounded-full ' +
-              'cursor-pointer hover:bg-neutral-200 transition-colors'
+              "fill-neutral-600 w-[34px] aspect-square p-2 rounded-full " +
+              "cursor-pointer hover:bg-neutral-200 transition-colors"
             }
             onClick={nextMonth}
           >
@@ -448,7 +582,7 @@ function DateRangePicker(
           </button>
         </div>
       </div>
-      <div className={'flex justify-around mb-2 font-medium'}>
+      <div className={"flex justify-around mb-2 font-medium"}>
         <p>일</p>
         <p>월</p>
         <p>화</p>
@@ -457,7 +591,7 @@ function DateRangePicker(
         <p>금</p>
         <p>토</p>
       </div>
-      <div className={'grid grid-cols-7 text-center'}>
+      <div className={"grid grid-cols-7 text-center"}>
         {calender}
       </div>
     </div>

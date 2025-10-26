@@ -15,8 +15,8 @@ from app.schemas.recommendation.theme_reqs import ThemeSearchQuery, SetTheme
 log = logging.getLogger(__name__)
 
 router = APIRouter(
-  prefix='/api/v1/recommendation/theme',
-  tags=['preference']
+  prefix="/api/v1/recommendation/theme",
+  tags=["preference"]
 )
 
 
@@ -38,9 +38,9 @@ def list_themes(
   return JSONResponse(
     status_code=200,
     content={
-      'code': 200,
-      'status': 'OK',
-      'themes': themes
+      "code": 200,
+      "status": "OK",
+      "themes": themes
     }
   )
 
@@ -63,8 +63,8 @@ def set_theme(
   return JSONResponse(
     status_code=200,
     content={
-      'code': 200,
-      'status': 'OK',
-      'theme': new_theme.model_dump()
+      "code": 200,
+      "status": "OK",
+      "theme": new_theme.model_dump()
     }
   )

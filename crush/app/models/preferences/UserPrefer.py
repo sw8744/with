@@ -16,7 +16,7 @@ class UserPrefer(BaseTable):
     "schema": "preferences"
   }
 
-  user_id: Mapped[uuid.UUID] = Column(UUID(as_uuid=True), ForeignKey('users.identities.uid'), primary_key=True,
+  user_id: Mapped[uuid.UUID] = Column(UUID(as_uuid=True), ForeignKey("users.identities.uid"), primary_key=True,
                                       nullable=False, unique=True)
   prefer: Mapped[NDArray[np.float32]] = Column(Vector(100), nullable=False)
 

@@ -6,7 +6,7 @@ import RegionSelector from "./RegionSelector.tsx";
 import ThemeSelector from "./ThemeSelector.tsx";
 import PlaceSelector from "./PlaceSelector.tsx";
 import {useDispatch} from "react-redux";
-import {plannerAction} from "../../core/redux/PlanReducer.ts";
+import {plannerAction} from "../../core/redux/PlannerReducer.ts";
 import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {PageStepperMotion} from "../../core/motionVariants.ts";
 import GeneratePlan from "./GeneratePlan.tsx";
@@ -30,11 +30,11 @@ function CorePlanner() {
   }
 
   const stepHeaders = [
-    '누구랑 같이 놀아볼까요?',
-    '어디로 놀러갈까요?',
-    '언제 놀러가는게 좋을까요?',
-    '어떤 분위기로 놀아볼까요?',
-    '이런 곳은 어떤가요?'
+    "누구랑 같이 놀아볼까요?",
+    "어디로 놀러갈까요?",
+    "언제 놀러가는게 좋을까요?",
+    "어떤 분위기로 놀아볼까요?",
+    "이런 곳은 어떤가요?"
   ]
 
   const dispatch = useDispatch();
@@ -43,27 +43,27 @@ function CorePlanner() {
     dispatch(plannerAction.clear());
 
     dispatch(plannerAction.setMember([{
-      name: myName ?? '나',
-      uid: myUuid ?? ''
+      name: myName ?? "나",
+      uid: myUuid ?? ""
     }]));
   }, [dispatch, myName, myUuid]);
 
   return (
     <>
-      <div className={'w-screen absolute left-0 top-0 overflow-clip'}>
+      <div className={"w-screen absolute left-0 top-0 overflow-clip"}>
         <motion.div
           className={
-            'w-screen rounded-r-full h-[4px] bg-neutral-700'
+            "w-screen rounded-r-full h-[4px] bg-neutral-700"
           }
           initial={{width: 0}}
           animate={{
-            width: (step * 25.25) + '%',
+            width: (step * 25.25) + "%",
           }}
         />
       </div>
-      <div className={'flex flex-col gap-4 mt-[4px] p-5 h-[calc(100vh-68.74px)]'}>
+      <div className={"flex flex-col gap-4 mt-[4px] p-5 h-[calc(100vh-68.74px)]"}>
         {/* 여기에 initial false 걸면 아래 skeletion animation 고장남 */}
-        <AnimatePresence mode={'wait'} custom={isForward}>
+        <AnimatePresence mode={"wait"} custom={isForward}>
           <motion.div
             key={step}
             custom={isForward}
@@ -71,9 +71,9 @@ function CorePlanner() {
             initial={"initial"}
             animate={"animate"}
             exit={"exit"}
-            className={'h-full flex flex-col gap-4'}
+            className={"h-full flex flex-col gap-4"}
           >
-            <p className={'text-2xl font-bold'}>{stepHeaders[step]}</p>
+            <p className={"text-2xl font-bold"}>{stepHeaders[step]}</p>
             {step === 0 &&
               <PartySelector next={next}/>
             }

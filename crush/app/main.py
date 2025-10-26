@@ -16,7 +16,7 @@ from app.routers.user import register, user
 
 log = logging.getLogger(__name__)
 
-log.info("Environment: %s | Commit#: %s", mode, os.environ['commit'])
+log.info("Environment: %s | Commit#: %s", mode, os.environ["commit"])
 
 app = FastAPI()
 

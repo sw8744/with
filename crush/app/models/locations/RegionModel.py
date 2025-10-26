@@ -22,7 +22,7 @@ class RegionModel(BaseTable):
   thumbnail: Mapped[str] = Column(TEXT)
 
 
-@event.listens_for(RegionModel, 'before_insert')
-@event.listens_for(RegionModel, 'before_update')
+@event.listens_for(RegionModel, "before_insert")
+@event.listens_for(RegionModel, "before_update")
 def region_name_save_umso(mapper, db, target: RegionModel):
   target.name_umso = 풀어쓰기(target.name)

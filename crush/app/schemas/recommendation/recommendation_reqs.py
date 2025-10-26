@@ -7,7 +7,7 @@ class RecommendByUsersParam(BaseModel):
   users: str = Field()
 
   def get_user_uuids(self) -> list[UUID]:
-    uuid_strs = self.users.split('.')
+    uuid_strs = self.users.split(".")
     uuids = []
     for uuid_str in uuid_strs:
       try:
@@ -23,7 +23,7 @@ class RecommendByUserFromRegionParam(BaseModel):
   regions: str = Field()
 
   def get_user_uuids(self) -> list[UUID]:
-    uuid_strs = self.users.split('.')
+    uuid_strs = self.users.split(".")
     uuids = []
     for uuid_str in uuid_strs:
       try:
@@ -34,7 +34,7 @@ class RecommendByUserFromRegionParam(BaseModel):
     return uuids
 
   def get_regions_uuid(self) -> list[UUID]:
-    uuid_strs = self.regions.split('.')
+    uuid_strs = self.regions.split(".")
     uuids = []
     for uuid_str in uuid_strs:
       try:

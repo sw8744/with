@@ -30,12 +30,12 @@ def test_recommendation(
       like_factory(users[i][0], places[j * 3 + i])
 
   resp = client.get(
-    '/api/v1/recommendation/region',
+    "/api/v1/recommendation/region",
     headers={
       "Authorization": f"Bearer {users[0][1]}"
     },
     params={
-      "users": '.'.join([str(user[0].uid) for user in users])
+      "users": ".".join([str(user[0].uid) for user in users])
     }
   )
 
@@ -72,12 +72,12 @@ def test_recommendation_of_not_friend(
       like_factory(users[i][0], places[j * 3 + i])
 
   resp = client.get(
-    '/api/v1/recommendation/region',
+    "/api/v1/recommendation/region",
     headers={
       "Authorization": f"Bearer {users[0][1]}"
     },
     params={
-      "users": '.'.join([str(user[0].uid) for user in users])
+      "users": ".".join([str(user[0].uid) for user in users])
     }
   )
 

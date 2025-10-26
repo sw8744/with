@@ -86,3 +86,47 @@ def create_plan(
   db.commit()
 
   return Plan(new_plan_model)
+
+
+def get_plan(
+  plan_id: UUID,
+  identity_uuid: UUID,
+  db: Session
+) -> dict[str, object]:
+  plan_model = (
+    db.query(PlanModel)
+    .join(PlanMemberModel, PlanModel.uid == PlanMemberModel.plan_id)
+    .filter(
+      PlanModel.uid == plan_id,
+      PlanMemberModel.user_id == identity_uuid
+    )
+    .scalar()
+  )
+
+  print(plan_model)
+  if plan_model is None:
+    log.warning("Plan uid=%r with uid=%r is a member was not found", plan_id, identity_uuid)
+    raise HTTPException(status_code=404, detail="Plan not found")
+
+  members: list[type[PlanMemberModel]] = (
+    db.query(PlanMemberModel)
+    .filter(PlanMemberModel.plan_id == plan_model.uid)
+    .all()
+  )
+
+  return {
+    "uid": str(plan_model.uid),
+    "name": plan_model.name,
+    "date": {
+      "from": plan_model.date_from.isoformat() if plan_model.date_from else None,
+      "to": plan_model.date_to.isoformat() if plan_model.date_to else None
+    },
+    "members": [
+      {
+        "uid": str(member.user_id),
+        "name": member.user.name,
+        "role": member.role.value
+      }
+      for member in members
+    ]
+  }

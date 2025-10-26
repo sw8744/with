@@ -1,63 +1,53 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import type {FriendInformationType} from "../apiResponseInterfaces/relationship.ts";
-import type {Place, Region} from "../model/LocationModels.ts";
-import type {ThemeMapping} from "../model/Theme.ts";
 
-interface PlannerStateType {
-  name: string | null;
-  members: FriendInformationType[];
-  region: Region[];
-  places: Place[];
-  dateFrom: string;
-  dateTo: string;
-  themes: ThemeMapping;
+interface PlanStateType {
+  uid: string
+  name: string;
+  host_id: string;
+  date: {
+    from: string;
+    to: string;
+  };
+  members: Array<{
+    uid: string;
+    name: string;
+    role: number;
+  }>;
 }
 
-const initialState: PlannerStateType = {
+const initialState: PlanStateType = {
+  uid: "",
   name: "",
-  members: [],
-  region: [],
-  places: [],
-  dateFrom: "",
-  dateTo: "",
-  themes: {}
+  host_id: "",
+  date: {
+    from: "",
+    to: ""
+  },
+  members: []
 }
 
-const plannerSlice = createSlice({
-  name: 'plan',
+const planSlice = createSlice({
+  name: "plan",
   initialState,
   reducers: {
-    clear: (state: PlannerStateType) => {
+    clear: (state: PlanStateType) => {
+      state.uid = initialState.uid;
       state.name = initialState.name;
+      state.host_id = initialState.host_id;
+      state.date = initialState.date;
       state.members = initialState.members;
-      state.region = initialState.region;
-      state.places = initialState.places;
-      state.dateFrom = initialState.dateFrom;
-      state.dateTo = initialState.dateTo;
-      state.themes = initialState.themes;
     },
-    setMember: (state: PlannerStateType, action: PayloadAction<FriendInformationType[]>) => {
-      state.members = action.payload;
-    },
-    setRegion: (state: PlannerStateType, action: PayloadAction<Region[]>) => {
-      state.region = action.payload;
-    },
-    setDateFrom: (state: PlannerStateType, action: PayloadAction<string>) => {
-      state.dateFrom = action.payload;
-    },
-    setDateTo: (state: PlannerStateType, action: PayloadAction<string>) => {
-      state.dateTo = action.payload;
-    },
-    setTheme: (state: PlannerStateType, action: PayloadAction<ThemeMapping>) => {
-      state.themes = action.payload;
-    },
-    setPlaces: (state: PlannerStateType, action: PayloadAction<Place[]>) => {
-      state.places = action.payload;
+    init: (state: PlanStateType, action: PayloadAction<PlanStateType>) => {
+      state.uid = action.payload.uid;
+      state.name = action.payload.name;
+      state.host_id = action.payload.host_id;
+      state.date = action.payload.date;
+      state.members = action.payload.members;
     }
   }
 });
 
-export const plannerAction = plannerSlice.actions;
-export default plannerSlice.reducer;
-export type {PlannerStateType};
+export const planActions = planSlice.actions;
+export default planSlice.reducer;
+export type {PlanStateType};
 

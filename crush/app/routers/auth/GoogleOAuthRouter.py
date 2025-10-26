@@ -67,7 +67,7 @@ def callback_authentication(
         "sub": userinfo["sub"]
       }
     })
-    log.info("New google user %s registration session %s was created", userinfo['sub'], sha256(register_session_uuid))
+    log.info("New google user %s registration session %s was created", userinfo["sub"], sha256(register_session_uuid))
 
     response = RedirectResponse("/register/google")
     response.delete_cookie("OAuthState")

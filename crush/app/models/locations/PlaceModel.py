@@ -38,7 +38,7 @@ class PlaceModel(BaseTable):
   )
 
 
-@event.listens_for(PlaceModel, 'before_insert')
-@event.listens_for(PlaceModel, 'before_update')
+@event.listens_for(PlaceModel, "before_insert")
+@event.listens_for(PlaceModel, "before_update")
 def place_name_save_umso(mapper, db, target: PlaceModel):
   target.name_umso = 풀어쓰기(target.name)

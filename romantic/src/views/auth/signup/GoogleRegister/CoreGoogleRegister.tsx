@@ -13,10 +13,10 @@ function CoreGoogleRegister() {
   const [step, setStep] = useState<number>(0);
   const [loadedSession, setLoadedSession] = useState<boolean>(false);
 
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [sex, setSex] = useState<number>(0);
-  const [birthday, setBirthday] = useState<string>('');
+  const [birthday, setBirthday] = useState<string>("");
   const [vEmail, setVEmail] = useState<string | null>(null);
   const [preferVector, setPreferVector] = useState<number[]>([]);
 
@@ -41,7 +41,7 @@ function CoreGoogleRegister() {
     setBlockForm(true);
 
     api.post<userRegisterAPI>(
-      '/user/register',
+      "/user/register",
       {
         name: name,
         email: email,
@@ -50,7 +50,7 @@ function CoreGoogleRegister() {
         prefer: preferVector
       }
     ).then(res => {
-      navigate('/login/set-token?at=' + res.data.jwt);
+      navigate("/login/set-token?at=" + res.data.jwt);
     }).catch(err => {
       if (axios.isAxiosError(err)) {
         const status = err.status;
@@ -78,16 +78,16 @@ function CoreGoogleRegister() {
     <>
       <div>
         <motion.div
-          key={'progress'}
-          className={'absolute top-0 left-0 w-screen rounded-r-full h-[4px] bg-neutral-700'}
+          key={"progress"}
+          className={"absolute top-0 left-0 w-screen rounded-r-full h-[4px] bg-neutral-700"}
           initial={{width: 0}}
           animate={{
-            width: (step * 50.5) + '%',
+            width: (step * 50.5) + "%",
           }}
         />
       </div>
-      <div className={'flex flex-col gap-4 mt-[4px] p-5 h-[calc(100vh-68.74px)]'}>
-        <AnimatePresence mode={'wait'} custom={isForward}>
+      <div className={"flex flex-col gap-4 mt-[4px] p-5 h-[calc(100vh-68.74px)]"}>
+        <AnimatePresence mode={"wait"} custom={isForward}>
           <motion.div
             key={step}
             custom={isForward}
@@ -95,7 +95,7 @@ function CoreGoogleRegister() {
             initial={"initial"}
             animate={"animate"}
             exit={"exit"}
-            className={'h-full flex flex-col gap-4'}
+            className={"h-full flex flex-col gap-4"}
           >
             {step === 0 &&
               <GoogleRegister

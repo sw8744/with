@@ -1,4 +1,5 @@
 import logging
+from uuid import UUID
 
 from fastapi import APIRouter
 from fastapi.params import Security, Depends
@@ -20,7 +21,7 @@ router = APIRouter(
 
 
 @router.post(
-  path=''
+  path=""
 )
 def add_plan(
   req: AddPlanRequest,
@@ -30,9 +31,9 @@ def add_plan(
   token = authorize_jwt(jwt)
   require_role(token, Role.CORE_USER)
 
-  log.info(f'Adding plan. new_plan=[%s]', req)
+  log.info("Adding plan. new_plan=[%s]", req)
   new_plan = core_plan.create_plan(get_sub(token), req, db)
-  log.info(f'New plan uid=%r, name=%r was committed', new_plan.uid, new_plan.name)
+  log.info("New plan uid=%r, name=%r was committed", new_plan.uid, new_plan.name)
 
   return JSONResponse(
     status_code=201,
@@ -40,5 +41,30 @@ def add_plan(
       "code": 201,
       "status": "CREATED",
       "plan": new_plan.model_dump()
+    }
+  )
+
+
+@router.get(
+  path="/{plan_id}"
+)
+def get_plan(
+  plan_id: UUID,
+  jwt: str = Security(authorization_header),
+  db: Session = Depends(create_connection)
+):
+  token = authorize_jwt(jwt)
+  require_role(token, Role.CORE_USER)
+
+  log.info("Searching plan. plan_id=[%s]", plan_id)
+  plan = core_plan.get_plan(plan_id, get_sub(token), db)
+  log.info("Found plan uid=%r, name=%r", plan.get("uid"), plan.get("name"))
+
+  return JSONResponse(
+    status_code=200,
+    content={
+      "code": 200,
+      "status": "OK",
+      "plan": plan
     }
   )

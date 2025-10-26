@@ -23,8 +23,8 @@ function Dialog(
       {show &&
         <motion.div
           className={
-            'w-screen h-screen absolute left-0 top-0 z-50 ' +
-            'bg-[#0008] flex flex-col justify-end'
+            "w-full h-screen absolute left-0 top-0 z-50 " +
+            "bg-[#0008] flex flex-col justify-end"
           }
           initial={{
             opacity: 0,
@@ -37,13 +37,13 @@ function Dialog(
           }}
           transition={{
             duration: 0.2,
-            ease: 'easeInOut'
+            ease: "easeInOut"
           }}
           onClick={whenBackgroundClicked}
         >
           <motion.div
             initial={{
-              translateY: '100%'
+              translateY: "100%"
             }}
             animate={{
               translateY: 0
@@ -53,9 +53,9 @@ function Dialog(
             }}
             transition={{
               duration: 0.2,
-              ease: 'easeInOut'
+              ease: "easeInOut"
             }}
-            className={'px-5 py-3 max-w-[500px] w-full mx-auto rounded-t-2xl flex flex-col gap-3 bg-light'}
+            className={"px-5 py-3 max-w-[500px] w-full mx-auto rounded-t-2xl flex flex-col gap-3 bg-light"}
             onClick={e => e.stopPropagation()}
           >
             {children}

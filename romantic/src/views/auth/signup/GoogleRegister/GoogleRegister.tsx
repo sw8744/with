@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {DatePicker, Select, TextInput} from "../../../elements/Inputs.tsx";
 import {Form, FormGroup} from "../../../elements/Form.tsx";
 import {Button} from "../../../elements/Buttons.tsx";
-import {useNavigate} from 'react-router-dom'
+import {useNavigate} from "react-router-dom"
 import {CheckmarkFillIcon, XMarkIcon} from "../../../../assets/svgs/svgs.ts";
 import {check, lengthCheck, rangeCheck, regexCheck, verifyAll} from "../../../../core/validation.ts";
 import type {authOAuthGoogleRegisterInfoAPI} from "../../../../core/apiResponseInterfaces/register.ts";
@@ -59,64 +59,64 @@ function GoogleRegister(
     if (loadedSession) return;
 
     api.get<authOAuthGoogleRegisterInfoAPI>(
-      '/auth/oauth/google/register-info'
+      "/auth/oauth/google/register-info"
     ).then(res => {
       const data = res.data;
 
-      if (data.content.auth.type != 'google') {
-        navigate('/login');
+      if (data.content.auth.type != "google") {
+        navigate("/login");
         return;
       }
 
-      setName(data.content.name ?? '');
-      setEmail(data.content.email ?? '');
+      setName(data.content.name ?? "");
+      setEmail(data.content.email ?? "");
 
       if (data.content.email_verified) setVEmail(data.content.email ?? null);
       setLoadedSession(true);
     }).catch(() => {
-      navigate('/login');
+      navigate("/login");
     });
   }, []);
 
-  let emailVerified = <XMarkIcon height={20} className={'mt-[-4px] fill-red-600'} title={'확인되지 않은 이메일입니다'}/>;
+  let emailVerified = <XMarkIcon height={20} className={"mt-[-4px] fill-red-600"} title={"확인되지 않은 이메일입니다"}/>;
   if (vEmail == email) {
-    emailVerified = <CheckmarkFillIcon height={20} className={'mt-[-4px] fill-green-600'} title={'확인된 이메일입니다'}/>;
+    emailVerified = <CheckmarkFillIcon height={20} className={"mt-[-4px] fill-green-600"} title={"확인된 이메일입니다"}/>;
   }
 
   return (
-    <div className={'h-full flex flex-col gap-4'}>
-      <p className={'text-2xl text-center font-bold'}>WITH 시작하기</p>
+    <div className={"h-full flex flex-col gap-4"}>
+      <p className={"text-2xl text-center font-bold"}>WITH 시작하기</p>
 
-      <Form className={'flex-grow'}>
-        <FormGroup name={'이름'}>
+      <Form className={"flex-grow"}>
+        <FormGroup name={"이름"}>
           <TextInput
             value={name}
             setter={setName}
-            placeholder={'이름'}
-            autocomplete={'name'}
+            placeholder={"이름"}
+            autocomplete={"name"}
             disabled={blockForm}
             error={check(formState, 0)}
           />
         </FormGroup>
 
         <FormGroup
-          name={'이메일'}
+          name={"이메일"}
           sidecar={emailVerified}
         >
           <TextInput
             value={email}
             setter={setEmail}
-            placeholder={'이메일'}
-            autocomplete={'email'}
+            placeholder={"이메일"}
+            autocomplete={"email"}
             disabled={blockForm}
             error={check(formState, 1) || check(formState, 3)}
           />
         </FormGroup>
 
-        <FormGroup name={'성별'}>
+        <FormGroup name={"성별"}>
           <Select
             keys={[0, 1, 2, 3]}
-            options={['성별', '남성', '여성', '기타']}
+            options={["성별", "남성", "여성", "기타"]}
             placeholder
             value={sex}
             setter={setSex}
@@ -125,7 +125,7 @@ function GoogleRegister(
           />
         </FormGroup>
 
-        <FormGroup name={'생일'}>
+        <FormGroup name={"생일"}>
           <DatePicker
             value={birthday}
             setter={setBirthday}
@@ -135,7 +135,7 @@ function GoogleRegister(
         </FormGroup>
       </Form>
 
-      <div className={'w-full flex justify-end'}>
+      <div className={"w-full flex justify-end"}>
         <Button onClick={nextValidation} disabled={blockForm}>다음</Button>
       </div>
     </div>

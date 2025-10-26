@@ -18,39 +18,39 @@ import CorePlan from "./plan/CorePlan.tsx";
 function App() {
   return (
     <BrowserRouter>
-      <main className={'w-full sm:w-3/4 md:w-1/2 xl:w-[35%] mx-auto mb-[64.74px]'}>
+      <main className={"w-full sm:w-3/4 md:w-1/2 xl:w-[35%] mx-auto mb-[64.74px]"}>
         <Routes>
-          <Route path={'/location'} element={<CoreLocation/>}>
-            <Route path={''} element={<Locations/>}/>
-            <Route path={'region/:regionUID'} element={<RegionShowcase/>}/>
-            <Route path={'place/:placeUID'} element={<PlaceShowcase/>}/>
+          <Route path={"/location"} element={<CoreLocation/>}>
+            <Route path={""} element={<Locations/>}/>
+            <Route path={"region/:regionUID"} element={<RegionShowcase/>}/>
+            <Route path={"place/:placeUID"} element={<PlaceShowcase/>}/>
           </Route>
 
           <Route
-            path={'/profile'}
+            path={"/profile"}
             element={<CoreProfile/>}
           >
-            <Route path={''} element={<MyPosts/>}/>
-            <Route path={'liked'} element={<LikedPlaces/>}/>
-            <Route path={'trips'} element={<MyTrips/>}/>
+            <Route path={""} element={<MyPosts/>}/>
+            <Route path={"liked"} element={<LikedPlaces/>}/>
+            <Route path={"trips"} element={<MyTrips/>}/>
           </Route>
 
-          <Route path={'/plan'}>
-            <Route path={''} element={<CorePlanner/>}/>
-            <Route path={':planUUID'} element={<CorePlan/>}/>
+          <Route path={"/plan"}>
+            <Route path={""} element={<CorePlanner/>}/>
+            <Route path={":planUUID/*"} element={<CorePlan/>}/>
           </Route>
 
           <Route
-            path={'/register/google'}
+            path={"/register/google"}
             element={<CoreGoogleRegister/>}
           />
 
           <Route
-            path={'/login'}
+            path={"/login"}
             element={<CoreLogin/>}
           />
           <Route
-            path={'/login/set-token'}
+            path={"/login/set-token"}
             element={<SetJwt/>}
           />
         </Routes>

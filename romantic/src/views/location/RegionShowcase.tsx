@@ -24,15 +24,15 @@ function ThemeTag(
     <span
       style={{
         backgroundColor: props.color,
-        color: props.textColor ?? '#0C0C0C',
+        color: props.textColor ?? "#0C0C0C",
       }}
-      className={'rounded-lg px-2 py-1'}
+      className={"rounded-lg px-2 py-1"}
     >{props.emogi} {props.name}</span>
   )
 }
 
 function RegionShowcase() {
-  const regionUid = useParams()['regionUID'];
+  const regionUid = useParams()["regionUID"];
 
   const [regionInfo, setRegionInfo] = useState<Region>();
   const [places, setPlaces] = useState<Place[]>([]);
@@ -47,7 +47,7 @@ function RegionShowcase() {
     (async () => {
       const regionResp =
         await apiAuth.get<locationRegionAPI>(
-          '/location/region',
+          "/location/region",
           {
             params: {
               uid: regionUid
@@ -62,7 +62,7 @@ function RegionShowcase() {
 
       const placeResp =
         await apiAuth.get<locationPlaceAPI>(
-          '/location/place',
+          "/location/place",
           {
             params: {
               regionUid: regionUid
@@ -86,20 +86,20 @@ function RegionShowcase() {
     <>
       <img
         src={tUrl}
-        className={'mb-10 w-full shadow'}
+        className={"mb-10 w-full shadow"}
       />
 
-      <div className={'flex flex-col justify-baseline items-center gap-3'}>
-        <p className={'text-3xl font-extrabold'}>{regionInfo?.name}</p>
-        <p className={'text-lg font-medium'}>{regionInfo?.description}</p>
-        <div className={'flex justify-center items-center gap-2'}>
-          <ThemeTag emogi={'❤️'} name={'연인'} color={'#ffc1cc'}/>
-          <ThemeTag emogi={'🔥'} name={'청춘'} color={'#ffc1cc'}/>
+      <div className={"flex flex-col justify-baseline items-center gap-3"}>
+        <p className={"text-3xl font-extrabold"}>{regionInfo?.name}</p>
+        <p className={"text-lg font-medium"}>{regionInfo?.description}</p>
+        <div className={"flex justify-center items-center gap-2"}>
+          <ThemeTag emogi={"❤️"} name={"연인"} color={"#ffc1cc"}/>
+          <ThemeTag emogi={"🔥"} name={"청춘"} color={"#ffc1cc"}/>
         </div>
       </div>
 
 
-      <div className={'flex flex-col justify-baseline items-center gap-4 mx-5 my-5'}>
+      <div className={"flex flex-col justify-baseline items-center gap-4 mx-5 my-5"}>
         {places.map((place, index) => (
           <PlaceArea
             key={index}
@@ -115,16 +115,16 @@ function RegionShowcaseSkeleton() {
   return (
     <SkeletonFrame>
       <SkeletonUnit>
-        <SkeletonElement className={'w-full mb-10 aspect-video'} unit/>
+        <SkeletonElement className={"w-full mb-10 aspect-video"} unit/>
       </SkeletonUnit>
 
-      <div className={'flex flex-col justify-baseline items-center gap-3'}>
+      <div className={"flex flex-col justify-baseline items-center gap-3"}>
         <SkeletonElement expH={36} expW={100} unit/>
-        <SkeletonElement expH={28} expW={220} className={'max-w-[50%]'} unit/>
-        <SkeletonElement expH={32} expW={500} className={'max-w-[70%]'} unit/>
+        <SkeletonElement expH={28} expW={220} className={"max-w-[50%]"} unit/>
+        <SkeletonElement expH={32} expW={500} className={"max-w-[70%]"} unit/>
       </div>
 
-      <div className={'flex flex-col justify-baseline items-center gap-4 mx-5 my-5'}>
+      <div className={"flex flex-col justify-baseline items-center gap-4 mx-5 my-5"}>
         <PlaceAreaSkeleton/>
         <PlaceAreaSkeleton/>
       </div>

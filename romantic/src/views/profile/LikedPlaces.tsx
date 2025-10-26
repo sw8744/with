@@ -13,7 +13,7 @@ function LikedPlaces() {
 
   useEffect(() => {
     apiAuth.get<interactionLikes>(
-      '/interaction/like'
+      "/interaction/like"
     ).then(res => {
       setLikedPlaces(res.data.likes);
       setPageState(PageState.NORMAL);
@@ -30,7 +30,7 @@ function LikedPlaces() {
   }
 
   return (
-    <div className={'flex flex-col gap-y-4'}>
+    <div className={"flex flex-col gap-y-4"}>
       {likedPlaces.map((place: Place, index: number) => {
         return <PlaceArea
           key={index}
@@ -44,7 +44,7 @@ function LikedPlaces() {
 function LikedPlaceSkeleton() {
   return (
     <SkeletonFrame>
-      <div className={'flex flex-col gap-y-4'}>
+      <div className={"flex flex-col gap-y-4"}>
         <PlaceAreaSkeleton/>
         <PlaceAreaSkeleton/>
         <PlaceAreaSkeleton/>

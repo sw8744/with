@@ -10,7 +10,7 @@ const frameMotionVariants = {
     transition: {
       duration: 0.2,
       delayChildren: stagger(0.1),
-      when: 'beforeChildren'
+      when: "beforeChildren"
     }
   }
 }
@@ -24,8 +24,8 @@ const unitMotionVariants = {
     transition: {
       duration: 0.7,
       repeat: Infinity,
-      repeatType: 'reverse',
-      ease: 'easeInOut'
+      repeatType: "reverse",
+      ease: "easeInOut"
     }
   }
 }
@@ -35,13 +35,13 @@ function SkeletonFrame(
 ) {
   return (
     <motion.div
-      key={'loading-skeleton'}
-      layout={'position'}
+      key={"loading-skeleton"}
+      layout={"position"}
       role="status"
-      className={className ?? ''}
+      className={className ?? ""}
       variants={frameMotionVariants}
-      initial={'hidden'}
-      animate={'visible'}
+      initial={"hidden"}
+      animate={"visible"}
     >
       {children}
       {!noCaption && <span className="sr-only">로딩중</span>}
@@ -57,7 +57,7 @@ function SkeletonUnit(
 ) {
   return (
     <motion.div
-      className={className ? ' ' + className : ''}
+      className={className ? " " + className : ""}
       variants={unitMotionVariants}
     >
       {children}
@@ -76,7 +76,7 @@ function SkeletonElement(
   if (unit) {
     return (
       <motion.div
-        className={'bg-neutral-300' + (className ? ' ' + className : '')}
+        className={"bg-neutral-300" + (className ? " " + className : "")}
         style={{
           width: expW,
           height: expH
@@ -88,7 +88,7 @@ function SkeletonElement(
 
   return (
     <div
-      className={'bg-neutral-300' + (className ? ' ' + className : '')}
+      className={"bg-neutral-300" + (className ? " " + className : "")}
       style={{
         width: expW,
         height: expH

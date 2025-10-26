@@ -85,9 +85,9 @@ def search_place(
       log.debug("Added address %s filter for place search", q.address)
       query = query.filter(PlaceModel.address.like("%" + q.address + "%"))
 
-    if q.metadata != '':
-      meta_pairs = q.metadata.split(',')
-      meta = [meta_pair.split('=') for meta_pair in meta_pairs]
+    if q.metadata != "":
+      meta_pairs = q.metadata.split(",")
+      meta = [meta_pair.split("=") for meta_pair in meta_pairs]
       for mdata in meta:
         key, value = mdata[0], mdata[1]
         mtype = ALLOWED_QUERY.get(key, None)

@@ -8,7 +8,7 @@ import ThemeTag from "../elements/theme/ThemeTag.tsx";
 import {AnimatePresence, motion} from "framer-motion";
 import {number} from "motion";
 import {useAppDispatch, useAppSelector} from "../../core/hook/ReduxHooks.ts";
-import {plannerAction} from "../../core/redux/PlanReducer.ts";
+import {plannerAction} from "../../core/redux/PlannerReducer.ts";
 import {PageError} from "../error/ErrorPage.tsx";
 import Spinner from "../elements/Spinner.tsx";
 
@@ -66,7 +66,7 @@ function ThemeSelector(
         type: "spring", stiffness: 400, damping: 30
       },
       duration: 0.5,
-      ease: 'easeInOut'
+      ease: "easeInOut"
     }
   }
   const SelectedThemeTags: ReactElement[] = [];
@@ -77,9 +77,9 @@ function ThemeSelector(
     ThemeTags.push(
       <motion.button
         key={uid}
-        layout={'position'}
+        layout={"position"}
         variants={themeTagMotionVariants}
-        className={'my-1 cursor-pointer'}
+        className={"my-1 cursor-pointer"}
         onClick={() => toggleThemeSelection(number.parse(uid))}
       >
         <ThemeTag key={uid} theme={theme}/>
@@ -92,7 +92,7 @@ function ThemeSelector(
         key={uid}
         layout={"position"}
         variants={themeTagMotionVariants}
-        className={'my-1 cursor-pointer'}
+        className={"my-1 cursor-pointer"}
         onClick={() => toggleThemeSelection(number.parse(uid))}
       >
         <ThemeTag key={uid} theme={theme}/>
@@ -108,20 +108,20 @@ function ThemeSelector(
 
   return (
     <>
-      <div className={'h-full'}>
-        <AnimatePresence mode={'popLayout'}>
+      <div className={"h-full"}>
+        <AnimatePresence mode={"popLayout"}>
           {SelectedThemeTags.length !== 0 &&
-            <div className={'flex flex-wrap gap-2 my-2 pb-2 border-b border-neutral-400'}>
+            <div className={"flex flex-wrap gap-2 my-2 pb-2 border-b border-neutral-400"}>
               {SelectedThemeTags}
             </div>
           }
-          <div className={'flex flex-wrap gap-2 my-2'}>
+          <div className={"flex flex-wrap gap-2 my-2"}>
             {ThemeTags}
           </div>
         </AnimatePresence>
       </div>
       <div>
-        <div className={'flex justify-between'}>
+        <div className={"flex justify-between"}>
           <Button onClick={prev}>이전</Button>
           <Button onClick={next}>다음</Button>
         </div>

@@ -29,7 +29,7 @@ def test_plan_addition(
   response = client.post(
     "/api/v1/plan",
     headers={
-      'Authorization': f'Bearer {h_at}'
+      "Authorization": f"Bearer {h_at}"
     },
     content=json.dumps({
       "name": "TestPlan",
@@ -54,15 +54,15 @@ def test_plan_addition(
   )
 
   assert response.status_code == 201
-  assert response.json()['code'] == 201
-  assert response.json()['status'] == "CREATED"
-  assert response.json()['plan']['uid'] is not None
-  assert response.json()['plan']['name'] == "TestPlan"
-  assert response.json()['plan']['host_id'] == str(h.uid)
-  assert response.json()['plan']['date_from'] == date_from[:11] + '00:00:00'
-  assert response.json()['plan']['date_to'] == date_to[:11] + '00:00:00'
+  assert response.json()["code"] == 201
+  assert response.json()["status"] == "CREATED"
+  assert response.json()["plan"]["uid"] is not None
+  assert response.json()["plan"]["name"] == "TestPlan"
+  assert response.json()["plan"]["host_id"] == str(h.uid)
+  assert response.json()["plan"]["date_from"] == date_from[:11] + "00:00:00"
+  assert response.json()["plan"]["date_to"] == date_to[:11] + "00:00:00"
 
-  new_plan = db.query(PlanModel).filter(PlanModel.uid == response.json()['plan']['uid']).scalar()
+  new_plan = db.query(PlanModel).filter(PlanModel.uid == response.json()["plan"]["uid"]).scalar()
   assert new_plan is not None
 
   db.delete(new_plan)
@@ -88,7 +88,7 @@ def test_plan_addition_host_duplicated(
   response = client.post(
     "/api/v1/plan",
     headers={
-      'Authorization': f'Bearer {h_at}'
+      "Authorization": f"Bearer {h_at}"
     },
     content=json.dumps({
       "name": "TestPlan",
@@ -114,9 +114,9 @@ def test_plan_addition_host_duplicated(
   )
 
   assert response.status_code == 400
-  assert response.json()['code'] == 400
-  assert response.json()['status'] == "Bad Request"
-  assert response.json()['message'] == "Host cannot be a member"
+  assert response.json()["code"] == 400
+  assert response.json()["status"] == "Bad Request"
+  assert response.json()["message"] == "Host cannot be a member"
 
 
 def test_plan_addition_imaginary_region(
@@ -136,7 +136,7 @@ def test_plan_addition_imaginary_region(
   response = client.post(
     "/api/v1/plan",
     headers={
-      'Authorization': f'Bearer {h_at}'
+      "Authorization": f"Bearer {h_at}"
     },
     content=json.dumps({
       "name": "TestPlan",
@@ -156,6 +156,6 @@ def test_plan_addition_imaginary_region(
   )
 
   assert response.status_code == 400
-  assert response.json()['code'] == 400
-  assert response.json()['status'] == "Bad Request"
-  assert response.json()['message'] == "Region was does not found"
+  assert response.json()["code"] == 400
+  assert response.json()["status"] == "Bad Request"
+  assert response.json()["message"] == "Region was does not found"

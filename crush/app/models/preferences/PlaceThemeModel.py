@@ -10,12 +10,12 @@ from app.schemas.location.place import Place
 
 
 class PlaceThemeModel(BaseTable):
-  __tablename__ = 'place_theme'
+  __tablename__ = "place_theme"
   __table_args__ = {
     "schema": "preferences"
   }
 
-  place_id: Mapped[UUID] = Column(UUID(as_uuid=True), ForeignKey('locations.places.uid'), primary_key=True,
+  place_id: Mapped[UUID] = Column(UUID(as_uuid=True), ForeignKey("locations.places.uid"), primary_key=True,
                                   nullable=False, unique=True)
   theme: Mapped[NDArray[np.float32]] = Column(Vector(100), nullable=False)
 

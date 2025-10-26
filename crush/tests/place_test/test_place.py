@@ -38,7 +38,7 @@ def test_place_creation(
   response = client.post(
     "/api/v1/location/place",
     headers={
-      'Authorization': f'Bearer {i_at}'
+      "Authorization": f"Bearer {i_at}"
     },
     content=json.dumps({
       "name": "4233마음센터 연남점",
@@ -115,7 +115,7 @@ def test_place_creation_without_role(
   response = client.post(
     "/api/v1/location/place",
     headers={
-      'Authorization': f'Bearer {i_at}'
+      "Authorization": f"Bearer {i_at}"
     },
     content=json.dumps({
       "name": "4233마음센터 연남점",
@@ -149,7 +149,7 @@ def test_place_read_by_name(
   response = client.get(
     "/api/v1/location/place",
     headers={
-      'Authorization': f'Bearer {i_at}'
+      "Authorization": f"Bearer {i_at}"
     },
     params={
       "name": "ㅣ역0장소0"
@@ -168,7 +168,7 @@ def test_place_read_by_address(
   response = client.get(
     "/api/v1/location/place",
     headers={
-      'Authorization': f'Bearer {i_at}'
+      "Authorization": f"Bearer {i_at}"
     },
     params={
       "address": "주소-지역0장소0"
@@ -187,7 +187,7 @@ def test_place_read_by_region(
   response = client.get(
     "/api/v1/location/place",
     headers={
-      'Authorization': f'Bearer {i_at}'
+      "Authorization": f"Bearer {i_at}"
     },
     params={
       "regionUid": str(places[0].region_uid)
@@ -209,7 +209,7 @@ def test_place_read_by_metadata(
   response = client.get(
     "/api/v1/location/place",
     headers={
-      'Authorization': f'Bearer {i_at}'
+      "Authorization": f"Bearer {i_at}"
     },
     params={
       "metadata": "reservation.required=true,operation.parking=true"
@@ -228,7 +228,7 @@ def test_place_read_limit(
   response = client.get(
     "/api/v1/location/place",
     headers={
-      'Authorization': f'Bearer {i_at}'
+      "Authorization": f"Bearer {i_at}"
     },
     params={
       "name": "지역0",
@@ -250,7 +250,7 @@ def test_place_search_nothing(
   response = client.get(
     "/api/v1/location/place",
     headers={
-      'Authorization': f'Bearer {i_at}'
+      "Authorization": f"Bearer {i_at}"
     },
     params={
       "name": "메가박스"
@@ -272,7 +272,7 @@ def test_place_search_nothing_from_param(
   response = client.get(
     "/api/v1/location/place",
     headers={
-      'Authorization': f'Bearer {i_at}'
+      "Authorization": f"Bearer {i_at}"
     },
     params={
       "metadata": "contact.instagram=username"
@@ -301,7 +301,7 @@ def test_place_patch(
   response = client.patch(
     "/api/v1/location/place/" + str(places[0].uid),
     headers={
-      'Authorization': f'Bearer {i_at}'
+      "Authorization": f"Bearer {i_at}"
     },
     content=json.dumps({
       "name": "케이팝 스퀘어 홍대",
@@ -354,7 +354,7 @@ def test_patch_null_region(
   response = client.patch(
     "/api/v1/location/place/a2ffae9b-04be-4b29-a529-aa4e55146cc4",
     headers={
-      'Authorization': f'Bearer {i_at}'
+      "Authorization": f"Bearer {i_at}"
     },
     content=json.dumps({
       "name": "룸이스케이프 홍대"
@@ -374,7 +374,7 @@ def test_place_patch_without_role(
   response = client.patch(
     "/api/v1/location/place/" + str(places[0].uid),
     headers={
-      'Authorization': f'Bearer {i_at}'
+      "Authorization": f"Bearer {i_at}"
     },
     content=json.dumps({
       "name": "케이팝 스퀘어 홍대",
@@ -405,7 +405,7 @@ def test_place_delete(
   response = client.delete(
     "/api/v1/location/place/" + str(places[0].uid),
     headers={
-      'Authorization': f'Bearer {i_at}'
+      "Authorization": f"Bearer {i_at}"
     }
   )
 
@@ -424,7 +424,7 @@ def test_place_delete_null(
   response = client.delete(
     "/api/v1/location/place/a2ffae9b-04be-4b29-a529-aa4e55146cc4",
     headers={
-      'Authorization': f'Bearer {i_at}'
+      "Authorization": f"Bearer {i_at}"
     }
   )
 
@@ -444,7 +444,7 @@ def test_place_delete_without_role(
   response = client.delete(
     "/api/v1/location/place/" + str(places[0].uid),
     headers={
-      'Authorization': f'Bearer {i_at}'
+      "Authorization": f"Bearer {i_at}"
     }
   )
 

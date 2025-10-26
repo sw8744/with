@@ -10,7 +10,7 @@ function MyPosts() {
   if (isPageError(pageState)) return <PageError pageState={pageState}/>
 
   return (
-    <div className={'grid grid-cols-3'}>
+    <div className={"grid grid-cols-3"}>
 
     </div>
   );
@@ -19,33 +19,33 @@ function MyPosts() {
 function MyPostSkeleton() {
   return (
     <SkeletonFrame>
-      <div className={'grid grid-cols-3 gap-0.5'}>
+      <div className={"grid grid-cols-3 gap-0.5"}>
         <SkeletonUnit>
-          <SkeletonElement className={'aspect-3/4'}/>
+          <SkeletonElement className={"aspect-3/4"}/>
         </SkeletonUnit>
         <SkeletonUnit>
-          <SkeletonElement className={'aspect-3/4'}/>
+          <SkeletonElement className={"aspect-3/4"}/>
         </SkeletonUnit>
         <SkeletonUnit>
-          <SkeletonElement className={'aspect-3/4'}/>
+          <SkeletonElement className={"aspect-3/4"}/>
         </SkeletonUnit>
         <SkeletonUnit>
-          <SkeletonElement className={'aspect-3/4'}/>
+          <SkeletonElement className={"aspect-3/4"}/>
         </SkeletonUnit>
         <SkeletonUnit>
-          <SkeletonElement className={'aspect-3/4'}/>
+          <SkeletonElement className={"aspect-3/4"}/>
         </SkeletonUnit>
         <SkeletonUnit>
-          <SkeletonElement className={'aspect-3/4'}/>
+          <SkeletonElement className={"aspect-3/4"}/>
         </SkeletonUnit>
         <SkeletonUnit>
-          <SkeletonElement className={'aspect-3/4'}/>
+          <SkeletonElement className={"aspect-3/4"}/>
         </SkeletonUnit>
         <SkeletonUnit>
-          <SkeletonElement className={'aspect-3/4'}/>
+          <SkeletonElement className={"aspect-3/4"}/>
         </SkeletonUnit>
         <SkeletonUnit>
-          <SkeletonElement className={'aspect-3/4'}/>
+          <SkeletonElement className={"aspect-3/4"}/>
         </SkeletonUnit>
       </div>
     </SkeletonFrame>

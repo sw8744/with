@@ -18,9 +18,9 @@ function GeneratePlan() {
 
   useEffect(() => {
     apiAuth.post(
-      '/plan',
+      "/plan",
       {
-        name: members.map(m => m.name).join(', ') + '와 놀기',
+        name: members.map(m => m.name).join(", ") + "와 놀기",
         members: members.slice(1).map(m => m.uid),
         regions: regions.map(r => r.uid),
         places: places.map(p => p.uid),
@@ -38,13 +38,13 @@ function GeneratePlan() {
 
   if (pageState === PageState.LOADING) {
     return (
-      <div className={'flex-1 flex justify-center items-center'}>
-        <p className={'text-2xl font-bold'}>계획을 만들고 있어요.</p>
+      <div className={"flex-1 flex justify-center items-center"}>
+        <p className={"text-2xl font-bold"}>계획을 만들고 있어요.</p>
       </div>
     );
   } else {
     return (
-      <div className={'flex-1'}>
+      <div className={"flex-1"}>
         <PageError pageState={pageState}/>
       </div>
     );

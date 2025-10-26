@@ -21,7 +21,7 @@ def get_themes(
     q.filter(ThemeModel.uid == query.uid)
   else:
     if query.name is not None:
-      q = q.filter(ThemeModel.name.like('%' + query.name + '%'))
+      q = q.filter(ThemeModel.name.like("%" + query.name + "%"))
     q = q.order_by(ThemeModel.uid.asc())
     q = q.limit(100)
 

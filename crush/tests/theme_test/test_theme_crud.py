@@ -16,8 +16,8 @@ def test_theme_creation(
   _, i_at = access_token_factory("test", Role.THEME_EDIT)
 
   response = client.post(
-    '/api/v1/recommendation/theme',
-    headers={'Authorization': f'Bearer {i_at}'},
+    "/api/v1/recommendation/theme",
+    headers={"Authorization": f"Bearer {i_at}"},
     content=json.dumps({
       "uid": 99,
       "name": "TestTheme",
@@ -45,8 +45,8 @@ def test_theme_set_without_role(
   _, i_at = access_token_factory("test", Role.CORE_USER)
 
   response = client.post(
-    '/api/v1/recommendation/theme',
-    headers={'Authorization': f'Bearer {i_at}'},
+    "/api/v1/recommendation/theme",
+    headers={"Authorization": f"Bearer {i_at}"},
     content=json.dumps({
       "uid": 99,
       "name": "TestTheme",
@@ -65,8 +65,8 @@ def test_theme_creation_without_name(
   _, i_at = access_token_factory("test", Role.THEME_EDIT)
 
   response = client.post(
-    '/api/v1/recommendation/theme',
-    headers={'Authorization': f'Bearer {i_at}'},
+    "/api/v1/recommendation/theme",
+    headers={"Authorization": f"Bearer {i_at}"},
     content=json.dumps({
       "color": "4435ff"
     })
@@ -84,8 +84,8 @@ def test_theme_creation_without_role(
   _, i_at = access_token_factory("test", Role.THEME_EDIT)
 
   response = client.post(
-    '/api/v1/recommendation/theme',
-    headers={'Authorization': f'Bearer {i_at}'},
+    "/api/v1/recommendation/theme",
+    headers={"Authorization": f"Bearer {i_at}"},
     content=json.dumps({
       "name": "TestTheme"
     })
@@ -104,8 +104,8 @@ def test_theme_patch(
   _, i_at = access_token_factory("test", Role.THEME_EDIT)
 
   response = client.post(
-    '/api/v1/recommendation/theme',
-    headers={'Authorization': f'Bearer {i_at}'},
+    "/api/v1/recommendation/theme",
+    headers={"Authorization": f"Bearer {i_at}"},
     content=json.dumps({
       "uid": themes[0].uid,
       "name": "TestTheme",
@@ -134,8 +134,8 @@ def test_list_themes(
   _, i_at = access_token_factory("test", Role.CORE_USER)
 
   response = client.get(
-    '/api/v1/recommendation/theme',
-    headers={'Authorization': f'Bearer {i_at}'},
+    "/api/v1/recommendation/theme",
+    headers={"Authorization": f"Bearer {i_at}"},
   )
 
   assert response.status_code == 200

@@ -119,5 +119,5 @@ def did_liked_place(
                   .scalar()
                 ) is not None
 
-  log.info("User %r %s", identity.uid, 'liked place' if place_id else 'disliked place')
+  log.info("User %r %s", identity.uid, "liked place" if place_id else "disliked place")
   return liked_place

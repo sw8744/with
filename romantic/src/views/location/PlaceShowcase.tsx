@@ -26,15 +26,15 @@ function ThemeTag(
     <span
       style={{
         backgroundColor: props.color,
-        color: props.textColor ?? '#0C0C0C',
+        color: props.textColor ?? "#0C0C0C",
       }}
-      className={'rounded-lg px-2 py-1'}
+      className={"rounded-lg px-2 py-1"}
     >{props.emogi} {props.name}</span>
   )
 }
 
 function PlaceShowcase() {
-  const placeUid = useParams()['placeUID'];
+  const placeUid = useParams()["placeUID"];
 
   const [placeInfo, setPlaceInfo] = useState<Place>();
   const [likedPlace, setLikedPlace] = useState<boolean>(false);
@@ -45,7 +45,7 @@ function PlaceShowcase() {
     setLikeOperationState(PageState.WORKING);
     if (likedPlace) {
       apiAuth.delete(
-        '/interaction/like/' + placeUid
+        "/interaction/like/" + placeUid
       ).then(() => {
         setLikedPlace(false);
         setLikeOperationState(PageState.NORMAL);
@@ -54,7 +54,7 @@ function PlaceShowcase() {
       });
     } else {
       apiAuth.post(
-        '/interaction/like',
+        "/interaction/like",
         {
           placeId: placeUid
         }
@@ -105,23 +105,23 @@ function PlaceShowcase() {
     <>
       <img
         src={thumbnailUrl(placeInfo?.thumbnail)}
-        className={'mb-10 w-full shadow'}
+        className={"mb-10 w-full shadow"}
       />
 
-      <div className={'flex flex-col justify-baseline items-center gap-3'}>
-        <p className={'text-3xl font-extrabold'}>{placeInfo?.name}</p>
-        <p className={'text-lg font-medium'}>{placeInfo?.description}</p>
-        <div className={'flex justify-center items-center'}>
-          <ThemeTag emogi={'❤️'} name={'연인'} color={'#ffc1cc'}/>
+      <div className={"flex flex-col justify-baseline items-center gap-3"}>
+        <p className={"text-3xl font-extrabold"}>{placeInfo?.name}</p>
+        <p className={"text-lg font-medium"}>{placeInfo?.description}</p>
+        <div className={"flex justify-center items-center"}>
+          <ThemeTag emogi={"❤️"} name={"연인"} color={"#ffc1cc"}/>
         </div>
-        <div className={'flex justify-center w-full'}>
+        <div className={"flex justify-center w-full"}>
           <PlaceOperationButton
             onClick={toggleLike}
             disabled={likeOperationState === PageState.WORKING}
             icon={
               likedPlace ?
-                <StarFilledIcon height={22} className={'fill-amber-400'}/> :
-                <StarIcon height={22} className={'fill-neutral-500'}/>
+                <StarFilledIcon height={22} className={"fill-amber-400"}/> :
+                <StarIcon height={22} className={"fill-neutral-500"}/>
             }
           >저장</PlaceOperationButton>
           <PlaceOperationButton onClick={toggleLike}>TODO: FEATURE PLACEHOLDER</PlaceOperationButton>
@@ -137,12 +137,12 @@ function PlaceShowcase() {
 function PlaceShowcaseSkeleton() {
   return (
     <SkeletonFrame>
-      <SkeletonElement className={'w-full mb-10 aspect-video'}/>
+      <SkeletonElement className={"w-full mb-10 aspect-video"}/>
 
-      <div className={'flex flex-col justify-baseline items-center gap-3'}>
+      <div className={"flex flex-col justify-baseline items-center gap-3"}>
         <SkeletonElement expH={36} expW={100}/>
-        <SkeletonElement expH={28} expW={220} className={'max-w-[50%]'}/>
-        <SkeletonElement expH={32} expW={500} className={'max-w-[70%]'}/>
+        <SkeletonElement expH={28} expW={220} className={"max-w-[50%]"}/>
+        <SkeletonElement expH={32} expW={500} className={"max-w-[70%]"}/>
       </div>
     </SkeletonFrame>
   );
@@ -165,7 +165,7 @@ function PlaceOperationButton(
 ) {
   return (
     <button
-      className={'w-full px-5 py-2 border-y border-neutral-600 flex gap-1.5 justify-center items-center cursor-pointer'}
+      className={"w-full px-5 py-2 border-y border-neutral-600 flex gap-1.5 justify-center items-center cursor-pointer"}
       onClick={onClick}
       disabled={disabled}
     >

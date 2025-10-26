@@ -76,7 +76,7 @@ apiAuth.interceptors.response.use(
       originalRequest._retry = true;
 
       const accessToken = await refreshAccessToken();
-      originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+      originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
 
       return apiAuth(originalRequest);
     }

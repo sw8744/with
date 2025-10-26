@@ -15,6 +15,6 @@ def process_vector(vector: list[float]) -> NDArray[np.float32]:
     )
   elif theme_shape < 100:
     padding_needed = 100 - theme_shape
-    n_array = np.pad(n_array, (0, padding_needed), mode='constant', constant_values=0.0)
+    n_array = np.pad(n_array, (0, padding_needed), mode="constant", constant_values=0.0)
 
   return n_array

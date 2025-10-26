@@ -27,7 +27,7 @@ def recommend_region_from_users(
       continue
     state = core_following.query_following(host, user, db)
     if state is None:
-      log.warning(f'Illegal recommendation request. %r->%r was not found', host.uid, user)
+      log.warning(f"Illegal recommendation request. %r->%r was not found", host.uid, user)
       raise HTTPException(status_code=400, detail="Followee is not your friend")
     if state.value < RelationshipState.FRIEND.value:
       log.warning("Illegal recommendation request. %r->%r=%d", host.uid, user, state.value)

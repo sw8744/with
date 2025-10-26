@@ -17,7 +17,7 @@ SQLALCHEMY_DATABASE_URL = "postgresql://{user}:{password}@{host}:{port}/{dbname}
 
 engine = create_engine(
   SQLALCHEMY_DATABASE_URL,
-  echo=config['database']['relational']['echo']
+  echo=config["database"]["relational"]["echo"]
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -50,7 +50,7 @@ class EnumAsValue(TypeDecorator):
 
 
 def jsonb_path_equals(column, path_string, target_value):
-  path_keys = path_string.split('.')
+  path_keys = path_string.split(".")
   path_expression = reduce(lambda obj, key: obj[key], path_keys, column)
 
   return path_expression.astext == str(target_value)

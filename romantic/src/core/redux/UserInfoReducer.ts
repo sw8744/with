@@ -22,7 +22,7 @@ const initialState: UserInfoStateType = {
 }
 
 const userInfoSlice = createSlice({
-  name: 'userInfo',
+  name: "userInfo",
   initialState,
   reducers: {
     signIn: (state: UserInfoStateType, action: PayloadAction<UserSignInType>) => {

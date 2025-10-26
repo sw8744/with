@@ -10,6 +10,24 @@ type planAddition = ApiInterface & {
   }
 }
 
+type GetGeneralPlanRequest = ApiInterface & {
+  plan: {
+    uid: string;
+    name: string;
+    host_id: string;
+    date: {
+      from: string;
+      to: string;
+    };
+    members: Array<{
+      uid: string;
+      name: string;
+      role: number;
+    }>;
+  }
+}
+
 export type {
-  planAddition
+  planAddition,
+  GetGeneralPlanRequest
 }
