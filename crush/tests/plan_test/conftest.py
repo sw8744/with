@@ -1,9 +1,13 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
+from typing import Callable
+from uuid import UUID
 
 import pytest
+from typing_extensions import Generator
 
 from app.models.plan.PlanMemberModel import PlanMemberModel, PlanRole
 from app.models.plan.PlanModel import PlanModel
+from app.models.plan.PlanPollModel import PlanPollingModel
 
 
 @pytest.fixture
@@ -75,4 +79,41 @@ def plan(
   }
 
   db.delete(plan)
+  db.commit()
+
+
+@pytest.fixture
+def date_vote_factory(
+  db
+) -> Generator[Callable[[UUID, UUID, list[date]], PlanPollingModel]]:
+  votes: list[tuple[UUID, UUID]] = []
+
+  def _factory(
+    plan_uuid: UUID,
+    user_uuid: UUID,
+    dates: list[date]
+  ) -> PlanPollingModel:
+    vote = PlanPollingModel(
+      plan_id=plan_uuid,
+      user_id=user_uuid,
+      dates=dates
+    )
+    db.add(vote)
+    db.commit()
+    db.refresh(vote)
+    votes.append((plan_uuid, user_uuid))
+
+    return vote
+
+  yield _factory
+
+  for v in votes:
+    (
+      db.query(PlanPollingModel)
+      .filter(
+        PlanPollingModel.plan_id == v[0],
+        PlanPollingModel.user_id == v[1]
+      )
+      .delete()
+    )
   db.commit()

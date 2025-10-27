@@ -22,6 +22,7 @@ def test_plan_get(
     "uid": str(plan.get("plan").uid),
     "name": plan.get("plan").name,
     "date": {
+      "polling": False,
       "from": plan.get("plan").date_from.isoformat(),
       "to": plan.get("plan").date_to.isoformat()
     },

@@ -53,7 +53,7 @@ def test_delete_null_follower(
   )
   assert resp.status_code == 404
   assert resp.json()["code"] == 404
-  assert resp.json()["status"] == "Not found"
+  assert resp.json()["status"] == "Not Found"
 
 
 def test_query_relationship_follower(
@@ -185,7 +185,7 @@ def test_change_null_relationship_follower(
 
   assert resp.status_code == 404
   assert resp.json()["code"] == 404
-  assert resp.json()["status"] == "Not found"
+  assert resp.json()["status"] == "Not Found"
 
 
 def test_count_followers(

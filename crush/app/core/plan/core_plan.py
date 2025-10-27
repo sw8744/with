@@ -118,6 +118,7 @@ def get_plan(
     "uid": str(plan_model.uid),
     "name": plan_model.name,
     "date": {
+      "polling": plan_model.polling_date,
       "from": plan_model.date_from.isoformat() if plan_model.date_from else None,
       "to": plan_model.date_to.isoformat() if plan_model.date_to else None
     },

@@ -86,7 +86,7 @@ def test_unfollow_null_following(
   )
   assert resp.status_code == 404
   assert resp.json()["code"] == 404
-  assert resp.json()["status"] == "Not found"
+  assert resp.json()["status"] == "Not Found"
 
 
 def test_query_relationship_following(
@@ -218,7 +218,7 @@ def test_change_relationship_null_following(
   )
   assert resp.status_code == 404
   assert resp.json()["code"] == 404
-  assert resp.json()["status"] == "Not found"
+  assert resp.json()["status"] == "Not Found"
 
 
 def test_count_followers(

@@ -123,7 +123,7 @@ def http_not_found_handler(request: Request, exc):
     status_code=404,
     content={
       "code": 404,
-      "status": "Not found",
+      "status": "Not Found",
       "message": "The requested resource could not be found"
     }
   )
