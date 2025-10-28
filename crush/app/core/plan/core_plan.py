@@ -9,7 +9,7 @@ from app.models.plan.PlanMemberModel import PlanMemberModel, PlanRole
 from app.models.plan.PlanModel import PlanModel
 from app.models.users.RelationshipModel import RelationshipModel, RelationshipState
 from app.schemas.plan.Plan import Plan
-from app.schemas.plan.plan_reqs import AddPlanRequest
+from app.schemas.plan.plan_reqs import AddPlanRequest, FixDateRequest
 
 log = logging.getLogger(__name__)
 
@@ -103,7 +103,6 @@ def get_plan(
     .scalar()
   )
 
-  print(plan_model)
   if plan_model is None:
     log.warning("Plan uid=%r with uid=%r is a member was not found", plan_id, identity_uuid)
     raise HTTPException(status_code=404, detail="Plan not found")
@@ -118,7 +117,7 @@ def get_plan(
     "uid": str(plan_model.uid),
     "name": plan_model.name,
     "date": {
-      "polling": plan_model.polling_date,
+      "polling": plan_model.polling_date.isoformat() if plan_model.polling_date else None,
       "from": plan_model.date_from.isoformat() if plan_model.date_from else None,
       "to": plan_model.date_to.isoformat() if plan_model.date_to else None
     },
@@ -131,3 +130,38 @@ def get_plan(
       for member in members
     ]
   }
+
+
+def fix_plan_date(
+  request: FixDateRequest,
+  plan_id: UUID,
+  requester_id: UUID,
+  db: Session
+):
+  plan_model = (
+    db.query(PlanModel)
+    .filter(PlanModel.uid == plan_id)
+    .scalar()
+  )
+
+  if plan_model is None:
+    log.warning("Plan %r not found when finding vote", plan_id)
+    raise HTTPException(status_code=404, detail="Plan not found")
+
+  member: PlanMemberModel = (
+    db.query(PlanMemberModel)
+    .filter(
+      PlanMemberModel.plan_id == plan_model.uid,
+      PlanMemberModel.user_id == requester_id
+    )
+    .scalar()
+  )
+
+  if not member or member.role.value > PlanRole.COHOST.value:
+    log.warning("User %r is not authorized to fix date in plan %r", requester_id, plan_id)
+    raise HTTPException(status_code=403, detail="Forbidden")
+
+  plan_model.date_from = request.date_from
+  plan_model.date_to = request.date_to
+  plan_model.polling_date = None
+  db.commit()

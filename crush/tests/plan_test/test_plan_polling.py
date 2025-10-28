@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime, timedelta
 
 from starlette.testclient import TestClient
 
@@ -25,7 +25,7 @@ def test_open_poll(
     json={
       "dateFrom": "2025-10-27",
       "dateTo": "2025-10-30",
-      "endIn": "2025-09-30T18:00:00Z"
+      "endIn": "2025-09-30T09:00:00"
     }
   )
 
@@ -40,7 +40,7 @@ def test_open_poll(
     .scalar()
   )
 
-  assert new_plan.polling_date == True
+  assert new_plan.polling_date == datetime(2025, 9, 30, 9, 0, 0)
   assert new_plan.date_from == date(2025, 10, 27)
   assert new_plan.date_to == date(2025, 10, 30)
   assert new_plan.votes == []
@@ -53,7 +53,9 @@ def test_open_poll_again(
     db.query(PlanModel)
     .filter(PlanModel.uid == plan.get("plan").uid)
     .update({
-      "polling_date": True
+      "polling_date": datetime.now() + timedelta(days=1),
+      "date_from": date(2025, 10, 27),
+      "date_to": date(2025, 10, 30)
     })
   )
   db.commit()
@@ -66,7 +68,7 @@ def test_open_poll_again(
     json={
       "dateFrom": "2025-10-27",
       "dateTo": "2025-10-30",
-      "endIn": "2025-09-30T18:00:00Z"
+      "endIn": "2025-09-30T18:00:00"
     }
   )
 
@@ -87,7 +89,7 @@ def test_open_poll_by_member(
     json={
       "dateFrom": "2025-10-27",
       "dateTo": "2025-10-30",
-      "endIn": "2025-09-30T18:00:00Z"
+      "endIn": "2025-09-30T18:00:00"
     }
   )
 
@@ -108,7 +110,7 @@ def test_open_poll_by_outsider(
     json={
       "dateFrom": "2025-10-27",
       "dateTo": "2025-10-30",
-      "endIn": "2025-09-30T18:00:00Z"
+      "endIn": "2025-09-30T18:00:00"
     }
   )
 
@@ -125,7 +127,9 @@ def test_close_poll(
     db.query(PlanModel)
     .filter(PlanModel.uid == plan.get("plan").uid)
     .update({
-      "polling_date": True
+      "polling_date": datetime.now() + timedelta(days=1),
+      "date_from": date(2025, 10, 27),
+      "date_to": date(2025, 10, 30)
     })
   )
   db.commit()
@@ -148,12 +152,39 @@ def test_close_poll(
     .scalar()
   )
 
-  assert new_plan.polling_date == False
+  assert new_plan.polling_date <= datetime.now()
 
 
 def test_close_poll_again(
   plan, db
 ):
+  response = client.patch(
+    f"/api/v1/plan/{plan.get("plan").uid}/poll/close",
+    headers={
+      "Authorization": f"Bearer {plan.get("host").get("at")}"
+    }
+  )
+
+  assert response.status_code == 400
+  assert response.json()["code"] == 400
+  assert response.json()["status"] == "Bad Request"
+  assert response.json()["message"] == "Polling is not opened"
+
+
+def test_close_poll_closed_by_time(
+  plan, db
+):
+  (
+    db.query(PlanModel)
+    .filter(PlanModel.uid == plan.get("plan").uid)
+    .update({
+      "polling_date": datetime.now() - timedelta(days=1),
+      "date_from": date(2025, 10, 27),
+      "date_to": date(2025, 10, 30)
+    })
+  )
+  db.commit()
+
   response = client.patch(
     f"/api/v1/plan/{plan.get("plan").uid}/poll/close",
     headers={
@@ -206,7 +237,7 @@ def test_vote(
     db.query(PlanModel)
     .filter(PlanModel.uid == plan.get("plan").uid)
     .update({
-      "polling_date": True,
+      "polling_date": datetime.now() + timedelta(days=1),
       "date_from": date(2025, 10, 27),
       "date_to": date(2025, 10, 30)
     })
@@ -245,7 +276,7 @@ def test_vote_by_observer(
     db.query(PlanModel)
     .filter(PlanModel.uid == plan.get("plan").uid)
     .update({
-      "polling_date": True,
+      "polling_date": datetime.now() + timedelta(days=1),
       "date_from": date(2025, 10, 27),
       "date_to": date(2025, 10, 30)
     })
@@ -275,7 +306,7 @@ def test_vote_by_outsider(
     db.query(PlanModel)
     .filter(PlanModel.uid == plan.get("plan").uid)
     .update({
-      "polling_date": True,
+      "polling_date": datetime.now() + timedelta(days=1),
       "date_from": date(2025, 10, 27),
       "date_to": date(2025, 10, 30)
     })
@@ -317,6 +348,35 @@ def test_vote_when_closed(
   assert response.json()["message"] == "Polling is not opened"
 
 
+def test_vote_when_expired(
+  plan, db
+):
+  (
+    db.query(PlanModel)
+    .filter(PlanModel.uid == plan.get("plan").uid)
+    .update({
+      "polling_date": datetime.now() - timedelta(days=1),
+      "date_from": date(2025, 10, 27),
+      "date_to": date(2025, 10, 30)
+    })
+  )
+
+  response = client.post(
+    f"/api/v1/plan/{plan.get("plan").uid}/poll/vote",
+    headers={
+      "Authorization": f"Bearer {plan.get("members")[1].get("at")}"
+    },
+    json={
+      "dates": ["2025-10-28", "2025-10-29"]
+    }
+  )
+
+  assert response.status_code == 400
+  assert response.json()["code"] == 400
+  assert response.json()["status"] == "Bad Request"
+  assert response.json()["message"] == "Polling is not opened"
+
+
 def test_vote_out_of_range(
   plan, db
 ):
@@ -324,7 +384,7 @@ def test_vote_out_of_range(
     db.query(PlanModel)
     .filter(PlanModel.uid == plan.get("plan").uid)
     .update({
-      "polling_date": True,
+      "polling_date": datetime.now() + timedelta(days=1),
       "date_from": date(2025, 10, 27),
       "date_to": date(2025, 10, 30)
     })
@@ -360,7 +420,7 @@ def test_change_vote(
     db.query(PlanModel)
     .filter(PlanModel.uid == plan.get("plan").uid)
     .update({
-      "polling_date": True,
+      "polling_date": datetime.now() + timedelta(days=1),
       "date_from": date(2025, 10, 27),
       "date_to": date(2025, 10, 30)
     })
@@ -484,11 +544,12 @@ def test_get_my_vote_nonexistent_plan(
 def test_get_poll_status(
   plan, date_vote_factory, db
 ):
+  end_in = datetime.now() + timedelta(days=1)
   (
     db.query(PlanModel)
     .filter(PlanModel.uid == plan.get("plan").uid)
     .update({
-      "polling_date": True,
+      "polling_date": end_in,
       "date_from": date(2025, 10, 27),
       "date_to": date(2025, 10, 30)
     })
@@ -516,7 +577,7 @@ def test_get_poll_status(
   assert response.status_code == 200
   assert response.json()["code"] == 200
   assert response.json()["status"] == "OK"
-  assert response.json()["poll"]["pollingOpen"] == True
+  assert response.json()["poll"]["pollingOpen"] == end_in.isoformat()
   assert response.json()["poll"]["dateFrom"] == "2025-10-27"
   assert response.json()["poll"]["dateTo"] == "2025-10-30"
   assert response.json()["poll"]["voted"] == 2

@@ -1,5 +1,6 @@
 import React from "react";
 import {PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
+import Alert from "../elements/Alert.tsx";
 
 interface ErrorPageProps {
   errorCode?: number;
@@ -44,7 +45,33 @@ function PageError(
   }
 }
 
+function InlineError(
+  {
+    pageState, successMessage
+  }: { pageState: PageState, successMessage?: string }
+) {
+  switch (pageState) {
+    case PageState.WORKING:
+    case PageState.LOADING:
+      return null;
+    case PageState.NORMAL:
+      if (successMessage) return <Alert variant={'successFill'} show>{successMessage}</Alert>
+      else break;
+    case PageState.NOT_FOUND:
+      return <Alert variant={'errorFill'} show>요청한 리소스를 찾지 못했습니다.</Alert>
+    case PageState.FORBIDDEN:
+      return <Alert variant={'errorFill'} show>접근이 거부되었습니다.</Alert>
+    case PageState.CLIENT_FAULT:
+      return <Alert variant={'errorFill'} show>잘못된 요청입니다.</Alert>
+    case PageState.SERVER_FAULT:
+      return <Alert variant={'errorFill'} show>요청을 처리하지 못했습니다.</Alert>
+    default:
+      return <Alert variant={'errorFill'} show>요청을 처리하지 못했습니다.</Alert>
+  }
+}
+
 export {
   PageError,
-  ErrorPage
+  ErrorPage,
+  InlineError
 };

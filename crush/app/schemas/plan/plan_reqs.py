@@ -21,3 +21,12 @@ class AddPlanRequest(BaseModel):
     default=None,
     alias="dateTo"
   )
+
+
+class FixDateRequest(BaseModel):
+  date_from: datetime = Field(
+    alias="dateFrom"
+  )
+  date_to: datetime = Field(
+    alias="dateTo"
+  )

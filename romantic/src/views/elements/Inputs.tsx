@@ -1,5 +1,6 @@
 import {type ChangeEvent, useEffect, useState} from "react";
 import {CheckmarkFillIcon, ChevronLeftIcon, ChevronRightIcon, CircleIcon} from "../../assets/svgs/svgs.ts";
+import {dateString} from "../../core/datetime.ts";
 
 interface TextInputPropsType {
   type?: "text" | "password" | "email"
@@ -42,6 +43,7 @@ interface DatePickerPropsType {
   multiple?: boolean;
   fromDate?: Date | null;
   toDate?: Date | null;
+  weight?: (date: string) => number;
 }
 
 interface DateRangePickerPropsType {
@@ -51,6 +53,7 @@ interface DateRangePickerPropsType {
   toSetter: (val: Date | null) => void;
   className?: string;
   disabled?: boolean;
+  weight?: (date: string) => number;
 }
 
 const commonClass = (
@@ -166,7 +169,7 @@ function Checkbox(
 
 function DatePicker(
   {
-    className, value, setter, error, disabled, multiple, fromDate, toDate
+    className, value, setter, error, disabled, multiple, fromDate, toDate, weight
   }: DatePickerPropsType
 ) {
   const [currentYear, setCurrentYear] = useState<number>(1970);
@@ -221,11 +224,14 @@ function DatePicker(
   }
 
   function selectDay(i: number) {
+    const selectedDay = dateString(currentYear, currentMonth, i);
+
+    if (selectedDay === null) return;
     if (multiple) {
-      if (value.includes(`${currentYear}-${currentMonth}-${i}`)) setter(value.filter(v => v !== `${currentYear}-${currentMonth}-${i}`));
-      else setter([...value, `${currentYear}-${currentMonth}-${i}`]);
+      if (value.includes(selectedDay)) setter(value.filter(v => v !== selectedDay));
+      else setter([...value, selectedDay]);
     } else {
-      setter([`${currentYear}-${currentMonth}-${i}`]);
+      setter([selectedDay]);
     }
   }
 
@@ -240,6 +246,27 @@ function DatePicker(
   let isInRange = false;
   for (let i = 1; i <= daysOfMonth; i++) {
     let daySpecificClass = "";
+    let caseSpecificClass = "";
+    const wt = weight ? weight(dateString(currentYear, currentMonth, i)) : 0;
+    if (wt > 0) {
+      switch (wt) {
+        case 1:
+          caseSpecificClass += " !mb-0 border-b-2 border-rose-100";
+          break;
+        case 2:
+          caseSpecificClass += " !mb-0 border-b-2 border-rose-200";
+          break;
+        case 3:
+          caseSpecificClass += " !mb-0 border-b-2 border-rose-300";
+          break;
+        case 4:
+          caseSpecificClass += " !mb-0 border-b-2 border-rose-400";
+          break;
+        case 5:
+          caseSpecificClass += " !mb-0 border-b-2 border-rose-500";
+          break;
+      }
+    }
 
     isInRange = (
       !!(
@@ -249,17 +276,17 @@ function DatePicker(
       )
     );
 
-    if (dayCounter === 0) daySpecificClass = " text-red-700 disabled:text-red-300";
-    else if (dayCounter === 6) daySpecificClass = " text-blue-800 disabled:text-blue-300";
-    else daySpecificClass = " text-neutral-800 disabled:text-neutral-400"
+    if (dayCounter === 0) daySpecificClass += " text-red-700 disabled:text-red-300";
+    else if (dayCounter === 6) daySpecificClass += " text-blue-800 disabled:text-blue-300";
+    else daySpecificClass += " text-neutral-800 disabled:text-neutral-400"
 
-    if (value.includes(`${currentYear}-${currentMonth}-${i}`)) {
+    if (value.includes(dateString(currentYear, currentMonth, i))) {
       daySpecificClass += " bg-blue-200 hover:!bg-blue-300";
     }
 
     calender.push(
       <div
-        className={"my-1"}
+        className={"py-1 mx-1.5 mb-[2px]" + caseSpecificClass}
         key={currentMonth + "-" + i}
       >
         <button
@@ -322,7 +349,7 @@ function DatePicker(
 
 function DateRangePicker(
   {
-    className, fromValue, toValue, fromSetter, toSetter, disabled
+    className, fromValue, toValue, fromSetter, toSetter, disabled, weight
   }: DateRangePickerPropsType
 ) {
   const [currentYear, setCurrentYear] = useState<number>(1970);
@@ -457,6 +484,27 @@ function DateRangePicker(
 
   for (let i = 1; i <= daysOfMonth; i++) {
     let daySpecificClass = "";
+    let caseSpecificClass = "";
+    const wt = weight ? weight(dateString(currentYear, currentMonth, i)) : 0;
+    if (wt > 0) {
+      switch (wt) {
+        case 1:
+          caseSpecificClass += " !mb-0 border-b-2 border-rose-100";
+          break;
+        case 2:
+          caseSpecificClass += " !mb-0 border-b-2 border-rose-200";
+          break;
+        case 3:
+          caseSpecificClass += " !mb-0 border-b-2 border-rose-300";
+          break;
+        case 4:
+          caseSpecificClass += " !mb-0 border-b-2 border-rose-400";
+          break;
+        case 5:
+          caseSpecificClass += " !mb-0 border-b-2 border-rose-500";
+          break;
+      }
+    }
 
     if (dayCounter === 0) daySpecificClass = " text-red-700";
     else if (dayCounter === 6) daySpecificClass = " text-blue-800";
@@ -467,78 +515,86 @@ function DateRangePicker(
 
     if (isFrom && !isTo) {
       calender.push(
-        <div
-          className={"my-1 bg-linear-to-r from-transparent from-50% via-blue-200 via-50% to-blue-100"}
-          key={currentMonth + "-" + i}
-        >
-          <button
-            className={
-              "w-[32px] p-1 mx-auto rounded-full " +
-              "bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer" +
-              daySpecificClass
-            }
-            onClick={() => selectDay(i)}
-            disabled={disabled}
-          >{i}</button>
+        <div className={'py-1 mx-1.5 mb-[2px]' + caseSpecificClass}>
+          <div
+            className={"-mx-1.5 bg-linear-to-r from-transparent from-50% via-blue-200 via-50% to-blue-100"}
+            key={currentMonth + "-" + i}
+          >
+            <button
+              className={
+                "w-[32px] p-1 mx-auto rounded-full " +
+                "bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer" +
+                daySpecificClass
+              }
+              onClick={() => selectDay(i)}
+              disabled={disabled}
+            >{i}</button>
+          </div>
         </div>
       );
       isInRange = true;
     } else if (!isFrom && isTo) {
       calender.push(
-        <div
-          className={"my-1 bg-linear-to-r from-blue-100 via-blue-200 via-50% to-transparent to-50%"}
-          key={currentMonth + "-" + i}
-        >
-          <button
-            className={
-              "w-[32px] p-1 mx-auto rounded-full " +
-              "bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer" +
-              daySpecificClass
-            }
-            onClick={() => selectDay(i)}
-            disabled={disabled}
-          >{i}</button>
+        <div className={'py-1 mx-1.5 mb-[2px]' + caseSpecificClass}>
+          <div
+            className={"px-1.5 -mx-1.5 bg-linear-to-r from-blue-100 via-blue-200 via-50% to-transparent to-50%"}
+            key={currentMonth + "-" + i}
+          >
+            <button
+              className={
+                "w-[32px] p-1 mx-auto rounded-full " +
+                "bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer" +
+                daySpecificClass
+              }
+              onClick={() => selectDay(i)}
+              disabled={disabled}
+            >{i}</button>
+          </div>
         </div>
       );
       isInRange = false;
     } else if (isFrom && isTo) {
       calender.push(
-        <div
-          className={"my-1"}
-          key={currentMonth + "-" + i}
-        >
-          <button
-            className={
-              "w-[32px] p-1 mx-auto rounded-full " +
-              "bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer" +
-              daySpecificClass
-            }
-            onClick={() => selectDay(i)}
-            disabled={disabled}
-          >{i}</button>
+        <div className={'py-1 mx-1.5 mb-[2px]' + caseSpecificClass}>
+          <div
+            className={"px-1.5 -mx-1.5"}
+            key={currentMonth + "-" + i}
+          >
+            <button
+              className={
+                "w-[32px] p-1 mx-auto rounded-full " +
+                "bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer" +
+                daySpecificClass
+              }
+              onClick={() => selectDay(i)}
+              disabled={disabled}
+            >{i}</button>
+          </div>
         </div>
       );
     } else if (isInRange) {
       calender.push(
-        <div
-          className={"my-1 bg-blue-100"}
-          key={currentMonth + "-" + i}
-        >
-          <button
-            className={
-              "w-[32px] p-1 mx-auto rounded-full " +
-              "hover:bg-blue-200 transition-colors cursor-pointer" +
-              daySpecificClass
-            }
-            onClick={() => selectDay(i)}
-            disabled={disabled}
-          >{i}</button>
+        <div className={'py-1 mx-1.5 mb-[2px]' + caseSpecificClass}>
+          <div
+            className={"-mx-1.5 bg-blue-100"}
+            key={currentMonth + "-" + i}
+          >
+            <button
+              className={
+                "w-[32px] p-1 mx-auto rounded-full " +
+                "hover:bg-blue-200 transition-colors cursor-pointer" +
+                daySpecificClass
+              }
+              onClick={() => selectDay(i)}
+              disabled={disabled}
+            >{i}</button>
+          </div>
         </div>
       );
     } else {
       calender.push(
         <div
-          className={"my-1"}
+          className={'py-1 mx-1.5 mb-[2px]' + caseSpecificClass}
           key={currentMonth + "-" + i}
         >
           <button

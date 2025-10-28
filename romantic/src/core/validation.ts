@@ -44,10 +44,16 @@ function uuidCheck(value: string) {
   return regexCheck(value, uuidExp);
 }
 
+function daysRangeCheck(from: Date, to: Date, limit: number) {
+  const days = Math.floor((to.getTime() - from.getTime()) / (86400000));
+  return days <= limit;
+}
+
 export {
   verifyAll, check,
   lengthCheck,
   rangeCheck,
   regexCheck,
-  uuidCheck
+  uuidCheck,
+  daysRangeCheck
 }

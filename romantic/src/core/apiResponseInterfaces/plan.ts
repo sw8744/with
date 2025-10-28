@@ -16,8 +16,9 @@ type GetGeneralPlanRequest = ApiInterface & {
     name: string;
     host_id: string;
     date: {
-      from: string;
-      to: string;
+      polling: string | null;
+      from: string | null;
+      to: string | null;
     };
     members: Array<{
       uid: string;
@@ -27,7 +28,23 @@ type GetGeneralPlanRequest = ApiInterface & {
   }
 }
 
+type GetVoteStatusRequest = ApiInterface & {
+  poll: {
+    pollingOpen: string;
+    dateFrom: string;
+    dateTo: string;
+    voted: number;
+    votes: Record<string, number>;
+  }
+}
+
+type GetMyVoteRequest = ApiInterface & {
+  vote: string[];
+}
+
 export type {
   planAddition,
-  GetGeneralPlanRequest
+  GetGeneralPlanRequest,
+  GetVoteStatusRequest,
+  GetMyVoteRequest
 }

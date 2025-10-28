@@ -1,5 +1,5 @@
 import logging
-from datetime import date
+from datetime import date, datetime
 from typing import Optional
 from uuid import UUID
 
@@ -40,7 +40,7 @@ def open_polling(
   if not plan_member or plan_member.role.value > PlanRole.COHOST.value:
     log.warning("User %r is not authorized to open polling in plan %r", requester_id, plan_uuid)
     raise HTTPException(status_code=403, detail="Forbidden")
-  if plan.polling_date:
+  if plan.polling_date is not None and datetime.now() <= plan.polling_date:
     log.warning("Polling is already opened in plan %r", plan_uuid)
     raise HTTPException(status_code=400, detail="Polling is already opened")
 
@@ -49,7 +49,7 @@ def open_polling(
 
   plan.date_from = request.date_from,
   plan.date_to = request.date_to,
-  plan.polling_date = True
+  plan.polling_date = request.end_in
 
   db.commit()
 
@@ -79,11 +79,11 @@ def close_polling(
   if not plan_member or plan_member.role.value > PlanRole.COHOST.value:
     log.warning("User %r is not authorized to close polling in plan %r", requester_id, plan_uuid)
     raise HTTPException(status_code=403, detail="Forbidden")
-  if not plan.polling_date:
+  if plan.polling_date is None or plan.polling_date < datetime.now():
     log.warning("Polling is not opened in plan %r", plan_uuid)
     raise HTTPException(status_code=400, detail="Polling is not opened")
 
-  plan.polling_date = False
+  plan.polling_date = datetime.now()
   db.commit()
 
 
@@ -113,7 +113,7 @@ def vote(
   if not plan_member or plan_member.role.value > PlanRole.MEMBER.value:
     log.warning("User %r is not authorized to vote in plan %r", sub, plan_uuid)
     raise HTTPException(status_code=403, detail="Forbidden")
-  if not plan.polling_date:
+  if not plan.polling_date or plan.polling_date < datetime.now():
     log.warning("Polling is not opened in plan %r", plan_uuid)
     raise HTTPException(status_code=400, detail="Polling is not opened")
 
@@ -219,9 +219,9 @@ def get_poll_status(
         date_counts[voted_date] = 1
 
   return {
-    "pollingOpen": plan.polling_date,
-    "dateFrom": plan.date_from.isoformat(),
-    "dateTo": plan.date_to.isoformat(),
+    "pollingOpen": plan.polling_date.isoformat() if plan.polling_date else None,
+    "dateFrom": plan.date_from.isoformat() if plan.date_from else None,
+    "dateTo": plan.date_to.isoformat() if plan.date_to else None,
     "voted": len(votes),
     "votes": {
       date.isoformat(): count for date, count in date_counts.items()

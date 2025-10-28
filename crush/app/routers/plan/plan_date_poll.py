@@ -110,7 +110,7 @@ def get_my_vote(
   sub = get_sub(token)
   log.info("Searching vote of %r in poll of plan %r", sub, plan_uuid)
   vote = core_plan_polling.find_my_vote(plan_uuid, sub, db)
-  log.info("Found %d vote of %r in plan %r", sub, plan_uuid)
+  log.info("Found vote of %r in plan %r", sub, plan_uuid)
 
   return JSONResponse(
     status_code=200,

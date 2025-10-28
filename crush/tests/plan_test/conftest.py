@@ -18,7 +18,7 @@ def plan(
   host, host_at = access_token_factory("host_user")
   member1, m1_at = access_token_factory("member_user1")
   member2, m2_at = access_token_factory("member_user2")
-  member3, m3_at = access_token_factory("member_user2")
+  member3, m3_at = access_token_factory("member_user3")
 
   date_from = datetime.now()
   date_to = datetime.now() + timedelta(days=5)

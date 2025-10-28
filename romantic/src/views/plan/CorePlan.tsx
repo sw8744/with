@@ -13,16 +13,21 @@ import {useDispatch} from "react-redux";
 import {planActions} from "../../core/redux/PlanReducer.ts";
 import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {PageError} from "../error/ErrorPage.tsx";
+import {SkeletonElement, SkeletonFrame} from "../elements/Skeleton.tsx";
+import Spinner from "../elements/Spinner.tsx";
 
 function CorePlan() {
   const planUuid = useParams()["planUUID"];
-  const [pageState, setPageState] = useState<PageState>(PageState.LOADING);
-
+  const myUuid = useAppSelector(state => state.userInfoReducer.uid);
+  const reduxPlanUuid = useAppSelector(state => state.planReducer.uid);
   const planName = useAppSelector(state => state.planReducer.name);
+  const refreshInterrupt = useAppSelector(state => state.planReducer.refreshInterrupt);
 
   const dispatch = useDispatch();
 
-  const currentPathList = window.location.pathname.split('.');
+  const [pageState, setPageState] = useState<PageState>(PageState.LOADING);
+
+  const currentPathList = window.location.pathname.split('/');
   const currentTab = currentPathList[currentPathList.length - 1];
 
   useEffect(() => {
@@ -41,8 +46,24 @@ function CorePlan() {
     });
   }, []);
 
+  useEffect(() => {
+    apiAuth.get<GetGeneralPlanRequest>(
+      "/plan/" + planUuid
+    ).then(res => {
+      dispatch(planActions.init(res.data.plan));
+      setPageState(PageState.NORMAL);
+    }).catch(err => {
+      handleAxiosError(err, setPageState);
+    });
+  }, [refreshInterrupt, dispatch, planUuid]);
+
+  useEffect(() => {
+    if (!myUuid || !reduxPlanUuid) return;
+    dispatch(planActions.setRole(myUuid));
+  }, [myUuid, dispatch, reduxPlanUuid])
+
   if (pageState === PageState.LOADING) {
-    return (<p>Loading</p>);
+    return (<CorePlanSkeleton/>);
   } else if (isPageError(pageState)) {
     return <PageError pageState={pageState}/>
   }
@@ -67,13 +88,23 @@ function CorePlan() {
       </div>
 
       <div className={"w-full flex"}>
-        <Link className={"flex-grow text-center font-bold text-lg border-b-2 border-neutral-500 py-2"}
-              to={`/plan/${planUuid}/timeline`}>일정</Link>
-        <Link className={"flex-grow text-center font-bold text-lg border-b-2 border-neutral-300 py-2"}
-              to={`/plan/${planUuid}/members`}>멤버</Link>
+        <Link
+          className={
+            "flex-grow text-center font-bold text-lg border-b-2 py-2 transition-all duration-200  " +
+            (currentTab === "timeline" || currentTab === "" ? "border-neutral-500" : "border-neutral-300")
+          }
+          to={`/plan/${planUuid}/timeline`}
+        >일정</Link>
+        <Link
+          className={
+            "flex-grow text-center font-bold text-lg border-b-2 py-2 transition-all duration-200 " +
+            (currentTab === "members" ? "border-neutral-500" : "border-neutral-300")
+          }
+          to={`/plan/${planUuid}/members`}
+        >멤버</Link>
       </div>
 
-      <div>
+      <div className={'flex flex-col gap-3'}>
         <Routes>
           <Route path={""} element={<CoreTimeline/>}/>
           <Route path={"timeline"} element={<CoreTimeline/>}/>
@@ -106,6 +137,35 @@ function FriendDaegari(
       <p className={"font-medium cursor-default"}>{friend.name}</p>
     </motion.div>
   );
+}
+
+function CorePlanSkeleton() {
+  return (
+    <SkeletonFrame>
+      <div className={"p-5 flex flex-col gap-4"}>
+        <div className={"flex items-center gap-3"}>
+          <SkeletonElement unit expW={220} expH={32}/>
+          <PencilIcon className={"fill-neutral-500"} width={20}/>
+        </div>
+        <div className={"flex gap-3 overflow-x-auto overflow-y-hidden"}>
+          <div className={"flex flex-col gap-2 items-center max-w-1/4"}>
+            <img
+              src={"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+              className={"rounded-full h-16 w-16"}
+            />
+            <SkeletonElement unit expH={24} expW={45}/>
+          </div>
+        </div>
+
+        <div className={"w-full flex"}>
+          <p className={"flex-grow text-center font-bold text-lg border-b-2 border-neutral-500 py-2"}>일정</p>
+          <p className={"flex-grow text-center font-bold text-lg border-b-2 border-neutral-300 py-2"}>멤버</p>
+        </div>
+
+        <Spinner className={'mx-auto'}/>
+      </div>
+    </SkeletonFrame>
+  )
 }
 
 export default CorePlan;

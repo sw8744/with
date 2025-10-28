@@ -5,12 +5,12 @@ import {PageState} from "../apiResponseInterfaces/apiInterface.ts";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 5000,
+  timeout: 10000,
 });
 
 const apiAuth = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 5000,
+  timeout: 10000,
 });
 
 function handleAxiosError(
@@ -30,6 +30,7 @@ function handleAxiosError(
         stateSetter(PageState.NOT_FOUND);
         break;
       case 401:
+      case 403:
         stateSetter(PageState.FORBIDDEN);
         break;
       case 500:
@@ -79,7 +80,7 @@ apiAuth.interceptors.response.use(
       originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
 
       return apiAuth(originalRequest);
-    }
+    } else return Promise.reject(err);
   }
 );
 
