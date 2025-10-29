@@ -1,7 +1,7 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import type {FriendInformationType} from "../apiResponseInterfaces/relationship.ts";
 import type {Place, Region} from "../model/LocationModels.ts";
 import type {ThemeMapping} from "../model/Theme.ts";
+import type {FriendInformationType} from "../apiResponseInterfaces/relationship.ts";
 
 interface PlannerStateType {
   name: string | null;

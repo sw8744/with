@@ -241,7 +241,3 @@ def relation_factory(
     return relation
 
   yield create_relation
-
-  for relation in relations:
-    db.delete(relation)
-  db.commit()

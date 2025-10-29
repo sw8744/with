@@ -17,6 +17,7 @@ type userFollowingGet = ApiInterface & {
   followings: FriendInformationType[];
 }
 
+//@ts-expect-error ENUM이 뭐가 어때서
 enum Relationship {
   BLOCKED = 0,
   FOLLOWING = 1,

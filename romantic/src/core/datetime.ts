@@ -14,6 +14,11 @@ function dateString(year: number, month: number, date: number): string {
   return `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
 }
 
+function getLocalizedDayString(date: Date): string {
+  const days = ['일', '월', '화', '수', '목', '금', '토'];
+  return days[date.getDay()];
+}
+
 export {
-  toAPIDatetimeString, toAPIDateString, dateString
+  toAPIDatetimeString, toAPIDateString, dateString, getLocalizedDayString
 }

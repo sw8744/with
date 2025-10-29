@@ -8,17 +8,22 @@ from typing_extensions import Generator
 from app.models.plan.PlanMemberModel import PlanMemberModel, PlanRole
 from app.models.plan.PlanModel import PlanModel
 from app.models.plan.PlanPollModel import PlanPollingModel
+from app.models.users.RelationshipModel import RelationshipState
 
 
 @pytest.fixture
 def plan(
-  access_token_factory,
+  access_token_factory, relation_factory,
   db
 ):
   host, host_at = access_token_factory("host_user")
   member1, m1_at = access_token_factory("member_user1")
   member2, m2_at = access_token_factory("member_user2")
   member3, m3_at = access_token_factory("member_user3")
+
+  relation_factory(host, member1, RelationshipState.FRIEND)
+  relation_factory(host, member2, RelationshipState.FRIEND)
+  relation_factory(host, member3, RelationshipState.FRIEND)
 
   date_from = datetime.now()
   date_to = datetime.now() + timedelta(days=5)

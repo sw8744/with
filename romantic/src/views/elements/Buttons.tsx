@@ -33,7 +33,7 @@ function Button(
       onClick={onClick}
       className={
         "px-5 py-2 rounded-full " +
-        "cursor-pointer transition duration-200 " +
+        "transition duration-200 " +
         themeClass[theme ?? "default"] +
         (className ? " " + className : "")
       }
@@ -55,7 +55,7 @@ function ButtonLink(
       reloadDocument={reloadDocument}
       className={
         "px-5 py-2 rounded-full text-center " +
-        "cursor-pointer transition-shadow transition-colors duration-200 " +
+        "transition-shadow transition-colors duration-200 " +
         themeClass[theme ?? "default"] +
         (className ? " " + className : "")
       }

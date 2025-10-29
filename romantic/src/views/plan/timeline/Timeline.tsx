@@ -1,21 +1,44 @@
-import type {ReactNode} from "react";
+import type {ReactElement, ReactNode} from "react";
+import {useAppDispatch, useAppSelector} from "../../../core/hook/ReduxHooks.ts";
+import {PageError} from "../../error/ErrorPage.tsx";
+import {PageState} from "../../../core/apiResponseInterfaces/apiInterface.ts";
+import {getLocalizedDayString} from "../../../core/datetime.ts";
 
 function Timeline() {
+  const dateFrom = useAppSelector(state => state.planReducer.date.from);
+  const dateTo = useAppSelector(state => state.planReducer.date.to);
+  const dispatch = useAppDispatch();
+
+  if (!dateFrom || !dateTo) {
+    return <PageError pageState={PageState.UNKNOWN_FAULT}/>
+  }
+
+  const from = new Date(dateFrom);
+  const to = new Date(dateTo);
+
+  if (from > to) {
+    return <PageError pageState={PageState.SERVER_FAULT}/>;
+  }
+
+  const dateElements: ReactElement[] = [];
+
+  for (let d = from; d <= to; d.setDate(d.getDate() + 1)) {
+    dateElements.push(
+      <div className={"flex gap-2 item-center my-1"}>
+        <p
+          className={"text-xl font-medium"}>{d.getFullYear()}.{String(d.getMonth() + 1).padStart(2, '0')}.{String(d.getDate()).padStart(2, '0')} {getLocalizedDayString(d)}요일</p>
+        <p>TODO: WEATHER GOES HERE</p>
+      </div>
+    );
+  }
+
   return (
     <div className={"flex flex-col"}>
-      <div className={"flex gap-2 item-center my-1"}>
-        <p className={"text-xl font-medium"}>2025.10.25 월요일</p>
-        <p>Possible Precipipation</p>
-      </div>
+      {dateElements}
 
       <PlanPlaceSegment/>
       <PlanMovementTimeSegment/>
       <PlanPlaceSegment/>
-
-      <div className={"flex gap-2 item-center my-1"}>
-        <p className={"text-xl font-medium"}>2025.10.26 화요일</p>
-        <p>Possible Precipipation</p>
-      </div>
       <PlanMovementTimeSegment/>
       <PlanPlaceSegment/>
       <PlanPlaceSegment/>

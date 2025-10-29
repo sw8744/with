@@ -293,7 +293,7 @@ function DatePicker(
           className={
             "w-[32px] p-1 mx-auto rounded-full " +
             "hover:bg-neutral-200 disabled:!bg-transparent disabled:cursor-default " +
-            "transition-colors cursor-pointer " +
+            "transition-colors" +
             daySpecificClass
           }
           onClick={() => selectDay(i)}
@@ -314,7 +314,7 @@ function DatePicker(
           <button
             className={
               "fill-neutral-600 w-[34px] aspect-square p-2 rounded-full " +
-              "cursor-pointer hover:bg-neutral-200 transition-colors"
+              "hover:bg-neutral-200 transition-colors"
             }
             onClick={lastMonth}
           >
@@ -323,7 +323,7 @@ function DatePicker(
           <button
             className={
               "fill-neutral-600 w-[34px] aspect-square p-2 rounded-full " +
-              "cursor-pointer hover:bg-neutral-200 transition-colors"
+              "hover:bg-neutral-200 transition-colors"
             }
             onClick={nextMonth}
           >
@@ -523,7 +523,7 @@ function DateRangePicker(
             <button
               className={
                 "w-[32px] p-1 mx-auto rounded-full " +
-                "bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer" +
+                "bg-blue-200 hover:bg-blue-300 transition-colors" +
                 daySpecificClass
               }
               onClick={() => selectDay(i)}
@@ -543,7 +543,7 @@ function DateRangePicker(
             <button
               className={
                 "w-[32px] p-1 mx-auto rounded-full " +
-                "bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer" +
+                "bg-blue-200 hover:bg-blue-300 transition-colors" +
                 daySpecificClass
               }
               onClick={() => selectDay(i)}
@@ -563,7 +563,7 @@ function DateRangePicker(
             <button
               className={
                 "w-[32px] p-1 mx-auto rounded-full " +
-                "bg-blue-200 hover:bg-blue-300 transition-colors cursor-pointer" +
+                "bg-blue-200 hover:bg-blue-300 transition-colors" +
                 daySpecificClass
               }
               onClick={() => selectDay(i)}
@@ -582,7 +582,7 @@ function DateRangePicker(
             <button
               className={
                 "w-[32px] p-1 mx-auto rounded-full " +
-                "hover:bg-blue-200 transition-colors cursor-pointer" +
+                "hover:bg-blue-200 transition-colors" +
                 daySpecificClass
               }
               onClick={() => selectDay(i)}
@@ -600,7 +600,7 @@ function DateRangePicker(
           <button
             className={
               "w-[32px] p-1 mx-auto rounded-full " +
-              "hover:bg-neutral-200 transition-colors cursor-pointer" +
+              "hover:bg-neutral-200 transition-colors" +
               daySpecificClass
             }
             onClick={() => selectDay(i)}
@@ -621,7 +621,7 @@ function DateRangePicker(
           <button
             className={
               "fill-neutral-600 w-[34px] aspect-square p-2 rounded-full " +
-              "cursor-pointer hover:bg-neutral-200 transition-colors"
+              "hover:bg-neutral-200 transition-colors"
             }
             onClick={lastMonth}
           >
@@ -630,7 +630,7 @@ function DateRangePicker(
           <button
             className={
               "fill-neutral-600 w-[34px] aspect-square p-2 rounded-full " +
-              "cursor-pointer hover:bg-neutral-200 transition-colors"
+              "hover:bg-neutral-200 transition-colors"
             }
             onClick={nextMonth}
           >

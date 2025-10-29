@@ -159,3 +159,50 @@ def test_plan_addition_imaginary_region(
   assert response.json()["code"] == 400
   assert response.json()["status"] == "Bad Request"
   assert response.json()["message"] == "Region was does not found"
+
+
+def test_plan_addition_too_many_members(
+  access_token_factory,
+  identity_factory,
+  relation_factory,
+  regions,
+  places,
+  db
+):
+  h, h_at = access_token_factory("host")
+  members: list[str] = []
+  for i in range(101):
+    member_identity = identity_factory(f"member{i}")
+    relation_factory(h, member_identity, RelationshipState.FRIEND)
+    members.append(str(member_identity.uid))
+
+  date_from = datetime.now().isoformat()
+  date_to = (datetime.now() + timedelta(days=5)).isoformat()
+
+  response = client.post(
+    "/api/v1/plan",
+    headers={
+      "Authorization": f"Bearer {h_at}"
+    },
+    content=json.dumps({
+      "name": "TestPlan",
+      "members": members,
+      "regions": [
+        str(regions[0].uid),
+        str(regions[1].uid)
+      ],
+      "places": [
+        str(places[0].uid),
+        str(places[1].uid),
+        str(places[4].uid),
+        str(places[5].uid)
+      ],
+      "themes": [],
+      "dateFrom": date_from,
+      "dateTo": date_to
+    })
+  )
+
+  assert response.status_code == 400
+  assert response.json()["code"] == 400
+  assert response.json()["status"] == "Bad Request"

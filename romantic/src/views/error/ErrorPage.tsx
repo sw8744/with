@@ -13,16 +13,22 @@ function ErrorPage(props: ErrorPageProps) {
   return (
     <div
       className={
-        "w-full h-full flex flex-col gap-5 justify-center items-center my-5"
+        "w-full h-full flex flex-col gap-5 justify-center items-center py-5"
       }
     >
-      <p className={"text-6xl font-bold"}>
-        {props.errorCode}
-      </p>
-      <p className={"text-xl font-bold"}>
-        {props.errorTitle}
-      </p>
-      <p className={"text-lg"}>{props.errorMessage}</p>
+      {props.errorCode &&
+        <p className={"text-6xl font-bold"}>
+          {props.errorCode}
+        </p>
+      }
+      {props.errorTitle &&
+        <p className={"text-xl font-bold"}>
+          {props.errorTitle}
+        </p>
+      }
+      {props.errorMessage &&
+        <p className={"text-lg"}>{props.errorMessage}</p>
+      }
       {props.children}
     </div>
   );

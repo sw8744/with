@@ -5,7 +5,7 @@ interface DialogPropsType {
   children: ReactNode;
   show: boolean;
   onClose?: () => void;
-  closeWhenBackgroundTouch: boolean
+  closeWhenBackgroundTouch?: boolean
 }
 
 function Dialog(
@@ -55,7 +55,7 @@ function Dialog(
               duration: 0.2,
               ease: "easeInOut"
             }}
-            className={"px-5 py-3 max-w-[500px] w-full mx-auto rounded-t-2xl flex flex-col gap-3 bg-light"}
+            className={"px-5 py-3 pt-5 max-w-[500px] w-full mx-auto rounded-t-2xl flex flex-col gap-3 bg-light"}
             onClick={e => e.stopPropagation()}
           >
             {children}

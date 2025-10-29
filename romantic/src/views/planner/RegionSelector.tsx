@@ -228,7 +228,7 @@ function RegionResult(
       className={
         "w-full rounded-2xl overflow-clip " +
         "shadow-neutral-300 shadow hover:shadow-md transition-all duration-300 " +
-        "flex flex-row cursor-pointer" +
+        "flex flex-row" +
         (selected ? " bg-amber-200" : "")
       }
       onClick={selectRegion}

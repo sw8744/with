@@ -79,7 +79,7 @@ function ThemeSelector(
         key={uid}
         layout={"position"}
         variants={themeTagMotionVariants}
-        className={"my-1 cursor-pointer"}
+        className={"my-1"}
         onClick={() => toggleThemeSelection(number.parse(uid))}
       >
         <ThemeTag key={uid} theme={theme}/>
@@ -92,7 +92,7 @@ function ThemeSelector(
         key={uid}
         layout={"position"}
         variants={themeTagMotionVariants}
-        className={"my-1 cursor-pointer"}
+        className={"my-1"}
         onClick={() => toggleThemeSelection(number.parse(uid))}
       >
         <ThemeTag key={uid} theme={theme}/>

@@ -10,7 +10,7 @@ from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection
 from app.core.plan import core_plan
 from app.core.user.core_jwt import require_role, Role, get_sub
-from app.schemas.plan.plan_reqs import AddPlanRequest, FixDateRequest
+from app.schemas.plan.plan_reqs import AddPlanRequest, FixDateRequest, ChangePlanNameRequest
 
 log = logging.getLogger(__name__)
 
@@ -70,6 +70,30 @@ def get_plan(
   )
 
 
+@router.get(
+  path='/{plan_id}/activities'
+)
+def get_plan_activities(
+  plan_id: UUID,
+  jwt: str = Security(authorization_header),
+  db: Session = Depends(create_connection)
+):
+  token = authorize_jwt(jwt)
+  require_role(token, Role.CORE_USER)
+
+  log.info("Searching plan activities. plan_id=[%s]", plan_id)
+  activities = core_plan.get_plan_activities(plan_id, get_sub(token), db)
+  log.info("Found %d activities for plan uid=%r", len(activities), plan_id)
+
+  return JSONResponse(
+    status_code=200,
+    content={
+      "code": 200,
+      "status": "OK",
+      "activities": activities
+    }
+  )
+
 @router.patch(
   path="/{plan_id}/date"
 )
@@ -85,6 +109,31 @@ def fix_date(
   log.info("Fixing plan date. plan_id=[%s]", plan_id)
   core_plan.fix_plan_date(request, plan_id, get_sub(token), db)
   log.info("Fix of plan uid=%r was committed", plan_id)
+
+  return JSONResponse(
+    status_code=200,
+    content={
+      "code": 200,
+      "status": "OK"
+    }
+  )
+
+
+@router.patch(
+  path="/{plan_id}/name"
+)
+def change_name(
+  request: ChangePlanNameRequest,
+  plan_id: UUID,
+  jwt: str = Security(authorization_header),
+  db: Session = Depends(create_connection)
+):
+  token = authorize_jwt(jwt)
+  require_role(token, Role.CORE_USER)
+
+  log.info("Changing name of plan %r", plan_id)
+  core_plan.change_plan_name(request, plan_id, get_sub(token), db)
+  log.info("Change of name in plan uid=%r was committed", plan_id)
 
   return JSONResponse(
     status_code=200,

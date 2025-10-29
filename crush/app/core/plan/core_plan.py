@@ -9,7 +9,7 @@ from app.models.plan.PlanMemberModel import PlanMemberModel, PlanRole
 from app.models.plan.PlanModel import PlanModel
 from app.models.users.RelationshipModel import RelationshipModel, RelationshipState
 from app.schemas.plan.Plan import Plan
-from app.schemas.plan.plan_reqs import AddPlanRequest, FixDateRequest
+from app.schemas.plan.plan_reqs import AddPlanRequest, FixDateRequest, ChangePlanNameRequest
 
 log = logging.getLogger(__name__)
 
@@ -161,7 +161,44 @@ def fix_plan_date(
     log.warning("User %r is not authorized to fix date in plan %r", requester_id, plan_id)
     raise HTTPException(status_code=403, detail="Forbidden")
 
+  if request.date_from > request.date_to:
+    log.warning("Cannot fix to reversed date range in plan %r. requested_by=%r", plan_id, requester_id)
+    raise HTTPException(status_code=400, detail="Reversed date")
+
   plan_model.date_from = request.date_from
   plan_model.date_to = request.date_to
   plan_model.polling_date = None
+  db.commit()
+
+
+def change_plan_name(
+  request: ChangePlanNameRequest,
+  plan_id: UUID,
+  sub: UUID,
+  db: Session
+):
+  plan_model = (
+    db.query(PlanModel)
+    .filter(PlanModel.uid == plan_id)
+    .scalar()
+  )
+
+  if plan_model is None:
+    log.warning("Plan %r not found when changing plan name", plan_id)
+    raise HTTPException(status_code=404, detail="Plan not found")
+
+  member: PlanMemberModel = (
+    db.query(PlanMemberModel)
+    .filter(
+      PlanMemberModel.plan_id == plan_model.uid,
+      PlanMemberModel.user_id == sub
+    )
+    .scalar()
+  )
+
+  if not member or member.role.value > PlanRole.COHOST.value:
+    log.warning("User %r is not authorized to change name in plan %r", sub, plan_id)
+    raise HTTPException(status_code=403, detail="Forbidden")
+
+  plan_model.name = request.name
   db.commit()

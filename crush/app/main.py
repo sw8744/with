@@ -9,7 +9,7 @@ from app.routers.auth import GoogleOAuthRouter, AuthRouter
 from app.routers.error_handler import add_error_handler
 from app.routers.interaction import like
 from app.routers.location import places, regions
-from app.routers.plan import plan, plan_date_poll
+from app.routers.plan import plan, plan_date_poll, plan_members
 from app.routers.recommendation import recommendation, theme
 from app.routers.relationship import following, follower
 from app.routers.user import register, user
@@ -33,6 +33,7 @@ app.include_router(recommendation.router)
 app.include_router(theme.router)
 app.include_router(plan.router)
 app.include_router(plan_date_poll.router)
+app.include_router(plan_members.router)
 add_error_handler(app)
 
 log.info("Application started on %s", datetime.now().isoformat())

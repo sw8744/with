@@ -1,4 +1,6 @@
 import type ApiInterface from "./apiInterface.ts";
+import type {PlanRole} from "../redux/PlanReducer.ts";
+import type {FriendInformationType} from "./relationship.ts";
 
 type planAddition = ApiInterface & {
   plan: {
@@ -38,6 +40,10 @@ type GetVoteStatusRequest = ApiInterface & {
   }
 }
 
+type PlanMemberType = FriendInformationType & {
+  role: PlanRole;
+}
+
 type GetMyVoteRequest = ApiInterface & {
   vote: string[];
 }
@@ -46,5 +52,6 @@ export type {
   planAddition,
   GetGeneralPlanRequest,
   GetVoteStatusRequest,
-  GetMyVoteRequest
+  GetMyVoteRequest,
+  PlanMemberType
 }

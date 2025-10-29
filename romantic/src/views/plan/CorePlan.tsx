@@ -15,12 +15,14 @@ import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {PageError} from "../error/ErrorPage.tsx";
 import {SkeletonElement, SkeletonFrame} from "../elements/Skeleton.tsx";
 import Spinner from "../elements/Spinner.tsx";
+import CoreMembers from "./member/CoreMembers.tsx";
+import ChangePlanName from "./ChangePlanName.tsx";
 
 function CorePlan() {
   const planUuid = useParams()["planUUID"];
   const myUuid = useAppSelector(state => state.userInfoReducer.uid);
   const reduxPlanUuid = useAppSelector(state => state.planReducer.uid);
-  const planName = useAppSelector(state => state.planReducer.name);
+  const members = useAppSelector(state => state.planReducer.members);
   const refreshInterrupt = useAppSelector(state => state.planReducer.refreshInterrupt);
 
   const dispatch = useDispatch();
@@ -68,22 +70,25 @@ function CorePlan() {
     return <PageError pageState={pageState}/>
   }
 
+  let currentPage = 0;
+  switch (currentTab) {
+    case "timeline":
+      currentPage = 0;
+      break;
+    case "members":
+      currentPage = 1;
+      break;
+  }
+
   return (
     <div className={"p-5 flex flex-col gap-4"}>
-      <div className={"flex items-center gap-3"}>
-        <p className={"text-2xl font-bold"}>{planName}</p>
-        <PencilIcon className={"fill-neutral-500"} width={20}/>
-      </div>
-      <div className={"flex gap-3 overflow-x-auto overflow-y-hidden"}>
+      <ChangePlanName/>
+      <div
+        className={"flex gap-3 overflow-x-auto overflow-y-hidden"}> {/* fixme: 인싸들은 여기 공간 부족할지도, width 자동으로 넓혀줘야 함 */}
         <AnimatePresence>
-          <FriendDaegari friend={{
-            name: "현창운",
-            uid: "xxx"
-          }}/>
-          <FriendDaegari friend={{
-            name: "이다민",
-            uid: "xxx"
-          }}/>
+          {members.map((member, idx) => (
+            <FriendDaegari key={idx} friend={member}/>
+          ))}
         </AnimatePresence>
       </div>
 
@@ -91,14 +96,14 @@ function CorePlan() {
         <Link
           className={
             "flex-grow text-center font-bold text-lg border-b-2 py-2 transition-all duration-200  " +
-            (currentTab === "timeline" || currentTab === "" ? "border-neutral-500" : "border-neutral-300")
+            (currentPage === 0 ? "border-neutral-500" : "border-neutral-300")
           }
           to={`/plan/${planUuid}/timeline`}
         >일정</Link>
         <Link
           className={
             "flex-grow text-center font-bold text-lg border-b-2 py-2 transition-all duration-200 " +
-            (currentTab === "members" ? "border-neutral-500" : "border-neutral-300")
+            (currentPage === 1 ? "border-neutral-500" : "border-neutral-300")
           }
           to={`/plan/${planUuid}/members`}
         >멤버</Link>
@@ -108,6 +113,7 @@ function CorePlan() {
         <Routes>
           <Route path={""} element={<CoreTimeline/>}/>
           <Route path={"timeline"} element={<CoreTimeline/>}/>
+          <Route path={'members'} element={<CoreMembers/>}/>
         </Routes>
       </div>
     </div>

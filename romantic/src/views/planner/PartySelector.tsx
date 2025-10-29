@@ -1,7 +1,11 @@
 import React, {type ChangeEvent, useEffect, useRef, useState} from "react";
 import {Checkbox} from "../elements/Inputs.tsx";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
-import {type FriendInformationType, type userFollowingGet} from "../../core/apiResponseInterfaces/relationship.ts";
+import {
+  type FriendInformationType,
+  Relationship,
+  type userFollowingGet
+} from "../../core/apiResponseInterfaces/relationship.ts";
 import {isPageError, PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
 import {PageError} from "../error/ErrorPage.tsx";
 import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/Skeleton.tsx";
@@ -14,8 +18,10 @@ import {plannerAction} from "../../core/redux/PlannerReducer.ts";
 import {HorizontalListMotionVariants} from "../../core/motionVariants.ts";
 
 function PartySelector(
-  {next}: {
-    next: () => void
+  {next, working, children}: {
+    next?: () => void;
+    working?: boolean;
+    children?: React.ReactNode;
   }
 ) {
   const [friends, setFriends] = useState<FriendInformationType[]>([]);
@@ -56,7 +62,7 @@ function PartySelector(
       {
         params: {
           limit: 30,
-          state: 1,
+          state: Relationship.FRIEND,
           up: true,
           head: headUUID
         }
@@ -77,7 +83,7 @@ function PartySelector(
       {
         params: {
           limit: 30,
-          state: 1,
+          state: Relationship.FRIEND,
           up: true
         }
       }
@@ -208,9 +214,13 @@ function PartySelector(
       {friendFinder}
       <div>
         <p className={"text-center text-sm text-neutral-500 my-2"}>상대방이 나를 친구로 추가해야 초대할 수 있습니다.</p>
-        <div className={"flex justify-end"}>
-          <Button onClick={next}>다음</Button>
-        </div>
+        {!children && (
+          /* 새 계획 모드 */
+          <div className={"flex justify-end"}>
+            <Button onClick={next} disabled={working}>선택 완료</Button>
+          </div>
+        )}
+        {children && children /* 멤버 수정 모드 */}
       </div>
     </>
   );

@@ -29,3 +29,7 @@ select {
   -webkit-appearance: none;
   appearance: none;
 }
+
+button {
+  cursor: pointer;
+}

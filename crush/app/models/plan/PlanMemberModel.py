@@ -3,9 +3,10 @@ from uuid import UUID as PyUUID
 
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, relationship
+from sqlalchemy.orm import Mapped, relationship, backref
 
 from app.core.database.database import BaseTable, EnumAsValue
+from app.models.plan.PlanModel import PlanModel
 from app.models.users.IdentityModel import IdentityModel
 
 
@@ -27,6 +28,17 @@ class PlanMemberModel(BaseTable):
                                    primary_key=True)
   role: Mapped[PlanRole] = Column(EnumAsValue(PlanRole), nullable=False, default=PlanRole.MEMBER)
 
+  plan: Mapped[PlanModel] = relationship(
+    "PlanModel",
+    foreign_keys="PlanMemberModel.plan_id",
+    uselist=False,
+    backref=backref(
+      "members",
+      uselist=True,
+      cascade="all, delete-orphan",
+      passive_deletes=True
+    )
+  )
   user: Mapped[IdentityModel] = relationship(
     "IdentityModel",
     foreign_keys="PlanMemberModel.user_id",
