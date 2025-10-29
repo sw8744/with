@@ -21,7 +21,7 @@ function ChangePlanName() {
   const [workState, setWorkState] = useState<PageState>(PageState.NORMAL);
   const [formState, setFormState] = useState<number>(0);
 
-  if (myRole !== PlanRole.HOST && myRole !== PlanRole.COHOST) {
+  if (myRole === PlanRole.OBSERVER) {
     return <p className={"text-2xl font-bold"}>{planName}</p>;
   }
 

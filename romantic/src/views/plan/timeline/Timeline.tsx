@@ -9,6 +9,10 @@ function Timeline() {
   const dateTo = useAppSelector(state => state.planReducer.date.to);
   const dispatch = useAppDispatch();
 
+  function addSegment(date: Date) {
+
+  }
+
   if (!dateFrom || !dateTo) {
     return <PageError pageState={PageState.UNKNOWN_FAULT}/>
   }
@@ -24,30 +28,35 @@ function Timeline() {
 
   for (let d = from; d <= to; d.setDate(d.getDate() + 1)) {
     dateElements.push(
-      <div className={"flex gap-2 item-center my-1"}>
-        <p
-          className={"text-xl font-medium"}>{d.getFullYear()}.{String(d.getMonth() + 1).padStart(2, '0')}.{String(d.getDate()).padStart(2, '0')} {getLocalizedDayString(d)}요일</p>
-        <p>TODO: WEATHER GOES HERE</p>
-      </div>
+      <>
+        <div className={"flex gap-2 item-center my-1"}>
+          <p
+            className={"text-xl font-medium"}>{d.getFullYear()}.{String(d.getMonth() + 1).padStart(2, '0')}.{String(d.getDate()).padStart(2, '0')} {getLocalizedDayString(d)}요일</p>
+          <p>TODO: WEATHER GOES HERE</p>
+        </div>
+        <AddPlanSegmentButton addSegment={() => addSegment(d)}/>
+      </>
     );
   }
 
   return (
     <div className={"flex flex-col"}>
       {dateElements}
-
-      <PlanPlaceSegment/>
-      <PlanMovementTimeSegment/>
-      <PlanPlaceSegment/>
-      <PlanMovementTimeSegment/>
-      <PlanPlaceSegment/>
-      <PlanPlaceSegment/>
-      <PlanMovementTimeSegment/>
-      <PlanPlaceSegment/>
-
-      <PlanProgressionTail/>
     </div>
   );
+}
+
+function AddPlanSegmentButton(
+  {addSegment}: { addSegment?: () => void }
+) {
+  return (
+    <button
+      className={"w-full py-2 my-1 border-2 border-dashed border-neutral-300 rounded-lg text-neutral-500 hover:bg-neutral-100 transition-all duration-200"}
+      onClick={addSegment}
+    >
+      + 일정 추가
+    </button>
+  )
 }
 
 function PlanPlaceSegment() {

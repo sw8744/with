@@ -196,7 +196,7 @@ def change_plan_name(
     .scalar()
   )
 
-  if not member or member.role.value > PlanRole.COHOST.value:
+  if not member or member.role.value > PlanRole.MEMBER.value:
     log.warning("User %r is not authorized to change name in plan %r", sub, plan_id)
     raise HTTPException(status_code=403, detail="Forbidden")
 

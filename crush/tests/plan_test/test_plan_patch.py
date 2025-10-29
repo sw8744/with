@@ -150,13 +150,13 @@ def test_plan_rename(
   assert new_plan.name == "New Plan Name"
 
 
-def test_plan_rename_by_member(
+def test_plan_rename_by_observer(
   plan
 ):
   response = client.patch(
     f"/api/v1/plan/{plan.get("plan").uid}/name",
     headers={
-      "Authorization": f"Bearer {plan.get("members")[1].get("at")}"
+      "Authorization": f"Bearer {plan.get("members")[2].get("at")}"
     },
     json={
       "name": "Another New Plan Name"
