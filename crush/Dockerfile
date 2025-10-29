@@ -3,10 +3,10 @@ FROM python:3.12.12-alpine3.22
 WORKDIR /home/with
 
 COPY ./app ./app
-COPY requirments.txt .
+COPY requirements.txt .
 RUN mkdir logs
 
-RUN pip3 install --no-cache-dir --upgrade -r requirments.txt
+RUN pip3 install --no-cache-dir --upgrade -r requirements.txt
 
 ENV mode=prod
 ENV commit=${APP_COMMIT}
