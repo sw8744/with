@@ -2,10 +2,10 @@ name: 'Build and Deploy to GHCR'
 
 on:
   workflow_dispatch
-#  push:
-#  pull_request:
-#    branches:
-#      - "main"
+  push:
+  pull_request:
+    branches:
+      - "main"
 
 env:
   CR_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -14,17 +14,12 @@ env:
 jobs:
   build-publish-image:
     name: Build and Publish Docker image
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
 
     steps:
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
-    
       - name: Checkout repository
         uses: actions/checkout@v5
 
