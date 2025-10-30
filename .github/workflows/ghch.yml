@@ -28,7 +28,7 @@ jobs:
 
       - name: Build docker image
         working-directory: ./crush
-        run: \
+        run: |
           docker build \
           -t ghcr.io/miho73/crush:$SHA \
           --build-arg APP_COMMIT=$SHA \
