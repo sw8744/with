@@ -14,15 +14,12 @@ env:
 jobs:
   build-publish-image:
     name: Build and Publish Docker image
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: read
       packages: write
 
     steps:
-      - name: Set up Docker
-        uses: docker/setup-docker-action@v4
-    
       - name: Checkout repository
         uses: actions/checkout@v5
 
