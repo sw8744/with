@@ -4,8 +4,8 @@ from uuid import UUID
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
+from app.core.plan.core_plan import get_plan_with_role
 from app.models.plan.PlanMemberModel import PlanMemberModel, PlanRole
-from app.models.plan.PlanModel import PlanModel
 from app.models.users.RelationshipModel import RelationshipModel, RelationshipState
 from app.schemas.plan.plan_member_reqs import PatchPlanMemberReqs
 
@@ -13,31 +13,12 @@ log = logging.getLogger(__name__)
 
 
 def patch_members(
-  plan_uuid: UUID,
+  plan_id: UUID,
   req: PatchPlanMemberReqs,
   sub: UUID,
   db: Session
 ):
-  plan: PlanModel = (
-    db.query(PlanModel)
-    .filter(PlanModel.uid == plan_uuid)
-    .scalar()
-  )
-  if not plan:
-    log.warning("Plan %r not found when finding vote", plan_uuid)
-    raise HTTPException(status_code=404, detail="Plan not found")
-
-  plan_member: PlanMemberModel = (
-    db.query(PlanMemberModel)
-    .filter(
-      PlanMemberModel.plan_id == plan.uid,
-      PlanMemberModel.user_id == sub
-    )
-    .scalar()
-  )
-  if not plan_member or plan_member.role.value > PlanRole.COHOST.value:
-    log.warning("User %r is not authorized to change members in plan %r", sub, plan_uuid)
-    raise HTTPException(status_code=403, detail="Forbidden")
+  plan = get_plan_with_role(plan_id, sub, db, PlanRole.HOST, PlanRole.COHOST)
 
   # 요청자는 members에게 친구 관계여야 함
   relationship_check = (

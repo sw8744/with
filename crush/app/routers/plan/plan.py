@@ -70,30 +70,6 @@ def get_plan(
   )
 
 
-@router.get(
-  path='/{plan_id}/activities'
-)
-def get_plan_activities(
-  plan_id: UUID,
-  jwt: str = Security(authorization_header),
-  db: Session = Depends(create_connection)
-):
-  token = authorize_jwt(jwt)
-  require_role(token, Role.CORE_USER)
-
-  log.info("Searching plan activities. plan_id=[%s]", plan_id)
-  activities = core_plan.get_plan_activities(plan_id, get_sub(token), db)
-  log.info("Found %d activities for plan uid=%r", len(activities), plan_id)
-
-  return JSONResponse(
-    status_code=200,
-    content={
-      "code": 200,
-      "status": "OK",
-      "activities": activities
-    }
-  )
-
 @router.patch(
   path="/{plan_id}/date"
 )

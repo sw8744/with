@@ -5,6 +5,7 @@ from uuid import UUID
 import pytest
 from typing_extensions import Generator
 
+from app.models.plan.PlanActivityModel import PlanActivityModel, ActivityCategory
 from app.models.plan.PlanMemberModel import PlanMemberModel, PlanRole
 from app.models.plan.PlanModel import PlanModel
 from app.models.plan.PlanPollModel import PlanPollingModel
@@ -122,3 +123,41 @@ def date_vote_factory(
       .delete()
     )
   db.commit()
+
+
+@pytest.fixture
+def plan_activities(
+  plan, db
+):
+  act1 = PlanActivityModel(
+    plan_id=plan.get("plan").uid,
+    name="Activity 1",
+    description="Description 1",
+    at_date=datetime.now().date(),
+    at_time=datetime.now().time(),
+    category=ActivityCategory.ACTIVITY
+  )
+  act2 = PlanActivityModel(
+    plan_id=plan.get("plan").uid,
+    name="Activity 2",
+    description="Description 2",
+    at_date=(datetime.now() + timedelta(days=1)).date(),
+    at_time=(datetime.now() + timedelta(hours=1)).time(),
+    category=ActivityCategory.MEAL
+  )
+  act3 = PlanActivityModel(
+    plan_id=plan.get("plan").uid,
+    name="Activity 3",
+    description="Description 3",
+    at_date=(datetime.now() + timedelta(days=2)).date(),
+    at_time=(datetime.now() + timedelta(hours=2)).time(),
+    category=ActivityCategory.MOVEMENT
+  )
+
+  db.add_all([act3, act1, act2])
+  db.commit()
+  db.refresh(act3)
+  db.refresh(act2)
+  db.refresh(act1)
+
+  yield [act1, act2, act3]

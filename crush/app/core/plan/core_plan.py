@@ -14,6 +14,39 @@ from app.schemas.plan.plan_reqs import AddPlanRequest, FixDateRequest, ChangePla
 log = logging.getLogger(__name__)
 
 
+def get_plan_with_role(
+  plan_id: UUID,
+  user_id: UUID,
+  db: Session,
+  *accepted_roles: PlanRole
+) -> PlanModel:
+  plan_model: PlanModel = (
+    db.query(PlanModel)
+    .filter(PlanModel.uid == plan_id)
+    .scalar()
+  )
+
+  if plan_model is None:
+    log.warning("Plan uid=%r with uid=%r and roles=%r was not found", plan_id, user_id, accepted_roles)
+    raise HTTPException(status_code=404, detail="Plan not found")
+
+  member: PlanMemberModel = (
+    db.query(PlanMemberModel)
+    .filter(
+      PlanMemberModel.plan_id == plan_model.uid,
+      PlanMemberModel.user_id == user_id
+    )
+    .scalar()
+  )
+
+  if member is None or member.role not in accepted_roles:
+    log.warning("User %r does not have required role in plan %r. required_roles=%r, actual_role=%r",
+                user_id, plan_id, accepted_roles, member.role if member else None)
+    raise HTTPException(status_code=403, detail="Forbidden")
+
+  return plan_model
+
+
 def create_plan(
   host_id: UUID,
   new_plan: AddPlanRequest,
@@ -138,36 +171,15 @@ def fix_plan_date(
   requester_id: UUID,
   db: Session
 ):
-  plan_model = (
-    db.query(PlanModel)
-    .filter(PlanModel.uid == plan_id)
-    .scalar()
-  )
-
-  if plan_model is None:
-    log.warning("Plan %r not found when finding vote", plan_id)
-    raise HTTPException(status_code=404, detail="Plan not found")
-
-  member: PlanMemberModel = (
-    db.query(PlanMemberModel)
-    .filter(
-      PlanMemberModel.plan_id == plan_model.uid,
-      PlanMemberModel.user_id == requester_id
-    )
-    .scalar()
-  )
-
-  if not member or member.role.value > PlanRole.COHOST.value:
-    log.warning("User %r is not authorized to fix date in plan %r", requester_id, plan_id)
-    raise HTTPException(status_code=403, detail="Forbidden")
+  plan = get_plan_with_role(plan_id, requester_id, db, PlanRole.HOST, PlanRole.COHOST)
 
   if request.date_from > request.date_to:
     log.warning("Cannot fix to reversed date range in plan %r. requested_by=%r", plan_id, requester_id)
     raise HTTPException(status_code=400, detail="Reversed date")
 
-  plan_model.date_from = request.date_from
-  plan_model.date_to = request.date_to
-  plan_model.polling_date = None
+  plan.date_from = request.date_from
+  plan.date_to = request.date_to
+  plan.polling_date = None
   db.commit()
 
 
@@ -177,28 +189,7 @@ def change_plan_name(
   sub: UUID,
   db: Session
 ):
-  plan_model = (
-    db.query(PlanModel)
-    .filter(PlanModel.uid == plan_id)
-    .scalar()
-  )
+  plan = get_plan_with_role(plan_id, sub, db, PlanRole.HOST, PlanRole.COHOST, PlanRole.MEMBER)
 
-  if plan_model is None:
-    log.warning("Plan %r not found when changing plan name", plan_id)
-    raise HTTPException(status_code=404, detail="Plan not found")
-
-  member: PlanMemberModel = (
-    db.query(PlanMemberModel)
-    .filter(
-      PlanMemberModel.plan_id == plan_model.uid,
-      PlanMemberModel.user_id == sub
-    )
-    .scalar()
-  )
-
-  if not member or member.role.value > PlanRole.MEMBER.value:
-    log.warning("User %r is not authorized to change name in plan %r", sub, plan_id)
-    raise HTTPException(status_code=403, detail="Forbidden")
-
-  plan_model.name = request.name
+  plan.name = request.name
   db.commit()

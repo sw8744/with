@@ -7,3 +7,9 @@ docker
 client_secret.json
 logs
 .DS_Store
+.run
+*/**/__pycache__
+*/**/*.pyc
+.env
+.env.*
+
