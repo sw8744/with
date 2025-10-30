@@ -7,6 +7,10 @@ on:
 #    branches:
 #      - "main"
 
+env:
+  CR_PAT: ${{ secrets.GITHUB_TOKEN }}
+  SHA: ${{ github.sha }}
+
 jobs:
   build-publish-image:
     name: Build and Publish Docker image
@@ -16,22 +20,21 @@ jobs:
       packages: write
 
     steps:
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: miho73
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout repository
+        uses: actions/checkout@v5
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Build docker image
+        working-directory: ./crush
+        run: |
+          docker build \
+          -t ghcr.io/miho73/crush:$SHA \
+          --build-arg APP_COMMIT=$SHA \
+          .
+      - name: Docker login
+        run: echo $CR_PAT | docker login ghcr.io -u miho73 --password-stdin
 
       - name: Push image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./crush
-          file: ./crush/Dockerfile
-          push: true
-          build-args: APP_COMMIT=${{ github.sha }}
-          tags: |
-            ghcr.io/miho73/crush:${{ github.sha }}
-            ghcr.io/miho73/crush:latest
+        run: |
+          docker push ghcr.io/miho73/crush:$SHA
+          docker tag ghcr.io/miho73/crush:$SHA ghcr.io/miho73/crush:latest
+          docker push ghcr.io/miho73/crush:latest
