@@ -35,4 +35,10 @@ jobs:
         run: echo $CR_PAT | docker login ghcr.io -u miho73 --password-stdin
 
       - name: Push image
-        run: docker push ghcr.io/miho73/crush:$SHA
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/miho73/crush:$SHA
+            ghcr.io/miho73/crush:latest
