@@ -60,4 +60,3 @@ const plannerSlice = createSlice({
 export const plannerAction = plannerSlice.actions;
 export default plannerSlice.reducer;
 export type {PlannerStateType};
-

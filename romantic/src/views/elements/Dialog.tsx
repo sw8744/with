@@ -1,4 +1,4 @@
-import type {ReactNode} from "react";
+import {type ReactNode} from "react";
 import {AnimatePresence, motion} from "framer-motion";
 
 interface DialogPropsType {
@@ -23,7 +23,7 @@ function Dialog(
       {show &&
         <motion.div
           className={
-            "w-full h-screen absolute left-0 top-0 z-50 " +
+            "w-full h-screen overflow-y-hidden fixed left-0 top-0 z-50 " +
             "bg-[#0008] flex flex-col justify-end"
           }
           initial={{
@@ -49,7 +49,7 @@ function Dialog(
               translateY: 0
             }}
             exit={{
-              translateY: 0
+              translateY: "100%"
             }}
             transition={{
               duration: 0.2,
