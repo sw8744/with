@@ -36,6 +36,18 @@ const PageStepperMotion = {
   }
 }
 
+const CarouselStepperMotion = {
+  initial: (direction: number) => ({
+    x: direction > 0 ? "102%" : "-102%"
+  }),
+  animate: {
+    x: 0
+  },
+  exit: (direction: number) => ({
+    x: direction > 0 ? "-102%" : "102%"
+  })
+}
+
 const PageTransitionMotion = {
   initial: {
     opacity: 0,
@@ -76,5 +88,5 @@ const HorizontalListMotionVariants = {
 
 
 export {
-  BlockListMotion, PageStepperMotion, HorizontalListMotionVariants, PageTransitionMotion
+  BlockListMotion, PageStepperMotion, CarouselStepperMotion, HorizontalListMotionVariants, PageTransitionMotion
 }

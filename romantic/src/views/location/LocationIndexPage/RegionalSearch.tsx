@@ -67,7 +67,7 @@ function RegionalSearch() {
   else if (isPageError(pageState)) return <PageError pageState={pageState}/>;
 
   return (
-    <div className={'grid grid-cols-3 gap-3'}>
+    <div className={'grid grid-cols-3 gap-3 mx-[14px]'}>
       {regionRecommendation.map((regionRec, index) => (
         <Link
           key={index}
@@ -78,13 +78,14 @@ function RegionalSearch() {
             src={thumbnailUrl(regions[regionRec.region]?.thumbnail)}
             className={
               'aspect-square object-cover shadow ' +
-              'hover:scale-105 transition-all duration-300'
+              'hover:scale-105 transition-all duration-300 ' +
+              'brightness-50'
             }
           />
           <p
             className={
               'absolute left-0 bottom-0 w-full ' +
-              'text-center py-3 text-neutral-50 text-xl font-bold'
+              'text-center py-4 text-neutral-50 text-xl font-bold'
             }
           >{regions[regionRec.region]?.name}</p>
         </Link>

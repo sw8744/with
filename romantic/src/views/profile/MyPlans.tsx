@@ -5,6 +5,7 @@ import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {ListMyPlansRequest, Plan} from "../../core/apiResponseInterfaces/plan.ts";
 import {Link} from "react-router-dom";
 import {getDayDelta, isoToDisplayDateString} from "../../core/datetime.ts";
+import {SkeletonElement, SkeletonFrame} from "../elements/Skeleton.tsx";
 
 function MyPlans() {
   const [pageState, setPageState] = useState<PageState>(PageState.LOADING);
@@ -71,8 +72,29 @@ function MyPlans() {
 
 function MyPlansSkeleton() {
   return (
-    <>
-    </>
+      <SkeletonFrame className={'flex flex-col gap-3'}>
+        <div
+            className={
+                'p-4 flex flex-col gap-1 ' +
+                'border border-neutral-300 rounded-xl ' +
+                'shadow'
+            }
+        >
+          <SkeletonElement unit expW={110} expH={28}/>
+          <SkeletonElement unit expW={300} expH={24}/>
+        </div>
+
+        <div
+            className={
+                'p-4 flex flex-col gap-1 ' +
+                'border border-neutral-300 rounded-xl ' +
+                'shadow'
+            }
+        >
+          <SkeletonElement unit expW={130} expH={28}/>
+          <SkeletonElement unit expW={260} expH={24}/>
+        </div>
+      </SkeletonFrame>
   );
 }
 
