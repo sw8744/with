@@ -3,7 +3,7 @@ import {PencilIcon} from "../../assets/svgs/svgs.ts";
 import type {FriendInformationType} from "../../core/apiResponseInterfaces/relationship.ts";
 import {AnimatePresence, motion} from "framer-motion";
 import {HorizontalListMotionVariants} from "../../core/motionVariants.ts";
-import CoreTimeline from "./timeline/CoreTimeline.tsx";
+import CoreSchedule from "./schedule/CoreSchedule.tsx";
 import {useEffect, useState} from "react";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import {uuidCheck} from "../../core/validation.ts";
@@ -111,8 +111,8 @@ function CorePlan() {
 
       <div className={'flex flex-col gap-3'}>
         <Routes>
-          <Route path={""} element={<CoreTimeline/>}/>
-          <Route path={"timeline"} element={<CoreTimeline/>}/>
+          <Route path={""} element={<CoreSchedule/>}/>
+          <Route path={"timeline"} element={<CoreSchedule/>}/>
           <Route path={'members'} element={<CoreMembers/>}/>
         </Routes>
       </div>

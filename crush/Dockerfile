@@ -1,5 +1,7 @@
 FROM python:3.12.12-alpine3.22
 
+LABEL org.opencontainers.image.description="(づ ◕‿◕ )づ"
+
 WORKDIR /home/with
 
 COPY ./app ./app

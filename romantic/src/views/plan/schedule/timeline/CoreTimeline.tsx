@@ -1,17 +1,30 @@
-import type {ReactElement, ReactNode} from "react";
-import {useAppDispatch, useAppSelector} from "../../../core/hook/ReduxHooks.ts";
-import {PageError} from "../../error/ErrorPage.tsx";
-import {PageState} from "../../../core/apiResponseInterfaces/apiInterface.ts";
-import {getLocalizedDayString} from "../../../core/datetime.ts";
+import {type ReactElement, type ReactNode, useEffect, useState} from "react";
+import {useAppDispatch, useAppSelector} from "../../../../core/hook/ReduxHooks.ts";
+import {PageError} from "../../../error/ErrorPage.tsx";
+import {PageState} from "../../../../core/apiResponseInterfaces/apiInterface.ts";
+import {getLocalizedDayString} from "../../../../core/datetime.ts";
+import AddSegment from "./AddSegment.tsx";
+import {apiAuth, handleAxiosError} from "../../../../core/axios/withAxios.ts";
+import type {GetPlanActivitiesRequest, PlanActivity} from "../../../../core/apiResponseInterfaces/plan.ts";
 
-function Timeline() {
+function CoreTimeline() {
+  const planUuid = useAppSelector(state => state.planReducer.uid);
   const dateFrom = useAppSelector(state => state.planReducer.date.from);
   const dateTo = useAppSelector(state => state.planReducer.date.to);
   const dispatch = useAppDispatch();
 
-  function addSegment(date: Date) {
+  const [pageState, setPageState] = useState<PageState>(PageState.LOADING);
+  const [activities, setActivities] = useState<PlanActivity[]>([]);
 
-  }
+  useEffect(() => {
+    apiAuth.get<GetPlanActivitiesRequest>(
+      `/plan/${planUuid}/activities`
+    ).then(res => {
+      setActivities(res.data.activities);
+    }).catch(err => {
+      handleAxiosError(err, setPageState);
+    });
+  }, []);
 
   if (!dateFrom || !dateTo) {
     return <PageError pageState={PageState.UNKNOWN_FAULT}/>
@@ -34,7 +47,8 @@ function Timeline() {
             className={"text-xl font-medium"}>{d.getFullYear()}.{String(d.getMonth() + 1).padStart(2, '0')}.{String(d.getDate()).padStart(2, '0')} {getLocalizedDayString(d)}요일</p>
           <p>TODO: WEATHER GOES HERE</p>
         </div>
-        <AddPlanSegmentButton addSegment={() => addSegment(d)}/>
+        <PlanPlaceSegment/>
+        <AddSegment/>
       </>
     );
   }
@@ -44,19 +58,6 @@ function Timeline() {
       {dateElements}
     </div>
   );
-}
-
-function AddPlanSegmentButton(
-  {addSegment}: { addSegment?: () => void }
-) {
-  return (
-    <button
-      className={"w-full py-2 my-1 border-2 border-dashed border-neutral-300 rounded-lg text-neutral-500 hover:bg-neutral-100 transition-all duration-200"}
-      onClick={addSegment}
-    >
-      + 일정 추가
-    </button>
-  )
 }
 
 function PlanPlaceSegment() {
@@ -99,7 +100,7 @@ function PlanProgressionSegment(
 ) {
   return (
     <div className={"flex relative overflow-y-hidden px-2" + (className ? " " + className : "")}>
-      <p className={"text-neutral-500 mt-2 pt-[1px]"}>{time}</p>
+      <p className={"text-neutral-500 mt-2 pt-[1px] w-[40px]"}>{time}</p>
       <svg className={"fill-neutral-300 absolute left-[calc(45px+var(--spacing)*2)]"} width={16} height={200}
            viewBox={"0 0 16 200"}>
         <rect x={6.5} y={0} width={3} height={200}/>
@@ -129,4 +130,7 @@ function PlanProgressionTail() {
   )
 }
 
-export default Timeline;
+export default CoreTimeline;
+export {
+  PlanProgressionSegment
+}

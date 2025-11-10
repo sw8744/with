@@ -38,7 +38,7 @@ def get_plan_activities(
     content={
       "code": 200,
       "status": "OK",
-      "activities": [activity for activity in activities]
+      "activities": [activity.model_dump() for activity in activities]
     }
   )
 

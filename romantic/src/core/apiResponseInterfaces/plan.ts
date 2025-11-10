@@ -40,6 +40,20 @@ type GetVoteStatusRequest = ApiInterface & {
   }
 }
 
+type GetPlanActivitiesRequest = ApiInterface & {
+  activities: Array<PlanActivity>
+}
+
+type PlanActivity = {
+  uid: string;
+  name: string;
+  description: string;
+  place_id: string | null;
+  at_date: string;
+  at_time: string;
+  category: number;
+}
+
 type PlanMemberType = FriendInformationType & {
   role: PlanRole;
 }
@@ -52,6 +66,8 @@ export type {
   planAddition,
   GetGeneralPlanRequest,
   GetVoteStatusRequest,
+  GetPlanActivitiesRequest,
   GetMyVoteRequest,
-  PlanMemberType
+  PlanMemberType,
+  PlanActivity
 }

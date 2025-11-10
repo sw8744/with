@@ -28,7 +28,10 @@ def set_session_state(state: str) -> str:
 
 
 def get_session_state(session_uuid: str) -> Optional[str]:
-  if session_uuid is None or redis_db0.exists(session_uuid) is None:
+  if session_uuid is None:
+    log.warning("OAuth state session UUID is None")
+    raise HTTPException(status_code=400, detail="Session UUID is None")
+  if redis_db0.exists(session_uuid) is None:
     log.warning("OAuth state session %s has not been saved", sha256(session_uuid))
     raise HTTPException(status_code=400, detail="Session UUID was not found")
 
