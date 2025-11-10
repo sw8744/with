@@ -193,3 +193,18 @@ def change_plan_name(
 
   plan.name = request.name
   db.commit()
+
+
+def list_plans(
+  sub: UUID,
+  db: Session
+) -> list[Plan]:
+  plans: list[type[PlanModel]] = (
+    db.query(PlanModel)
+    .join(PlanMemberModel, PlanModel.uid == PlanMemberModel.plan_id)
+    .filter(PlanMemberModel.user_id == sub)
+    .order_by(PlanModel.created_at.desc())
+    .all()
+  )
+
+  return [Plan(plan) for plan in plans]

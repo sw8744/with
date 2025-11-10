@@ -7,11 +7,11 @@ import SetJwt from "./auth/authentication/login/SetJwt.tsx";
 import CoreProfile from "./profile/CoreProfile.tsx";
 import RegionShowcase from "./location/RegionShowcase.tsx";
 import PlaceShowcase from "./location/PlaceShowcase.tsx";
-import Locations from "./location/Locations.tsx";
+import CoreLocationIndex from "./location/LocationIndexPage/CoreLocationIndex.tsx";
 import CorePlanner from "./planner/CorePlanner.tsx";
 import LikedPlaces from "./profile/LikedPlaces.tsx";
 import MyPosts from "./profile/MyPosts.tsx";
-import MyTrips from "./profile/MyTrips.tsx";
+import MyPlans from "./profile/MyPlans.tsx";
 import CoreGoogleRegister from "./auth/signup/GoogleRegister/CoreGoogleRegister.tsx";
 import CorePlan from "./plan/CorePlan.tsx";
 
@@ -25,7 +25,7 @@ function App() {
       >
         <Routes>
           <Route path={"/location"} element={<CoreLocation/>}>
-            <Route path={""} element={<Locations/>}/>
+            <Route path={""} element={<CoreLocationIndex/>}/>
             <Route path={"region/:regionUID"} element={<RegionShowcase/>}/>
             <Route path={"place/:placeUID"} element={<PlaceShowcase/>}/>
           </Route>
@@ -36,7 +36,7 @@ function App() {
           >
             <Route path={""} element={<MyPosts/>}/>
             <Route path={"liked"} element={<LikedPlaces/>}/>
-            <Route path={"trips"} element={<MyTrips/>}/>
+            <Route path={"plans"} element={<MyPlans/>}/>
           </Route>
 
           <Route path={"/plan"}>

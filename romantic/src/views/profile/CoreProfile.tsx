@@ -88,7 +88,7 @@ function CoreProfile() {
         <ProfileMenuButton to={"/profile/liked"}>
           <StarFilledIcon className={"mx-auto"} height={24}/>
         </ProfileMenuButton>
-        <ProfileMenuButton to={"/profile/trips"}>
+        <ProfileMenuButton to={"/profile/plans"}>
           <MapPinAndEllipseIcon className={"mx-auto"} height={24}/>
         </ProfileMenuButton>
       </div>
@@ -126,7 +126,7 @@ function ProfileSkeleton() {
         <ProfileMenuButton to={"/profile/liked"}>
           <StarFilledIcon className={"mx-auto"} height={24}/>
         </ProfileMenuButton>
-        <ProfileMenuButton to={"/profile/trips"}>
+        <ProfileMenuButton to={"/profile/plans"}>
           <PersonIcon className={"mx-auto"} height={24}/>
         </ProfileMenuButton>
       </div>

@@ -126,7 +126,7 @@ function DatePoll() {
             {wasIVoted ? '다시 투표하기' : '투표하기'}
           </Button>
         )}
-        {endDelta > 0 && <p>투표 마감 {endDelta}일 전입니다.</p>}
+        {endDelta > 0 && <p>투표 마감 {endDelta + 1}일 전입니다.</p>}
         {endDelta == 0 && <p>오늘 투표가 마감됩니다.</p>}
         {endDelta < 0 && <p>투표가 종료되었습니다.</p>}
       </div>

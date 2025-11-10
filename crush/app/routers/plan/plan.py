@@ -46,6 +46,30 @@ def add_plan(
 
 
 @router.get(
+  path=""
+)
+def list_plans(
+  jwt: str = Security(authorization_header),
+  db: Session = Depends(create_connection)
+):
+  token = authorize_jwt(jwt)
+  require_role(token, Role.CORE_USER)
+
+  sub = get_sub(token)
+  log.info("Listing plans of user %r", sub)
+  plans = core_plan.list_plans(sub, db)
+  log.info("Found %d plans for %r", len(plans), sub)
+
+  return JSONResponse(
+    status_code=200,
+    content={
+      "code": 200,
+      "status": "OK",
+      "plans": [plan.model_dump() for plan in plans]
+    }
+  )
+
+@router.get(
   path="/{plan_id}"
 )
 def get_plan(

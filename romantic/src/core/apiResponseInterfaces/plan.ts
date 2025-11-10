@@ -2,16 +2,6 @@ import type ApiInterface from "./apiInterface.ts";
 import type {PlanRole} from "../redux/PlanReducer.ts";
 import type {FriendInformationType} from "./relationship.ts";
 
-type planAddition = ApiInterface & {
-  plan: {
-    uid: string;
-    name: string;
-    host_id: string;
-    date_from: string;
-    date_to: string;
-  }
-}
-
 type GetGeneralPlanRequest = ApiInterface & {
   plan: {
     uid: string;
@@ -28,6 +18,19 @@ type GetGeneralPlanRequest = ApiInterface & {
       role: number;
     }>;
   }
+}
+
+type Plan = {
+  uid: string;
+  name: string;
+  host_id: string;
+  date_from: string | null;
+  date_to: string | null;
+  polling_date: string | null;
+}
+
+type ListMyPlansRequest = ApiInterface & {
+  plans: Array<Plan>;
 }
 
 type GetVoteStatusRequest = ApiInterface & {
@@ -63,11 +66,13 @@ type GetMyVoteRequest = ApiInterface & {
 }
 
 export type {
-  planAddition,
+  Plan,
+
   GetGeneralPlanRequest,
   GetVoteStatusRequest,
   GetPlanActivitiesRequest,
   GetMyVoteRequest,
   PlanMemberType,
-  PlanActivity
+  PlanActivity,
+  ListMyPlansRequest
 }

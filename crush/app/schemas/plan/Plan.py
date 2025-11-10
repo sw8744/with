@@ -8,13 +8,14 @@ from app.models.plan.PlanModel import PlanModel
 
 
 class Plan(BaseModel):
-  def __init__(self, plan_model: PlanModel):
+  def __init__(self, plan_model: PlanModel | type[PlanModel]) -> None:
     super().__init__(
       uid=plan_model.uid,
       name=plan_model.name,
       host_id=plan_model.host_id,
       date_from=plan_model.date_from,
-      date_to=plan_model.date_to
+      date_to=plan_model.date_to,
+      polling_date=plan_model.polling_date
     )
 
   uid: UUID = Field()
@@ -22,6 +23,7 @@ class Plan(BaseModel):
     min_length=1, max_length=256,
   )
   host_id: UUID = Field()
+  polling_date: Optional[datetime] = Field()
   date_from: Optional[datetime] = Field()
   date_to: Optional[datetime] = Field()
 
@@ -33,7 +35,7 @@ class Plan(BaseModel):
   def serialize_host_id(self, host_id: UUID) -> str:
     return str(host_id)
 
-  @field_serializer("date_from", "date_to")
+  @field_serializer("date_from", "date_to", "polling_date")
   def serialize_dates(self, date: datetime) -> Optional[str]:
     if date is None:
       return None
