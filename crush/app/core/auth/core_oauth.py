@@ -36,6 +36,10 @@ def get_session_state(session_uuid: str) -> Optional[str]:
     raise HTTPException(status_code=400, detail="Session UUID was not found")
 
   val = redis_db0.get(session_uuid)
+  if val is None:
+    log.warning("OAuth state session %s value is None", sha256(session_uuid))
+    raise HTTPException(status_code=400, detail="Session value is None")
+
   redis_db0.delete(session_uuid)
 
   log.info("OAuth state %s linked to session %s was cleared", sha256(val), sha256(session_uuid))

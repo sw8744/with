@@ -4,7 +4,7 @@ import type {Place} from "../../core/model/LocationModels.ts";
 import {isPageError, PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {locationPlaceAPI} from "../../core/apiResponseInterfaces/location.ts";
-import {thumbnailUrl} from "../../core/model/ImageUrlProcessor.ts";
+import {ImageUrlProcessor} from "../../core/model/ImageUrlProcessor.ts";
 import {SkeletonElement, SkeletonFrame} from "../elements/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
 import PlaceMetaInterpreter from "./PlaceMetadata.tsx";
@@ -104,7 +104,7 @@ function PlaceShowcase() {
   return (
     <>
       <img
-        src={thumbnailUrl(placeInfo?.thumbnail)}
+        src={ImageUrlProcessor(placeInfo?.thumbnail)}
         className={"mb-10 w-full shadow"}
       />
 

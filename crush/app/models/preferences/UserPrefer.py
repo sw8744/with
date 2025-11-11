@@ -7,7 +7,7 @@ from sqlalchemy import Column, UUID, ForeignKey
 from sqlalchemy.orm import Mapped, relationship, backref
 
 from app.core.database.database import BaseTable
-from app.schemas.user.identity import Identity
+from app.schemas.user.Identity import Identity
 
 
 class UserPrefer(BaseTable):

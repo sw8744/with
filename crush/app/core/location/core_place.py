@@ -10,8 +10,8 @@ from app.core.hangul.umso import 풀어쓰기
 from app.core.recommendation import core_prefer_vector
 from app.models.locations.PlaceModel import PlaceModel
 from app.models.preferences.PlaceThemeModel import PlaceThemeModel
-from app.schemas.location.place import Place
-from app.schemas.location.place_reqs import AddPlace, PatchPlace, PlaceSearchQuery
+from app.schemas.location.Place import Place
+from app.schemas.location.PlaceRequests import AddPlace, PatchPlace, PlaceSearchQuery
 
 log = logging.getLogger(__name__)
 

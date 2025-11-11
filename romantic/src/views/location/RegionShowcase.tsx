@@ -4,7 +4,7 @@ import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {locationPlaceAPI, locationRegionAPI} from "../../core/apiResponseInterfaces/location.ts";
 import {isPageError, PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
 import type {Place, Region} from "../../core/model/LocationModels.ts";
-import {thumbnailUrl} from "../../core/model/ImageUrlProcessor.ts";
+import {ImageUrlProcessor} from "../../core/model/ImageUrlProcessor.ts";
 import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
 import {PlaceArea, PlaceAreaSkeleton} from "../elements/location/PlaceArea.tsx";
@@ -81,7 +81,7 @@ function RegionShowcase() {
   if (pageState === PageState.LOADING) return <RegionShowcaseSkeleton/>;
   else if (isPageError(pageState)) return <PageError pageState={pageState}/>;
 
-  const tUrl = thumbnailUrl(regionInfo?.thumbnail);
+  const tUrl = ImageUrlProcessor(regionInfo?.thumbnail);
   return (
     <>
       <img

@@ -10,7 +10,7 @@ from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection
 from app.core.relationship import core_following
 from app.core.user import core_user
-from app.schemas.relationship.follow_reqs import FollowRequest, FollowPatchRequest, ListingRelationshipRequest
+from app.schemas.relationship.FollowRequests import FollowRequest, FollowPatchRequest, ListingRelationshipRequest
 
 router = APIRouter(
   prefix="/api/v1/user/following",
@@ -35,7 +35,10 @@ def list_followings(
     content={
       "code": 200,
       "status": "OK",
-      "followings": [following.model_dump() for following in followings]
+      "followings": [
+        following.model_dump()
+        for following in followings
+      ]
     }
   )
 

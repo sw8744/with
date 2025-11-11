@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.core.plan.core_plan import get_plan_with_role
 from app.models.plan.PlanMemberModel import PlanMemberModel, PlanRole
 from app.models.users.RelationshipModel import RelationshipModel, RelationshipState
-from app.schemas.plan.plan_member_reqs import PatchPlanMemberReqs
+from app.schemas.plan.PlanMemberRequests import PatchPlanMemberReqs
 
 log = logging.getLogger(__name__)
 

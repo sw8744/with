@@ -7,7 +7,8 @@ import {PageError} from "../../error/ErrorPage.tsx";
 import {useAppSelector} from "../../../core/hook/ReduxHooks.ts";
 import type {locationRegionAPI} from "../../../core/apiResponseInterfaces/location.ts";
 import {Link} from "react-router-dom";
-import {thumbnailUrl} from "../../../core/model/ImageUrlProcessor.ts";
+import {ImageUrlProcessor} from "../../../core/model/ImageUrlProcessor.ts";
+import {SkeletonElement, SkeletonFrame} from "../../elements/Skeleton.tsx";
 
 function RegionalSearch() {
   const userName = useAppSelector(state => state.userInfoReducer.name);
@@ -78,7 +79,7 @@ function RegionalSearch() {
             className={'rounded-2xl overflow-clip relative shadow hover:shadow-lg transition-all'}
           >
             <img
-              src={thumbnailUrl(regions[regionRec.region]?.thumbnail)}
+              src={ImageUrlProcessor(regions[regionRec.region]?.thumbnail)}
               className={
                 'aspect-square object-cover shadow ' +
                 'hover:scale-105 transition-all duration-300 ' +
@@ -100,7 +101,20 @@ function RegionalSearch() {
 
 function RegionalSearchSkeleton() {
   return (
-    <div className={'grid grid-cols-3'}>
+    <div className={'mx-[14px]'}>
+      <SkeletonFrame>
+        <SkeletonElement unit expH={32} expW={240} className={'mb-3'}/>
+        <div className={'grid grid-cols-4 gap-3'}>
+          <SkeletonElement unit className={'aspect-square rounded-2xl overflow-clip'}/>
+          <SkeletonElement unit className={'aspect-square rounded-2xl overflow-clip'}/>
+          <SkeletonElement unit className={'aspect-square rounded-2xl overflow-clip'}/>
+          <SkeletonElement unit className={'aspect-square rounded-2xl overflow-clip'}/>
+          <SkeletonElement unit className={'aspect-square rounded-2xl overflow-clip'}/>
+          <SkeletonElement unit className={'aspect-square rounded-2xl overflow-clip'}/>
+          <SkeletonElement unit className={'aspect-square rounded-2xl overflow-clip'}/>
+          <SkeletonElement unit className={'aspect-square rounded-2xl overflow-clip'}/>
+        </div>
+      </SkeletonFrame>
     </div>
   );
 }

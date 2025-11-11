@@ -1,4 +1,4 @@
-import {thumbnailUrl} from "../../../core/model/ImageUrlProcessor.ts";
+import {ImageUrlProcessor} from "../../../core/model/ImageUrlProcessor.ts";
 import {Link} from "react-router-dom";
 import type {Place} from "../../../core/model/LocationModels.ts";
 import {SkeletonElement, SkeletonUnit} from "../Skeleton.tsx";
@@ -13,7 +13,7 @@ function PlaceArea(
     place, className
   }: InformationAreaPropsType
 ) {
-  const tUrl = thumbnailUrl(place.thumbnail);
+  const tUrl = ImageUrlProcessor(place.thumbnail);
 
   return (
     <Link
@@ -45,7 +45,7 @@ function PlaceAreaShow(
     place, className
   }: InformationAreaPropsType
 ) {
-  const tUrl = thumbnailUrl(place.thumbnail);
+  const tUrl = ImageUrlProcessor(place.thumbnail);
 
   return (
     <div

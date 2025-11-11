@@ -6,9 +6,9 @@ from sqlalchemy.orm import Session
 
 from app.models.users.IdentityModel import IdentityModel
 from app.models.users.RelationshipModel import RelationshipState, RelationshipModel
-from app.schemas.relationship.follow import Following
-from app.schemas.relationship.follow_reqs import FollowRequest, FollowPatchRequest, ListingRelationshipRequest
-from app.schemas.user.identity import Identity
+from app.schemas.relationship.Follow import Following
+from app.schemas.relationship.FollowRequests import FollowRequest, FollowPatchRequest, ListingRelationshipRequest
+from app.schemas.user.Identity import Identity
 
 log = logging.getLogger(__name__)
 

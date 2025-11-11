@@ -46,6 +46,7 @@ def identity(
 ) -> Generator[IdentityModel]:
   iden = IdentityModel(
     name="test",
+    profile_picture="00000000-0000-4000-0000-000000000000",
     email="test@test.com",
     email_verified=True,
     sex=SEX.MALE,
@@ -75,6 +76,7 @@ def identity_factory(
   ) -> IdentityModel:
     iden = IdentityModel(
       name=name,
+      profile_picture="00000000-0000-4000-0000-000000000000",
       email="test@test.com",
       email_verified=True,
       sex=SEX.MALE,

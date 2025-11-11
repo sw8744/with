@@ -9,7 +9,7 @@ from app.models.plan.PlanMemberModel import PlanMemberModel, PlanRole
 from app.models.plan.PlanModel import PlanModel
 from app.models.users.RelationshipModel import RelationshipModel, RelationshipState
 from app.schemas.plan.Plan import Plan
-from app.schemas.plan.plan_reqs import AddPlanRequest, FixDateRequest, ChangePlanNameRequest
+from app.schemas.plan.PlanRequests import AddPlanRequest, FixDateRequest, ChangePlanNameRequest
 
 log = logging.getLogger(__name__)
 

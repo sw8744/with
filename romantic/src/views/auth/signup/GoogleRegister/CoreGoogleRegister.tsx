@@ -68,7 +68,7 @@ function CoreGoogleRegister() {
         }
       } else setPageState(4);
     }).finally(() => {
-      setBlockForm(true);
+      setBlockForm(false);
     });
   }
 

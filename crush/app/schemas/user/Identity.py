@@ -11,6 +11,7 @@ class Identity(BaseModel):
     super().__init__(
       uid=identity_model.uid,
       name=identity_model.name,
+      profile_picture=identity_model.profile_picture,
       email=identity_model.email,
       email_verified=identity_model.email_verified,
       sex=identity_model.sex,
@@ -21,6 +22,9 @@ class Identity(BaseModel):
   uid: UUID = Field()
   name: str = Field(
     min_length=1, max_length=64
+  )
+  profile_picture: str = Field(
+    min_length=0, max_length=256
   )
   email: EmailStr = Field(
     min_length=1, max_length=64

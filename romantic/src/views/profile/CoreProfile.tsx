@@ -1,7 +1,7 @@
 import {type ReactNode, useEffect, useState} from "react";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {userAPI} from "../../core/apiResponseInterfaces/user.ts";
-import {Button} from "../elements/Buttons.tsx";
+import {ButtonLink} from "../elements/Buttons.tsx";
 import {MapPinAndEllipseIcon, PersonIcon, StarFilledIcon} from "../../assets/svgs/svgs.ts";
 import type {Identity} from "../../core/model/User.ts";
 import {isPageError, PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
@@ -9,6 +9,8 @@ import {Link, Outlet} from "react-router-dom";
 import {SkeletonElement} from "../elements/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
 import type {userFollowerCount, userFollowingCount} from "../../core/apiResponseInterfaces/relationship.ts";
+import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
+import {ImageUrlProcessor} from "../../core/model/ImageUrlProcessor.ts";
 
 interface ProfileMenuButtonPropsType {
   children: ReactNode;
@@ -35,6 +37,8 @@ function ProfileMenuButton(
 }
 
 function CoreProfile() {
+  const profilePictureUrl = useAppSelector(state => state.userInfoReducer.profile_picture);
+
   const [pageState, setPageState] = useState<PageState>(PageState.LOADING);
   const [followers, setFollowers] = useState<number>();
   const [followings, setFollowings] = useState<number>();
@@ -67,7 +71,7 @@ function CoreProfile() {
       <div className={"flex justify-between mx-5 items-center"}>
         <div className={"flex items-center gap-4"}>
           <img
-            src={"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+            src={ImageUrlProcessor(profilePictureUrl)}
             className={"rounded-full h-16 w-16"}
           />
           <p className={"text-xl font-bold"}>{identity?.name}</p>
@@ -80,8 +84,8 @@ function CoreProfile() {
         </div>
       </div>
       <div className={"flex gap-3"}>
-        <Button className={"!rounded-lg !py-1 w-full"} theme={"white"}>프로필 수정</Button>
-        <Button className={"!rounded-lg !py-1 w-full"} theme={"white"}>프로필 공유</Button>
+        <ButtonLink className={"!rounded-lg !py-1 w-full"} theme={"white"} to={"/profile/edit"}>프로필 수정</ButtonLink>
+        <ButtonLink className={"!rounded-lg !py-1 w-full"} theme={"white"} to={"/profile/share"}>프로필 공유</ButtonLink>
       </div>
       <div className={"flex gap-3 justify-between px-5 mx-auto w-full max-w-[360px]"}>
         <ProfileMenuButton to={"/profile"}>
@@ -104,7 +108,7 @@ function ProfileSkeleton() {
       <div className={"flex justify-between mx-5 items-center"}>
         <div className={"flex items-center gap-4"}>
           <img
-            src={"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+            src={"/api/v1/resources/image/profile/00000000-0000-4000-0000-000000000000"}
             className={"rounded-full h-16 w-16"}
           />
           <SkeletonElement expH={28} expW={65}/>
@@ -117,8 +121,8 @@ function ProfileSkeleton() {
         </div>
       </div>
       <div className={"flex gap-3"}>
-        <Button className={"!rounded-lg !py-1 w-full"} theme={"white"}>프로필 수정</Button>
-        <Button className={"!rounded-lg !py-1 w-full"} theme={"white"}>프로필 공유</Button>
+        <ButtonLink className={"!rounded-lg !py-1 w-full"} theme={"white"} to={"/profile/edit"}>프로필 수정</ButtonLink>
+        <ButtonLink className={"!rounded-lg !py-1 w-full"} theme={"white"} to={"/profile/share"}>프로필 공유</ButtonLink>
       </div>
       <div className={"flex gap-3 justify-between px-5 mx-auto w-full max-w-[360px]"}>
         <ProfileMenuButton to={"/profile"}>

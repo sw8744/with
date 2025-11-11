@@ -1,5 +1,5 @@
 from app.core.user.core_jwt import create_access_token, create_refresh_token
-from app.schemas.user.identity import Identity
+from app.schemas.user.Identity import Identity
 
 
 def login(identity: Identity) -> (str, str):

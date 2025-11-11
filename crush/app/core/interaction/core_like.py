@@ -5,9 +5,9 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.models.interacrions.LikeModel import LikesModel
-from app.schemas.interaction.like_reqs import LikeRequest, LikeSearchRequest
-from app.schemas.location.place import Place
-from app.schemas.user.identity import Identity
+from app.schemas.interaction.LikeRequests import LikeRequest, LikeSearchRequest
+from app.schemas.location.Place import Place
+from app.schemas.user.Identity import Identity
 
 log = logging.getLogger(__name__)
 

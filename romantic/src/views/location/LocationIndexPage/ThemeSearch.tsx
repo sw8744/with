@@ -6,9 +6,9 @@ import {handleAxiosError} from "../../../core/axios/withAxios.ts";
 import {AnimatePresence, motion} from "framer-motion";
 import {number} from "motion";
 import ThemeTag from "../../elements/theme/ThemeTag.tsx";
-import Spinner from "../../elements/Spinner.tsx";
 import {PageError} from "../../error/ErrorPage.tsx";
 import {ThemeTagMotionVariants} from "../../../core/motionVariants.ts";
+import {SkeletonElement, SkeletonFrame} from "../../elements/Skeleton.tsx";
 
 function ThemeSearch() {
   const [themeMapping, setThemeMapping] = useState<ThemeMapping>({});
@@ -75,7 +75,7 @@ function ThemeSearch() {
   });
 
   if (pageState === PageState.LOADING) {
-    return <Spinner/>;
+    return <ThemeSearchSkeleton/>;
   } else if (isPageError(pageState)) {
     return <PageError pageState={pageState}/>
   }
@@ -96,6 +96,22 @@ function ThemeSearch() {
       <div className={'grid grid-cols-2'}>
 
       </div>
+    </div>
+  );
+}
+
+function ThemeSearchSkeleton() {
+  return (
+    <div className={'mx-[14px]'}>
+      <SkeletonFrame>
+        <SkeletonElement unit expH={32} expW={240} className={'mb-3'}/>
+        <div className={"flex flex-wrap gap-2 my-2"}>
+          {Array.from({length: 20}).map((_, index) => (
+            <SkeletonElement key={index} unit className={"px-4 py-1 rounded-full"} expH={24}
+                             expW={60 + Math.sin(index * 30) * 10}/>
+          ))}
+        </div>
+      </SkeletonFrame>
     </div>
   );
 }

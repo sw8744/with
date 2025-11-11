@@ -13,6 +13,7 @@ import LikedPlaces from "./profile/LikedPlaces.tsx";
 import MyPlans from "./profile/MyPlans.tsx";
 import CoreGoogleRegister from "./auth/signup/GoogleRegister/CoreGoogleRegister.tsx";
 import CorePlan from "./plan/CorePlan.tsx";
+import CoreEditProfile from "./profile/EditProfile/CoreEditProfile.tsx";
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
             <Route path={"region/:regionUID"} element={<RegionShowcase/>}/>
             <Route path={"place/:placeUID"} element={<PlaceShowcase/>}/>
           </Route>
+
+          <Route path={"/profile/edit"} element={<CoreEditProfile/>}/>
 
           <Route
             path={"/profile"}

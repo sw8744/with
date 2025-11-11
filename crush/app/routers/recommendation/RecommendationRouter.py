@@ -9,7 +9,7 @@ from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection
 from app.core.recommendation import core_recommendation
 from app.core.user import core_user
-from app.schemas.recommendation.recommendation_reqs import RecommendByUsersParam, RecommendByUserFromRegionParam
+from app.schemas.recommendation.RecommendationRequests import RecommendByUsersParam, RecommendByUserFromRegionParam
 
 router = APIRouter(
   prefix="/api/v1/recommendation",

@@ -10,7 +10,7 @@ from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection
 from app.core.plan import core_plan_polling
 from app.core.user.core_jwt import require_role, Role, get_sub
-from app.schemas.plan.plan_date_poll_reqs import PollBeginRequest, PollVoteRequest
+from app.schemas.plan.PlanDatePollingRequests import PollBeginRequest, PollVoteRequest
 
 log = logging.getLogger(__name__)
 

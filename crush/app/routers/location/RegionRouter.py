@@ -10,8 +10,8 @@ from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection
 from app.core.location import core_region
 from app.core.user.core_jwt import require_role, Role
-from app.schemas.location.region import Region
-from app.schemas.location.region_reqs import AddRegion, RegionSearchQuery, PatchRegion
+from app.schemas.location.Region import Region
+from app.schemas.location.RegionsRequests import AddRegion, RegionSearchQuery, PatchRegion
 
 router = APIRouter(
   prefix="/api/v1/location/region",

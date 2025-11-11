@@ -10,7 +10,7 @@ from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection
 from app.core.recommendation import core_theme
 from app.core.user.core_jwt import require_role, Role
-from app.schemas.recommendation.theme_reqs import ThemeSearchQuery, SetTheme
+from app.schemas.recommendation.ThemeRequests import ThemeSearchQuery, SetTheme
 
 log = logging.getLogger(__name__)
 

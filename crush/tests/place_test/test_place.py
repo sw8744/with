@@ -10,7 +10,7 @@ from app.core.user.core_jwt import Role
 from app.main import app
 from app.models.locations.PlaceModel import PlaceModel
 from app.models.preferences.PlaceThemeModel import PlaceThemeModel
-from app.schemas.location.place import Place
+from app.schemas.location.Place import Place
 
 client = TestClient(app)
 

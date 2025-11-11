@@ -11,7 +11,7 @@ from app.core.relationship import core_following
 from app.models.interacrions.LikeModel import LikesModel
 from app.models.locations.PlaceModel import PlaceModel
 from app.models.users.RelationshipModel import RelationshipState
-from app.schemas.user.identity import Identity
+from app.schemas.user.Identity import Identity
 
 log = logging.getLogger(__name__)
 

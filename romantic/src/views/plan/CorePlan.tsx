@@ -136,7 +136,7 @@ function FriendDaegari(
       className={"flex flex-col gap-2 items-center max-w-1/4"}
     >
       <img
-        src={"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+        src={"/api/v1/resources/image/profile/" + friend.uid}
         alt={friend.name}
         className={"rounded-full h-16 w-16"}
       />
@@ -156,7 +156,7 @@ function CorePlanSkeleton() {
         <div className={"flex gap-3 overflow-x-auto overflow-y-hidden"}>
           <div className={"flex flex-col gap-2 items-center max-w-1/4"}>
             <img
-              src={"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+              src={"/api/v1/resources/image/profile/00000000-0000-4000-0000-000000000000"}
               className={"rounded-full h-16 w-16"}
             />
             <SkeletonElement unit expH={24} expW={45}/>

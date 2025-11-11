@@ -6,6 +6,7 @@ type Identity = {
   sex: number;
   birthday: string;
   role: string[];
+  profile_picture: string;
 }
 
 export type {

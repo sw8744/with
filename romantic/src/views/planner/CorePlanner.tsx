@@ -63,7 +63,7 @@ function CorePlanner() {
       </div>
       <div className={"flex flex-col gap-4 mt-[4px] p-5 h-[calc(100vh-68.74px)]"}>
         {/* 여기에 initial false 걸면 아래 skeletion animation 고장남 */}
-        <AnimatePresence mode={"wait"} custom={isForward}>
+        <AnimatePresence initial={false} mode={"wait"} custom={isForward}>
           <motion.div
             key={step}
             custom={isForward}

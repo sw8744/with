@@ -5,9 +5,9 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.models.users.RelationshipModel import RelationshipModel, RelationshipState
-from app.schemas.relationship.follow import Follower
-from app.schemas.relationship.follow_reqs import FollowPatchRequest, ListingRelationshipRequest
-from app.schemas.user.identity import Identity
+from app.schemas.relationship.Follow import Follower
+from app.schemas.relationship.FollowRequests import FollowPatchRequest, ListingRelationshipRequest
+from app.schemas.user.Identity import Identity
 
 log = logging.getLogger(__name__)
 

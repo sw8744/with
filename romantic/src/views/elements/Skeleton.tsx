@@ -1,5 +1,5 @@
 import {type ReactNode} from "react";
-import {motion, stagger} from "framer-motion";
+import {AnimatePresence, motion, stagger} from "framer-motion";
 
 const frameMotionVariants = {
   hidden: {
@@ -34,18 +34,20 @@ function SkeletonFrame(
   {children, noCaption, className}: { children: ReactNode, noCaption?: boolean, className?: string }
 ) {
   return (
-    <motion.div
-      key={"loading-skeleton"}
-      layout={"position"}
-      role="status"
-      className={className ?? ""}
-      variants={frameMotionVariants}
-      initial={"hidden"}
-      animate={"visible"}
-    >
-      {children}
-      {!noCaption && <span className="sr-only">로딩중</span>}
-    </motion.div>
+    <AnimatePresence initial={true}>
+      <motion.div
+        key={"loading-skeleton"}
+        layout={"position"}
+        role="status"
+        className={className ?? ""}
+        variants={frameMotionVariants}
+        initial={"hidden"}
+        animate={"visible"}
+      >
+        {children}
+        {!noCaption && <span className="sr-only">로딩중</span>}
+      </motion.div>
+    </AnimatePresence>
   );
 }
 

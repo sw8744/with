@@ -201,7 +201,7 @@ function PartySelector(
                 className={"flex flex-col gap-2 items-center max-w-1/4"}
               >
                 <img
-                  src={"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                  src={"/api/v1/resources/image/profile/" + friend.uid}
                   alt={friend.name}
                   className={"rounded-full h-16 w-16 cursor-pointer"}
                 />
@@ -248,7 +248,7 @@ function FriendInList(
     >
       <div className={"flex gap-4 items-center"}>
         <img
-          src={"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+          src={"/api/v1/resources/image/profile/" + uuid}
           className={"w-10 h-10 aspect-1/1 rounded-full"}
           alt={name}
         />

@@ -5,8 +5,8 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.models.preferences.ThemeModel import ThemeModel
-from app.schemas.recommendation.theme import Theme
-from app.schemas.recommendation.theme_reqs import ThemeSearchQuery, SetTheme, PatchTheme
+from app.schemas.recommendation.Theme import Theme
+from app.schemas.recommendation.ThemeRequests import ThemeSearchQuery, SetTheme, PatchTheme
 
 log = logging.getLogger(__name__)
 

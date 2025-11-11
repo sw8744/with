@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.main import app
 from app.models.interacrions.LikeModel import LikesModel
-from app.schemas.location.place import Place
+from app.schemas.location.Place import Place
 from tests.conftest import like_factory, identity
 
 client = TestClient(app)

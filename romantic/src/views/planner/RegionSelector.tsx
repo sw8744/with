@@ -11,7 +11,7 @@ import {AnimatePresence, motion} from "framer-motion";
 import {plannerAction} from "../../core/redux/PlannerReducer.ts";
 import {PageError} from "../error/ErrorPage.tsx";
 import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/Skeleton.tsx";
-import {thumbnailUrl} from "../../core/model/ImageUrlProcessor.ts";
+import {ImageUrlProcessor} from "../../core/model/ImageUrlProcessor.ts";
 import {BlockListMotion} from "../../core/motionVariants.ts";
 
 function RegionSelector(
@@ -218,7 +218,7 @@ function RegionResult(
     toggleRegionSelected(region);
   }
 
-  const tu = thumbnailUrl(region.thumbnail);
+  const tu = ImageUrlProcessor(region.thumbnail);
 
   return (
     <motion.button

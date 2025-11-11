@@ -15,7 +15,7 @@ from app.core.database.database import redis_db0
 from app.core.hash import sha256
 from app.models.auth.GoogleAuth import GoogleAuthModel
 from app.models.users.IdentityModel import IdentityModel
-from app.schemas.user.identity import Identity
+from app.schemas.user.Identity import Identity
 
 log = logging.getLogger(__name__)
 

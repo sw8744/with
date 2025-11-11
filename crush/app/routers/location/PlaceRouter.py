@@ -11,8 +11,8 @@ from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection
 from app.core.location import core_place
 from app.core.user.core_jwt import require_role, Role
-from app.schemas.location.place import Place
-from app.schemas.location.place_reqs import AddPlace, PlaceSearchQuery, PatchPlace
+from app.schemas.location.Place import Place
+from app.schemas.location.PlaceRequests import AddPlace, PlaceSearchQuery, PatchPlace
 
 log = logging.getLogger(__name__)
 

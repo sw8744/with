@@ -112,11 +112,19 @@ class Role(Enum):
 
   THEME_EDIT = "theme:edit"
 
+  IMAGE_UPLOAD = "image:upload"
+
+  ROOT = "core:root"
+
 
 def require_role(token: dict, *permissions: Role):
   scope = token.get("scope")
   if scope is None:
     raise HTTPException(status_code=403, detail="Forbidden")
+
+  if Role.ROOT.value in scope:
+    log.info("user %r has root role, skipping permission checks", get_sub(token))
+    return
 
   log.debug("checking role %r in %r", permissions, scope)
 

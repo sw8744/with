@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from app.core.plan.core_plan import get_plan_with_role
 from app.models.plan.PlanMemberModel import PlanRole
 from app.models.plan.PlanPollModel import PlanPollingModel
-from app.schemas.plan.plan_date_poll_reqs import PollBeginRequest, PollVoteRequest
+from app.schemas.plan.PlanDatePollingRequests import PollBeginRequest, PollVoteRequest
 
 log = logging.getLogger(__name__)
 

@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, relationship, backref
 
 from app.core.database.database import BaseTable
-from app.schemas.location.place import Place
+from app.schemas.location.Place import Place
 
 
 class PlaceThemeModel(BaseTable):

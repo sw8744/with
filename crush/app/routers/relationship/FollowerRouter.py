@@ -10,7 +10,7 @@ from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection
 from app.core.relationship import core_follower
 from app.core.user import core_user
-from app.schemas.relationship.follow_reqs import FollowPatchRequest, ListingRelationshipRequest
+from app.schemas.relationship.FollowRequests import FollowPatchRequest, ListingRelationshipRequest
 
 router = APIRouter(
   prefix="/api/v1/user/follower",

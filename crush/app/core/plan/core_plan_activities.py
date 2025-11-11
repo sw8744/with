@@ -9,7 +9,7 @@ from app.models.locations.PlaceModel import PlaceModel
 from app.models.plan.PlanActivityModel import PlanActivityModel
 from app.models.plan.PlanMemberModel import PlanRole
 from app.schemas.plan.PlanActivities import PlanActivity
-from app.schemas.plan.plan_activity_reqs import CreatePlanActivityRequest, PatchPlanActivityRequest
+from app.schemas.plan.PlanActivityRequests import CreatePlanActivityRequest, PatchPlanActivityRequest
 
 log = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ def get_plan_activities(
     .order_by(PlanActivityModel.at_date.asc(), PlanActivityModel.at_time.asc())
     .all()
   )
-  return [PlanActivity(activity).model_dump() for activity in activities]
+  return [PlanActivity(activity) for activity in activities]
 
 
 def create_activity(

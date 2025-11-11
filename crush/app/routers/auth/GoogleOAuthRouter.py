@@ -61,6 +61,7 @@ def callback_authentication(
     register_session_uuid = create_signup_session({
       "name": userinfo["name"],
       "email": userinfo["email"],
+      "profile_picture": userinfo["picture"],
       "email_verified": userinfo["email_verified"],
       "auth": {
         "type": "google",

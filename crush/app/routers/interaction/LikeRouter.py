@@ -10,7 +10,7 @@ from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection
 from app.core.interaction import core_like
 from app.core.user import core_user
-from app.schemas.interaction.like_reqs import LikeRequest, LikeSearchRequest
+from app.schemas.interaction.LikeRequests import LikeRequest, LikeSearchRequest
 
 router = APIRouter(
   prefix="/api/v1/interaction/like",

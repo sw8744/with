@@ -10,7 +10,7 @@ from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection
 from app.core.plan import core_plan
 from app.core.user.core_jwt import require_role, Role, get_sub
-from app.schemas.plan.plan_reqs import AddPlanRequest, FixDateRequest, ChangePlanNameRequest
+from app.schemas.plan.PlanRequests import AddPlanRequest, FixDateRequest, ChangePlanNameRequest
 
 log = logging.getLogger(__name__)
 

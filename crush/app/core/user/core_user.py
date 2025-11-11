@@ -13,8 +13,8 @@ from app.core.user.core_jwt import get_sub
 from app.models.auth.GoogleAuth import GoogleAuthModel
 from app.models.preferences.UserPrefer import UserPrefer
 from app.models.users.IdentityModel import IdentityModel
-from app.schemas.user.identity import Identity
-from app.schemas.user.register_reqs import RegisterIdentityReq
+from app.schemas.user.Identity import Identity
+from app.schemas.user.IdentityRegisterRequests import RegisterIdentityReq
 
 log = logging.getLogger(__name__)
 
@@ -71,6 +71,7 @@ def register_using_session(
 
   identity = IdentityModel(
     name=application.name,
+    profile_picture=reg.get("profile_picture", "00000000-0000-4000-0000-000000000000"),
     email=str(application.email),
     email_verified=(
       application.email == reg.get("email", None) and

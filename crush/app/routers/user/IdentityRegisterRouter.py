@@ -12,7 +12,7 @@ from app.core.database.database import create_connection
 from app.core.hash import sha256
 from app.core.user import core_user
 from app.core.user.core_login import login
-from app.schemas.user.register_reqs import RegisterIdentityReq
+from app.schemas.user.IdentityRegisterRequests import RegisterIdentityReq
 
 log = logging.getLogger(__name__)
 

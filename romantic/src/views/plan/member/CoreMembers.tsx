@@ -27,7 +27,7 @@ function CoreMembers() {
       <div className={'flex items-center justify-between py-3'}>
         <div className={'flex gap-3 items-center'}>
           <img
-            src={"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+            src={"/api/v1/resources/image/profile/" + member.uid}
             className={"rounded-full w-10 aspect-square"}
           />
           <p className={'text-lg font-medium'}>{member.name}</p>

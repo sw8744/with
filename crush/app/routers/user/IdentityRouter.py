@@ -36,3 +36,26 @@ def get_user(
       "user": identity.model_dump()
     }
   )
+
+
+@router.patch(
+  path=""
+)
+def update_user_identity(
+  jwt: str = Security(authorization_header),
+  db: Session = Depends(create_connection)
+):
+  token = authorize_jwt(jwt)
+
+  identity = core_user.get_identity(token, db)
+
+  updated_identity = core_user.update_identity(identity, db)
+
+  return JSONResponse(
+    status_code=200,
+    content={
+      "code": 200,
+      "status": "OK",
+      "user": updated_identity.model_dump()
+    }
+  )
