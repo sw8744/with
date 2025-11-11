@@ -71,13 +71,13 @@ function HostDateFix(
           >날짜 확정</Button>
           {(fromDate !== null && toDate !== null) && (
             <motion.div
-            initial={{opacity: 0}}
-            animate={{opacity: 1}}
-            exit={{opacity: 0}}
-            transition={{
-              duration: 0.2,
-              ease: "easeInOut"
-            }}>
+              initial={{opacity: 0}}
+              animate={{opacity: 1}}
+              exit={{opacity: 0}}
+              transition={{
+                duration: 0.2,
+                ease: "easeInOut"
+              }}>
               <Button
                 theme={"white"}
                 className={"!py-1"}

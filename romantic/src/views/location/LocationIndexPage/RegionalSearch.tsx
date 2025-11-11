@@ -10,6 +10,7 @@ import {Link} from "react-router-dom";
 import {thumbnailUrl} from "../../../core/model/ImageUrlProcessor.ts";
 
 function RegionalSearch() {
+  const userName = useAppSelector(state => state.userInfoReducer.name);
   const userUuid = useAppSelector(state => state.userInfoReducer.uid);
 
   const [pageState, setPageState] = useState<PageState>(PageState.LOADING);
@@ -67,29 +68,32 @@ function RegionalSearch() {
   else if (isPageError(pageState)) return <PageError pageState={pageState}/>;
 
   return (
-    <div className={'grid grid-cols-3 gap-3 mx-[14px]'}>
-      {regionRecommendation.map((regionRec, index) => (
-        <Link
-          key={index}
-          to={'/location/region/' + regions[regionRec.region]?.uid}
-          className={'rounded-2xl overflow-clip relative shadow hover:shadow-lg transition-all'}
-        >
-          <img
-            src={thumbnailUrl(regions[regionRec.region]?.thumbnail)}
-            className={
-              'aspect-square object-cover shadow ' +
-              'hover:scale-105 transition-all duration-300 ' +
-              'brightness-50'
-            }
-          />
-          <p
-            className={
-              'absolute left-0 bottom-0 w-full ' +
-              'text-center py-4 text-neutral-50 text-xl font-bold'
-            }
-          >{regions[regionRec.region]?.name}</p>
-        </Link>
-      ))}
+    <div className={'mx-[14px]'}>
+      <p className={'text-2xl font-medium mb-3'}>{userName}님이 좋아할만한 장소에요</p>
+      <div className={'grid grid-cols-4 gap-3'}>
+        {regionRecommendation.map((regionRec, index) => (
+          <Link
+            key={index}
+            to={'/location/region/' + regions[regionRec.region]?.uid}
+            className={'rounded-2xl overflow-clip relative shadow hover:shadow-lg transition-all'}
+          >
+            <img
+              src={thumbnailUrl(regions[regionRec.region]?.thumbnail)}
+              className={
+                'aspect-square object-cover shadow ' +
+                'hover:scale-105 transition-all duration-300 ' +
+                'brightness-50'
+              }
+            />
+            <p
+              className={
+                'absolute left-0 bottom-0 w-full ' +
+                'text-center py-4 text-neutral-50 text-xl font-bold'
+              }
+            >{regions[regionRec.region]?.name}</p>
+          </Link>
+        ))}
+      </div>
     </div>
   )
 }

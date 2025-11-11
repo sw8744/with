@@ -10,7 +10,6 @@ import PlaceShowcase from "./location/PlaceShowcase.tsx";
 import CoreLocationIndex from "./location/LocationIndexPage/CoreLocationIndex.tsx";
 import CorePlanner from "./planner/CorePlanner.tsx";
 import LikedPlaces from "./profile/LikedPlaces.tsx";
-import MyPosts from "./profile/MyPosts.tsx";
 import MyPlans from "./profile/MyPlans.tsx";
 import CoreGoogleRegister from "./auth/signup/GoogleRegister/CoreGoogleRegister.tsx";
 import CorePlan from "./plan/CorePlan.tsx";
@@ -34,8 +33,7 @@ function App() {
             path={"/profile"}
             element={<CoreProfile/>}
           >
-            <Route path={""} element={<MyPosts/>}/>
-            <Route path={"liked"} element={<LikedPlaces/>}/>
+            <Route path={""} element={<LikedPlaces/>}/>
             <Route path={"plans"} element={<MyPlans/>}/>
           </Route>
 

@@ -48,6 +48,25 @@ const CarouselStepperMotion = {
   })
 }
 
+const ThemeTagMotionVariants = {
+  initial: {
+    opacity: 0,
+  },
+  animate: {
+    opacity: 1,
+  },
+  exit: {
+    opacity: 0,
+  },
+  transition: {
+    layout: {
+      type: "spring", stiffness: 400, damping: 30
+    },
+    duration: 0.5,
+    ease: "easeInOut"
+  }
+}
+
 const PageTransitionMotion = {
   initial: {
     opacity: 0,
@@ -88,5 +107,10 @@ const HorizontalListMotionVariants = {
 
 
 export {
-  BlockListMotion, PageStepperMotion, CarouselStepperMotion, HorizontalListMotionVariants, PageTransitionMotion
+  BlockListMotion,
+  PageStepperMotion,
+  CarouselStepperMotion,
+  HorizontalListMotionVariants,
+  PageTransitionMotion,
+  ThemeTagMotionVariants
 }

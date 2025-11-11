@@ -2,7 +2,7 @@ import {type ReactNode, useEffect, useState} from "react";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {userAPI} from "../../core/apiResponseInterfaces/user.ts";
 import {Button} from "../elements/Buttons.tsx";
-import {MapFilledIcon, MapPinAndEllipseIcon, PersonIcon, StarFilledIcon} from "../../assets/svgs/svgs.ts";
+import {MapPinAndEllipseIcon, PersonIcon, StarFilledIcon} from "../../assets/svgs/svgs.ts";
 import type {Identity} from "../../core/model/User.ts";
 import {isPageError, PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
 import {Link, Outlet} from "react-router-dom";
@@ -65,14 +65,16 @@ function CoreProfile() {
   return (
     <div className={"flex flex-col gap-2.5 m-5"}>
       <div className={"flex justify-between mx-5 items-center"}>
-        <div className={"w-1/4"}>
+        <div className={"flex items-center gap-4"}>
+          <img
+            src={"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+            className={"rounded-full h-16 w-16"}
+          />
           <p className={"text-xl font-bold"}>{identity?.name}</p>
         </div>
-        <div className={"w-[60%] grid grid-cols-3 grid-rows-2"}>
-          <p className={"text-lg font-bold"}>233</p>
+        <div className={"grid grid-cols-2 gap-x-6 grid-rows-2"}>
           <p className={"text-lg font-bold"}>{followers}</p>
           <p className={"text-lg font-bold"}>{followings}</p>
-          <p>포스트</p>
           <p>팔로워</p>
           <p>팔로잉</p>
         </div>
@@ -83,9 +85,6 @@ function CoreProfile() {
       </div>
       <div className={"flex gap-3 justify-between px-5 mx-auto w-full max-w-[360px]"}>
         <ProfileMenuButton to={"/profile"}>
-          <MapFilledIcon className={"mx-auto"} height={24}/>
-        </ProfileMenuButton>
-        <ProfileMenuButton to={"/profile/liked"}>
           <StarFilledIcon className={"mx-auto"} height={24}/>
         </ProfileMenuButton>
         <ProfileMenuButton to={"/profile/plans"}>
@@ -103,14 +102,16 @@ function ProfileSkeleton() {
   return (
     <div className={"flex flex-col gap-2.5 m-5"}>
       <div className={"flex justify-between mx-5 items-center"}>
-        <div className={"w-1/4"}>
+        <div className={"flex items-center gap-4"}>
+          <img
+            src={"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+            className={"rounded-full h-16 w-16"}
+          />
           <SkeletonElement expH={28} expW={65}/>
         </div>
-        <div className={"w-[60%] grid grid-cols-3 grid-rows-2"}>
+        <div className={"grid grid-cols-2 gap-x-6 grid-rows-2"}>
           <SkeletonElement expH={24} expW={60}/>
           <SkeletonElement expH={24} expW={60}/>
-          <SkeletonElement expH={24} expW={60}/>
-          <p>장소</p>
           <p>팔로워</p>
           <p>팔로잉</p>
         </div>
@@ -121,9 +122,6 @@ function ProfileSkeleton() {
       </div>
       <div className={"flex gap-3 justify-between px-5 mx-auto w-full max-w-[360px]"}>
         <ProfileMenuButton to={"/profile"}>
-          <MapFilledIcon className={"mx-auto"} height={24}/>
-        </ProfileMenuButton>
-        <ProfileMenuButton to={"/profile/liked"}>
           <StarFilledIcon className={"mx-auto"} height={24}/>
         </ProfileMenuButton>
         <ProfileMenuButton to={"/profile/plans"}>

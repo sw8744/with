@@ -1,29 +1,20 @@
-import {Button} from "../elements/Buttons.tsx";
 import {type ReactElement, useEffect, useState} from "react";
-import type {ThemeMapping} from "../../core/model/Theme.ts";
-import {getThemeMapping} from "../../core/theme/theme.ts";
-import {isPageError, PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
-import {handleAxiosError} from "../../core/axios/withAxios.ts";
-import ThemeTag from "../elements/theme/ThemeTag.tsx";
+import type {ThemeMapping} from "../../../core/model/Theme.ts";
+import {isPageError, PageState} from "../../../core/apiResponseInterfaces/apiInterface.ts";
+import {getThemeMapping} from "../../../core/theme/theme.ts";
+import {handleAxiosError} from "../../../core/axios/withAxios.ts";
 import {AnimatePresence, motion} from "framer-motion";
 import {number} from "motion";
-import {useAppDispatch, useAppSelector} from "../../core/hook/ReduxHooks.ts";
-import {plannerAction} from "../../core/redux/PlannerReducer.ts";
-import {PageError} from "../error/ErrorPage.tsx";
-import Spinner from "../elements/Spinner.tsx";
-import {ThemeTagMotionVariants} from "../../core/motionVariants.ts";
+import ThemeTag from "../../elements/theme/ThemeTag.tsx";
+import Spinner from "../../elements/Spinner.tsx";
+import {PageError} from "../../error/ErrorPage.tsx";
+import {ThemeTagMotionVariants} from "../../../core/motionVariants.ts";
 
-function ThemeSelector(
-  {prev, next}: {
-    prev: () => void;
-    next: () => void;
-  }
-) {
+function ThemeSearch() {
   const [themeMapping, setThemeMapping] = useState<ThemeMapping>({});
   const [pageState, setPageState] = useState<PageState>(PageState.LOADING);
 
-  const selectedTheme = useAppSelector(state => state.plannerReducer.themes);
-  const dispatch = useAppDispatch();
+  const [selectedTheme, setSelectedTheme] = useState<ThemeMapping>({});
 
   function toggleThemeSelection(uid: number) {
     if (uid in selectedTheme) {
@@ -32,14 +23,14 @@ function ThemeSelector(
         const ue = number.parse(uid_ele);
         if (ue !== uid) newSelection[ue] = theme;
       });
-      dispatch(plannerAction.setTheme(newSelection));
+      setSelectedTheme(newSelection);
     } else {
       const newSelection: ThemeMapping = {};
       Object.entries(selectedTheme).forEach(([uid, theme]) => {
         newSelection[number.parse(uid)] = theme;
       });
       newSelection[uid] = themeMapping[uid];
-      dispatch(plannerAction.setTheme(newSelection));
+      setSelectedTheme(newSelection);
     }
   }
 
@@ -90,27 +81,23 @@ function ThemeSelector(
   }
 
   return (
-    <>
-      <div className={"h-full"}>
-        <AnimatePresence mode={"popLayout"}>
-          {SelectedThemeTags.length !== 0 &&
-            <div className={"flex flex-wrap gap-2 my-2 pb-2 border-b border-neutral-400"}>
-              {SelectedThemeTags}
-            </div>
-          }
-          <div className={"flex flex-wrap gap-2 my-2"}>
-            {ThemeTags}
+    <div className={'mx-[14px]'}>
+      <p className={'text-2xl font-medium'}>어떤 느낌의 놀러갈 곳을 찾고 있나요?</p>
+      <AnimatePresence mode={"popLayout"}>
+        {SelectedThemeTags.length !== 0 &&
+          <div className={"flex flex-wrap gap-2 my-2 pb-2 border-b border-neutral-300"}>
+            {SelectedThemeTags}
           </div>
-        </AnimatePresence>
-      </div>
-      <div>
-        <div className={"flex justify-between"}>
-          <Button onClick={prev}>이전</Button>
-          <Button onClick={next}>다음</Button>
+        }
+        <div className={"flex flex-wrap gap-2 my-2"}>
+          {ThemeTags}
         </div>
+      </AnimatePresence>
+      <div className={'grid grid-cols-2'}>
+
       </div>
-    </>
+    </div>
   );
 }
 
-export default ThemeSelector;
+export default ThemeSearch;

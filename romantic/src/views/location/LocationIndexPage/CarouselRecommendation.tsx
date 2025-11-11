@@ -1,6 +1,6 @@
 import {AnimatePresence, motion} from "framer-motion";
 import {CarouselStepperMotion} from "../../../core/motionVariants.ts";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {ChevronLeftIcon, ChevronRightIcon} from "../../../assets/svgs/svgs.ts";
 
 function CarouselRecommendation() {
@@ -34,6 +34,14 @@ function CarouselRecommendation() {
       setLockControl(false);
     }, 1000);
   }
+
+  useEffect(() => {
+    const int = setInterval(() => {
+      next();
+    }, 4000);
+
+    return () => clearInterval(int);
+  });
 
   return (
     <div className={'relative'}>

@@ -72,29 +72,29 @@ function MyPlans() {
 
 function MyPlansSkeleton() {
   return (
-      <SkeletonFrame className={'flex flex-col gap-3'}>
-        <div
-            className={
-                'p-4 flex flex-col gap-1 ' +
-                'border border-neutral-300 rounded-xl ' +
-                'shadow'
-            }
-        >
-          <SkeletonElement unit expW={110} expH={28}/>
-          <SkeletonElement unit expW={300} expH={24}/>
-        </div>
+    <SkeletonFrame className={'flex flex-col gap-3'}>
+      <div
+        className={
+          'p-4 flex flex-col gap-1 ' +
+          'border border-neutral-300 rounded-xl ' +
+          'shadow'
+        }
+      >
+        <SkeletonElement unit expW={110} expH={28}/>
+        <SkeletonElement unit expW={300} expH={24}/>
+      </div>
 
-        <div
-            className={
-                'p-4 flex flex-col gap-1 ' +
-                'border border-neutral-300 rounded-xl ' +
-                'shadow'
-            }
-        >
-          <SkeletonElement unit expW={130} expH={28}/>
-          <SkeletonElement unit expW={260} expH={24}/>
-        </div>
-      </SkeletonFrame>
+      <div
+        className={
+          'p-4 flex flex-col gap-1 ' +
+          'border border-neutral-300 rounded-xl ' +
+          'shadow'
+        }
+      >
+        <SkeletonElement unit expW={130} expH={28}/>
+        <SkeletonElement unit expW={260} expH={24}/>
+      </div>
+    </SkeletonFrame>
   );
 }
 

@@ -69,6 +69,7 @@ def list_plans(
     }
   )
 
+
 @router.get(
   path="/{plan_id}"
 )

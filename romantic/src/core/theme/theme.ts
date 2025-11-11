@@ -14,7 +14,6 @@ function getThemeMapping(): Promise<ThemeMapping> {
       ).then(res => {
         themeListLoaded = true;
         theme = res.data.themes;
-        console.log(res.data.themes);
         resolve(theme);
       }).catch(err => {
         reject(err);
