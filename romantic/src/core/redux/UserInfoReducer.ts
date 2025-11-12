@@ -5,7 +5,6 @@ interface UserInfoStateType {
   uid: string | null
   accessToken: string | null;
   role: string[];
-  profile_picture: string;
 }
 
 interface UserSignInType {
@@ -13,7 +12,6 @@ interface UserSignInType {
   uid: string;
   accessToken: string;
   role: string[];
-  profile_picture: string;
 }
 
 const initialState: UserInfoStateType = {
@@ -21,7 +19,6 @@ const initialState: UserInfoStateType = {
   uid: null,
   accessToken: null,
   role: [],
-  profile_picture: ""
 }
 
 const userInfoSlice = createSlice({
@@ -33,7 +30,6 @@ const userInfoSlice = createSlice({
       state.uid = action.payload.uid;
       state.accessToken = action.payload.accessToken;
       state.role = action.payload.role;
-      state.profile_picture = action.payload.profile_picture
     },
 
     changeName: (state: UserInfoStateType, action: PayloadAction<string>) => {
@@ -45,7 +41,6 @@ const userInfoSlice = createSlice({
       state.name = initialState.name;
       state.accessToken = initialState.accessToken;
       state.role = initialState.role;
-      state.profile_picture = initialState.profile_picture;
     }
   }
 });

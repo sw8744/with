@@ -176,9 +176,16 @@ function DatePicker(
   const [currentMonth, setCurrentMonth] = useState<number>(1);
 
   useEffect(() => {
-    if (fromDate) {
+    if (value.length > 0) {
+      const sampleDate = new Date(value[0]);
+      setCurrentYear(sampleDate.getFullYear());
+      setCurrentMonth(sampleDate.getMonth() + 1);
+    } else if (fromDate) {
       setCurrentYear(fromDate.getFullYear());
       setCurrentMonth(fromDate.getMonth() + 1);
+    } else if (toDate) {
+      setCurrentYear(toDate.getFullYear);
+      setCurrentMonth(toDate.getMonth() + 1);
     } else {
       const today = new Date();
       setCurrentMonth(today.getMonth() + 1);
@@ -268,13 +275,15 @@ function DatePicker(
       }
     }
 
-    isInRange = (
-      !!(
-        fromDate && toDate &&
-        getRelative(i, fromDate) >= 0 &&
-        getRelative(i, toDate) <= 0
-      )
-    );
+    if (fromDate && toDate) {
+      isInRange = getRelative(i, fromDate) === 1 && getRelative(i, toDate) === -1
+    } else if (fromDate) {
+      isInRange = getRelative(i, fromDate) === 1
+    } else if (toDate) {
+      isInRange = getRelative(i, toDate) === -1
+    } else {
+      isInRange = true;
+    }
 
     if (dayCounter === 0) daySpecificClass += " text-red-700 disabled:text-red-300";
     else if (dayCounter === 6) daySpecificClass += " text-blue-800 disabled:text-blue-300";

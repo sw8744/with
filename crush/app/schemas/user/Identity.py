@@ -24,6 +24,7 @@ class Identity(BaseModel):
     min_length=1, max_length=64
   )
   profile_picture: str = Field(
+    exclude=True,
     min_length=0, max_length=256
   )
   email: EmailStr = Field(
@@ -44,4 +45,4 @@ class Identity(BaseModel):
 
   @field_serializer("birthday")
   def serialize_birthday(self, birthday: datetime):
-    return birthday.isoformat()
+    return birthday.date().isoformat()

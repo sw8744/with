@@ -156,7 +156,7 @@ function CorePlanSkeleton() {
         <div className={"flex gap-3 overflow-x-auto overflow-y-hidden"}>
           <div className={"flex flex-col gap-2 items-center max-w-1/4"}>
             <img
-              src={"/api/v1/resources/image/profile/00000000-0000-4000-0000-000000000000"}
+              src={"/api/v1/resources/image/store/00000000-0000-4000-0000-000000000000"}
               className={"rounded-full h-16 w-16"}
             />
             <SkeletonElement unit expH={24} expW={45}/>

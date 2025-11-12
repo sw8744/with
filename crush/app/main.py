@@ -7,12 +7,12 @@ from fastapi import FastAPI
 from app.core.config_store import mode
 from app.routers.ErrorHandlingRouter import add_error_handler
 from app.routers.auth import GoogleOAuthRouter, GeneralAuthRouter
-from app.routers.image import ImageResourcesRouter
 from app.routers.interaction import LikeRouter
 from app.routers.location import PlaceRouter, RegionRouter
 from app.routers.plan import PlanRouter, PlanDatePollingRouter, PlanMembersRouter, PlanActivitiesRouter
 from app.routers.recommendation import RecommendationRouter, ThemeRouter
 from app.routers.relationship import FollowingRouter, FollowerRouter
+from app.routers.resources import ImageResourcesRouter
 from app.routers.user import IdentityRegisterRouter, IdentityRouter
 
 log = logging.getLogger(__name__)

@@ -10,7 +10,6 @@ import {SkeletonElement} from "../elements/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
 import type {userFollowerCount, userFollowingCount} from "../../core/apiResponseInterfaces/relationship.ts";
 import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
-import {ImageUrlProcessor} from "../../core/model/ImageUrlProcessor.ts";
 
 interface ProfileMenuButtonPropsType {
   children: ReactNode;
@@ -37,7 +36,7 @@ function ProfileMenuButton(
 }
 
 function CoreProfile() {
-  const profilePictureUrl = useAppSelector(state => state.userInfoReducer.profile_picture);
+  const myUuid = useAppSelector(state => state.userInfoReducer.uid);
 
   const [pageState, setPageState] = useState<PageState>(PageState.LOADING);
   const [followers, setFollowers] = useState<number>();
@@ -71,7 +70,7 @@ function CoreProfile() {
       <div className={"flex justify-between mx-5 items-center"}>
         <div className={"flex items-center gap-4"}>
           <img
-            src={ImageUrlProcessor(profilePictureUrl)}
+            src={"/api/v1/resources/image/profile/" + myUuid}
             className={"rounded-full h-16 w-16"}
           />
           <p className={"text-xl font-bold"}>{identity?.name}</p>
@@ -108,7 +107,7 @@ function ProfileSkeleton() {
       <div className={"flex justify-between mx-5 items-center"}>
         <div className={"flex items-center gap-4"}>
           <img
-            src={"/api/v1/resources/image/profile/00000000-0000-4000-0000-000000000000"}
+            src={"/api/v1/resources/image/store/00000000-0000-4000-0000-000000000000"}
             className={"rounded-full h-16 w-16"}
           />
           <SkeletonElement expH={28} expW={65}/>

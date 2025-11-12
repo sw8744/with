@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field, EmailStr
 from app.models.users.IdentityModel import SEX
 
 
-class RegisterIdentityReq(BaseModel):
+class IdentityPatchRequest(BaseModel):
   name: str = Field(
     min_length=1, max_length=64
   ),
@@ -14,7 +14,3 @@ class RegisterIdentityReq(BaseModel):
   ),
   sex: SEX = Field()
   birthday: datetime = Field()
-  prefer: list[float] = Field(
-    default=[0.0] * 100,
-    min_length=0, max_length=100
-  )

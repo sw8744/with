@@ -1,20 +1,25 @@
+import io
 import json
 import logging
 from typing import Optional
 from uuid import uuid4, UUID
 
+from PIL import Image
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from starlette.datastructures import UploadFile
 
 from app.core.database.database import redis_db0
 from app.core.hash import sha256
 from app.core.recommendation import core_prefer_vector
+from app.core.resources import core_image
 from app.core.user.core_jwt import get_sub
 from app.models.auth.GoogleAuth import GoogleAuthModel
 from app.models.preferences.UserPrefer import UserPrefer
 from app.models.users.IdentityModel import IdentityModel
 from app.schemas.user.Identity import Identity
 from app.schemas.user.IdentityRegisterRequests import RegisterIdentityReq
+from app.schemas.user.IdentityRequests import IdentityPatchRequest
 
 log = logging.getLogger(__name__)
 
@@ -117,3 +122,80 @@ def register_google_auth(
   log.debug("Google auth model created for user %s, sub=%s", uid, auth_ctx["sub"])
 
   db.add(google_auth)
+
+
+def update_identity(
+  request: IdentityPatchRequest,
+  identity_uid: UUID,
+  db: Session
+):
+  identity: IdentityModel = (
+    db.query(IdentityModel)
+    .filter(IdentityModel.uid == identity_uid)
+    .scalar()
+  )
+
+  if identity is None:
+    log.warning("Identity %r was not found for update", identity_uid)
+    raise HTTPException(status_code=404, detail="Identity not found")
+
+  if request.name is not None:
+    log.debug("Applying change of name in identity %r", identity.uid)
+    identity.name = request.name
+  if request.email is not None and request.email != identity.email:
+    log.debug("Applying change of email in identity %r", identity.uid)
+    log.info("Verification of email %r of identity %r is no more valid", request.email, identity.uid)
+    identity.email = request.email
+    identity.email_verified = False
+  if request.birthday is not None:
+    log.debug("Applying change of birthday in identity %r", identity.uid)
+    identity.birthday = request.birthday
+  if request.sex is not None:
+    log.debug("Applying change of sex in identity %r", identity.uid)
+    identity.sex = request.sex
+
+  db.commit()
+
+
+async def update_profile_picture(
+  profile_picture: UploadFile,
+  identity_uid: UUID,
+  db: Session
+) -> str:
+  identity: IdentityModel = (
+    db.query(IdentityModel)
+    .filter(IdentityModel.uid == identity_uid)
+    .scalar()
+  )
+
+  if identity is None:
+    log.warning("Identity %r was not found for profile picture update", identity_uid)
+    raise HTTPException(status_code=404, detail="Identity not found")
+
+  image_byte = await profile_picture.read()
+  image = Image.open(io.BytesIO(image_byte))
+
+  w = image.width;
+  h = image.height
+
+  if w != h:
+    side = min(w, h)
+    log.debug("Cropping profile picture for identity %r from %dx%d to %dx%d", identity_uid, w, h, side, side)
+    left = (w - side) / 2
+    top = (h - side) / 2
+    right = (w + side) / 2
+    bottom = (h + side) / 2
+    image = image.crop((left, top, right, bottom))
+
+  image = image.resize((96, 96))
+
+  buffer = io.BytesIO()
+  image.save(buffer, format="JPEG")
+  binary = buffer.getvalue()
+
+  img_uuid = core_image.upload_binary(binary, "image/jpeg", db)
+
+  identity.profile_picture = img_uuid
+  db.commit()
+
+  return img_uuid

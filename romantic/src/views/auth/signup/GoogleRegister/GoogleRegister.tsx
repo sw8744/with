@@ -125,11 +125,10 @@ function GoogleRegister(
           />
         </FormGroup>
 
-        <FormGroup name={"생일"}>
+        <FormGroup name={"생년월일"}>
           <DatePicker
             value={[birthday]}
             setter={(e) => setBirthday(e[0])}
-            fromDate={new Date(1900, 0, 1)}
             toDate={new Date()}
             disabled={blockForm}
             error={check(formState, 4)}

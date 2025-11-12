@@ -69,3 +69,23 @@ def upload(
 
   db.commit()
   return image_uuid
+
+
+def upload_binary(
+  binary: bytes,
+  mime_type: str,
+  db: Session
+) -> str:
+  metadata = ImageStoreModel(
+    mime_type=mime_type
+  )
+  db.add(metadata)
+  db.flush()
+
+  image_uuid = metadata.uid
+  path = "images/" + str(image_uuid)
+
+  with open(path, "wb") as image_file:
+    image_file.write(binary)
+
+  return image_uuid

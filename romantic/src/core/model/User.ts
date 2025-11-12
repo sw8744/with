@@ -2,7 +2,7 @@ type Identity = {
   uid: string;
   name: string;
   email: string;
-  emailVerified: string;
+  email_verified: string;
   sex: number;
   birthday: string;
   role: string[];
