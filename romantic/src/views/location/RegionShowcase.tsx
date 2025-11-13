@@ -8,6 +8,7 @@ import {ImageUrlProcessor} from "../../core/model/ImageUrlProcessor.ts";
 import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
 import {PlaceArea, PlaceAreaSkeleton} from "../elements/location/PlaceArea.tsx";
+import {BackHeader} from "../elements/hierarchy/HierarchyStructure.tsx";
 
 
 interface ThemeTagPropsType {
@@ -84,6 +85,8 @@ function RegionShowcase() {
   const tUrl = ImageUrlProcessor(regionInfo?.thumbnail);
   return (
     <>
+      <BackHeader title={regionInfo?.name ?? ""}/>
+
       <img
         src={tUrl}
         className={"mb-10 w-full shadow"}

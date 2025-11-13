@@ -10,6 +10,8 @@ import {PageError} from "../error/ErrorPage.tsx";
 import PlaceMetaInterpreter from "./PlaceMetadata.tsx";
 import type {interactionLike} from "../../core/apiResponseInterfaces/interaction.ts";
 import {StarFilledIcon, StarIcon} from "../../assets/svgs/svgs.ts";
+import {BackHeader} from "../elements/hierarchy/HierarchyStructure.tsx";
+import AnimatedSuspense from "../elements/hierarchy/AnimatedSuspense.tsx";
 
 interface ThemeTagPropsType {
   emogi: string;
@@ -98,11 +100,15 @@ function PlaceShowcase() {
     });
   }, []);
 
-  if (pageState === PageState.LOADING) return <PlaceShowcaseSkeleton/>
-  if (isPageError(pageState)) return <PageError pageState={pageState}/>
+  if (isPageError(pageState)) return <PageError pageState={pageState}/>;
 
   return (
-    <>
+    <AnimatedSuspense
+      pageState={pageState}
+      loadingSkeleton={<PlaceShowcaseSkeleton/>}
+    >
+      <BackHeader title={placeInfo?.name ?? ""}/>
+
       <img
         src={ImageUrlProcessor(placeInfo?.thumbnail)}
         className={"mb-10 w-full shadow"}
@@ -130,15 +136,16 @@ function PlaceShowcase() {
       </div>
 
       <PlaceMetaInterpreter meta={placeInfo?.metadata} address={placeInfo?.address}/>
-    </>
+    </AnimatedSuspense>
   );
 }
 
 function PlaceShowcaseSkeleton() {
   return (
     <SkeletonFrame>
-      <SkeletonElement className={"w-full mb-10 aspect-video"}/>
+      <BackHeader title={""}/>
 
+      <SkeletonElement className={"w-full mb-10 aspect-video"}/>
       <div className={"flex flex-col justify-baseline items-center gap-3"}>
         <SkeletonElement expH={36} expW={100}/>
         <SkeletonElement expH={28} expW={220} className={"max-w-[50%]"}/>

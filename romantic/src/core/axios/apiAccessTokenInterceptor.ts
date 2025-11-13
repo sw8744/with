@@ -42,7 +42,6 @@ async function resetAccessToken(
       uid: resp.data.user.uid,
       accessToken: accessToken,
       role: resp.data.user.role,
-      profile_picture: resp.data.user.profile_picture
     }
   } catch (err) {
     if (axios.isAxiosError(err)) {

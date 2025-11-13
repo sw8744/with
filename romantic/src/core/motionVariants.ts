@@ -68,18 +68,28 @@ const ThemeTagMotionVariants = {
 }
 
 const PageTransitionMotion = {
-  initial: {
-    opacity: 0,
+  initial: (shift: number) => {
+    return {
+      position: "absolute",
+      left: 0,
+      top: 0,
+      opacity: 0,
+      //x: "100%"
+    };
   },
   animate: {
+    position: "relative",
     opacity: 1,
+    x: 0
   },
-  exit: {
-    opacity: 0,
-  },
-  transition: {
-    duration: 0.2,
-    ease: "easeInOut"
+  exit: (shift: number) => {
+    return {
+      position: "absolute",
+      left: 0,
+      top: 0,
+      opacity: 0,
+      //x: "100%"
+    };
   }
 }
 

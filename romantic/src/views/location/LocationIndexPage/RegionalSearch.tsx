@@ -71,7 +71,7 @@ function RegionalSearch() {
   return (
     <div className={'mx-[14px]'}>
       <p className={'text-2xl font-medium mb-3'}>{userName}님이 좋아할만한 장소에요</p>
-      <div className={'grid grid-cols-4 gap-3'}>
+      <div className={'grid grid-cols-3 gap-3'}>
         {regionRecommendation.map((regionRec, index) => (
           <Link
             key={index}

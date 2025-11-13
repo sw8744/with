@@ -34,7 +34,7 @@ interface PlanInitializeType {
   }>;
 }
 
-// @ts-expect-error enum이 뭐 어때서
+//@ts-expect-error ENUM이 뭐가 어때서
 enum PlanRole {
   HOST = 0,
   COHOST = 1,

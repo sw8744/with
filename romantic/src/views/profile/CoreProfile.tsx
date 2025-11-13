@@ -6,10 +6,11 @@ import {MapPinAndEllipseIcon, PersonIcon, StarFilledIcon} from "../../assets/svg
 import type {Identity} from "../../core/model/User.ts";
 import {isPageError, PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
 import {Link, Outlet} from "react-router-dom";
-import {SkeletonElement} from "../elements/Skeleton.tsx";
+import {SkeletonElement, SkeletonFrame} from "../elements/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
 import type {userFollowerCount, userFollowingCount} from "../../core/apiResponseInterfaces/relationship.ts";
 import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
+import AnimatedSuspense from "../elements/hierarchy/AnimatedSuspense.tsx";
 
 interface ProfileMenuButtonPropsType {
   children: ReactNode;
@@ -25,10 +26,7 @@ function ProfileMenuButton(
   return (
     <Link
       to={to}
-      className={
-        "text-center w-[50px] border-b py-2 fill-neutral-700 border-neutral-700 " +
-        ""
-      }
+      className={"text-center w-[50px] border-b py-2 fill-neutral-700 border-neutral-700"}
     >
       {children}
     </Link>
@@ -58,15 +56,16 @@ function CoreProfile() {
     });
   }, []);
 
-  if (pageState === PageState.LOADING) {
-    return <ProfileSkeleton/>
-  }
   if (isPageError(pageState)) {
     return <PageError pageState={pageState}/>;
   }
 
   return (
-    <div className={"flex flex-col gap-2.5 m-5"}>
+    <AnimatedSuspense
+      pageState={pageState}
+      loadingSkeleton={<ProfileSkeleton/>}
+      className={"flex flex-col gap-2.5 p-5"}
+    >
       <div className={"flex justify-between mx-5 items-center"}>
         <div className={"flex items-center gap-4"}>
           <img
@@ -97,14 +96,14 @@ function CoreProfile() {
       <div className={"mt-3"}>
         <Outlet/>
       </div>
-    </div>
+    </AnimatedSuspense>
   );
 }
 
 function ProfileSkeleton() {
   return (
-    <div className={"flex flex-col gap-2.5 m-5"}>
-      <div className={"flex justify-between mx-5 items-center"}>
+    <>
+      <SkeletonFrame className={"flex justify-between mx-5 items-center"}>
         <div className={"flex items-center gap-4"}>
           <img
             src={"/api/v1/resources/image/store/00000000-0000-4000-0000-000000000000"}
@@ -118,7 +117,7 @@ function ProfileSkeleton() {
           <p>팔로워</p>
           <p>팔로잉</p>
         </div>
-      </div>
+      </SkeletonFrame>
       <div className={"flex gap-3"}>
         <ButtonLink className={"!rounded-lg !py-1 w-full"} theme={"white"} to={"/profile/edit"}>프로필 수정</ButtonLink>
         <ButtonLink className={"!rounded-lg !py-1 w-full"} theme={"white"} to={"/profile/share"}>프로필 공유</ButtonLink>
@@ -134,7 +133,7 @@ function ProfileSkeleton() {
       <div className={"mt-3"}>
         <Outlet/>
       </div>
-    </div>
+    </>
   );
 }
 

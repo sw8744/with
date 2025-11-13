@@ -1,5 +1,4 @@
-import {useNavigate} from "react-router-dom";
-import {CheckmarkFillIcon, ChevronLeftIcon, XMarkIcon} from "../../../assets/svgs/svgs.ts";
+import {CheckmarkFillIcon, XMarkIcon} from "../../../assets/svgs/svgs.ts";
 import {useAppSelector} from "../../../core/hook/ReduxHooks.ts";
 import {DatePicker, Select, TextInput} from "../../elements/Inputs.tsx";
 import {Form, FormGroup} from "../../elements/Form.tsx";
@@ -13,10 +12,10 @@ import {PageError} from "../../error/ErrorPage.tsx";
 import {SkeletonElement, SkeletonFrame} from "../../elements/Skeleton.tsx";
 import Spinner from "../../elements/Spinner.tsx";
 import CoreEditProfilePicture from "./CoreEditProfilePicture.tsx";
+import {BackHeader} from "../../elements/hierarchy/HierarchyStructure.tsx";
+import AnimatedSuspense from "../../elements/hierarchy/AnimatedSuspense.tsx";
 
 function CoreEditProfile() {
-  const navigate = useNavigate();
-
   const myUuid = useAppSelector(state => state.userInfoReducer.uid);
 
   const [name, setName] = useState<string>('');
@@ -29,10 +28,6 @@ function CoreEditProfile() {
   const [pageState, setPageState] = useState<PageState>(PageState.LOADING);
   const [profilePictureUpdateInterrupt, setProfilePictureUpdateInterrupt] = useState<number>(0);
   const [showingProfilePictureEditDialog, setShowingProfilePictureEditDialog] = useState<boolean>(false);
-
-  function back() {
-    navigate(-1);
-  }
 
   function validateForm() {
     const validation = verifyAll(
@@ -87,8 +82,7 @@ function CoreEditProfile() {
     });
   }, []);
 
-  if (pageState === PageState.LOADING) return <EditProfileSkeleton/>;
-  else if (isPageError(pageState)) return <PageError pageState={pageState}/>
+  if (isPageError(pageState)) return <PageError pageState={pageState}/>
 
   let emailVerificationCheckmark = <XMarkIcon height={20} className={"mt-[-4px] fill-red-600"}
                                               title={"확인되지 않은 이메일입니다"}/>;
@@ -98,109 +92,96 @@ function CoreEditProfile() {
   }
 
   return (
-    <div className={'mx-5'}>
-      <div className={'flex justify-between items-center -mx-5 px-5 py-4 border-b border-neutral-300'}>
-        <button onClick={back}>
-          <ChevronLeftIcon height={24}/>
-        </button>
-        <p className={'text-lg font-medium'}>프로필 수정</p>
-        <p/>
-      </div>
+    <AnimatedSuspense
+      pageState={pageState}
+      loadingSkeleton={<EditProfileSkeleton/>}
+    >
+      <BackHeader title={"프로필 수정"}/>
 
-      <div className={'my-3'}>
-        <img
-          src={"/api/v1/resources/image/profile/" + myUuid + "?t=" + profilePictureUpdateInterrupt}
-          className={"mx-auto rounded-full h-20 w-20"}
+      <div className={'mx-5'}>
+        <div className={'my-3'}>
+          <img
+            src={"/api/v1/resources/image/profile/" + myUuid + "?t=" + profilePictureUpdateInterrupt}
+            className={"mx-auto rounded-full h-20 w-20"}
+          />
+          <button
+            className={'block mx-auto px-2 py-1 my-2 font-medium text-sky-700 hover:text-sky-800 transition-colors duration-200'}
+            onClick={() => setShowingProfilePictureEditDialog(true)}
+          >
+            프로필사진 변경
+          </button>
+        </div>
+
+        <Form className={'py-4'}>
+          <FormGroup name={"이름"}>
+            <TextInput
+              value={name}
+              setter={setName}
+              placeholder={"이름"}
+              autocomplete={"name"}
+              disabled={workState === PageState.WORKING}
+              error={check(formState, 0)}
+            />
+          </FormGroup>
+
+          <FormGroup
+            name={"이메일"}
+            sidecar={emailVerificationCheckmark}
+          >
+            <TextInput
+              value={email}
+              setter={setEmail}
+              placeholder={"이메일"}
+              autocomplete={"email"}
+              disabled={workState === PageState.WORKING}
+              error={check(formState, 1) || check(formState, 3)}
+            />
+          </FormGroup>
+
+          <FormGroup name={"성별"}>
+            <Select
+              keys={[0, 1, 2, 3]}
+              options={["성별", "남성", "여성", "기타"]}
+              placeholder
+              value={sex}
+              setter={setSex}
+              disabled={workState === PageState.WORKING}
+              error={check(formState, 2)}
+            />
+          </FormGroup>
+
+          <FormGroup name={"생년월일"}>
+            <DatePicker
+              value={[birthday]}
+              setter={(e) => setBirthday(e[0])}
+              toDate={new Date()}
+              disabled={workState === PageState.WORKING}
+              error={check(formState, 4)}
+            />
+          </FormGroup>
+
+          <FormGroup className={'!flex-row justify-end'}>
+            <Button
+              disabled={workState === PageState.WORKING}
+              onClick={validateForm}
+            >확인</Button>
+          </FormGroup>
+        </Form>
+
+        <CoreEditProfilePicture
+          showing={showingProfilePictureEditDialog}
+          onClose={() => setShowingProfilePictureEditDialog(false)}
+          refresh={refreshProfilePicture}
         />
-        <button
-          className={'block mx-auto px-2 py-1 my-2 font-medium text-sky-700 hover:text-sky-800 transition-colors duration-200'}
-          onClick={() => setShowingProfilePictureEditDialog(true)}
-        >
-          프로필사진 변경
-        </button>
       </div>
-
-      <Form className={'py-4'}>
-        <FormGroup name={"이름"}>
-          <TextInput
-            value={name}
-            setter={setName}
-            placeholder={"이름"}
-            autocomplete={"name"}
-            disabled={workState === PageState.WORKING}
-            error={check(formState, 0)}
-          />
-        </FormGroup>
-
-        <FormGroup
-          name={"이메일"}
-          sidecar={emailVerificationCheckmark}
-        >
-          <TextInput
-            value={email}
-            setter={setEmail}
-            placeholder={"이메일"}
-            autocomplete={"email"}
-            disabled={workState === PageState.WORKING}
-            error={check(formState, 1) || check(formState, 3)}
-          />
-        </FormGroup>
-
-        <FormGroup name={"성별"}>
-          <Select
-            keys={[0, 1, 2, 3]}
-            options={["성별", "남성", "여성", "기타"]}
-            placeholder
-            value={sex}
-            setter={setSex}
-            disabled={workState === PageState.WORKING}
-            error={check(formState, 2)}
-          />
-        </FormGroup>
-
-        <FormGroup name={"생년월일"}>
-          <DatePicker
-            value={[birthday]}
-            setter={(e) => setBirthday(e[0])}
-            toDate={new Date()}
-            disabled={workState === PageState.WORKING}
-            error={check(formState, 4)}
-          />
-        </FormGroup>
-
-        <FormGroup className={'!flex-row justify-end'}>
-          <Button
-            disabled={workState === PageState.WORKING}
-            onClick={validateForm}
-          >확인</Button>
-        </FormGroup>
-      </Form>
-
-      <CoreEditProfilePicture
-        showing={showingProfilePictureEditDialog}
-        onClose={() => setShowingProfilePictureEditDialog(false)}
-        refresh={refreshProfilePicture}
-      />
-    </div>
+    </AnimatedSuspense>
   );
 }
 
 function EditProfileSkeleton() {
-  const navigate = useNavigate();
-
-  function back() {
-    navigate(-1);
-  }
-
   return (
     <SkeletonFrame>
-      <div className={'flex justify-between items-center -mx-5 px-5 py-4 border-b border-neutral-300'}>
-        <button onClick={back}>
-          <ChevronLeftIcon height={24}/>
-        </button>
-        <p className={'text-lg font-medium'}>프로필 수정</p>
-        <p/>
-      </div>
+      <BackHeader title={"프로필 수정"}/>
 
       <div className={'my-3'}>
         <img

@@ -47,6 +47,7 @@ apiAuth.interceptors.request.use(
     const accessToken = store.getState().userInfoReducer.accessToken;
 
     if (accessToken) {
+      //@ts-expect-error 타입 문제 없음
       config.headers = {
         ...config.headers,
         Authorization: `Bearer ${accessToken}`
@@ -54,6 +55,7 @@ apiAuth.interceptors.request.use(
     } else {
       const accessToken = await refreshAccessToken();
 
+      //@ts-expect-error 타입 문제 없음
       config.headers = {
         ...config.headers,
         Authorization: `Bearer ${accessToken}`

@@ -13,7 +13,7 @@ function FooterMenu(
   return (
     <Link
       to={props.to}
-      className={"py-4 flex flex-col justify-center items-center"}
+      className={"h-full flex flex-col justify-center items-center"}
     >
       {props.icon}
     </Link>
@@ -24,7 +24,7 @@ function Footer() {
   return (
     <footer
       className={
-        "fixed bottom-0 left-0 " +
+        "fixed bottom-0 left-0 h-[65px] " +
         "w-full grid grid-cols-3 bg-light " +
         "border-t border-t-neutral-300"
       }
