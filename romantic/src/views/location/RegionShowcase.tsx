@@ -4,11 +4,12 @@ import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {locationPlaceAPI, locationRegionAPI} from "../../core/apiResponseInterfaces/location.ts";
 import {isPageError, PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
 import type {Place, Region} from "../../core/model/LocationModels.ts";
-import {ImageUrlProcessor} from "../../core/model/ImageUrlProcessor.ts";
 import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
 import {PlaceArea, PlaceAreaSkeleton} from "../elements/location/PlaceArea.tsx";
 import {BackHeader} from "../elements/hierarchy/HierarchyStructure.tsx";
+import AnimatedSuspense from "../elements/hierarchy/AnimatedSuspense.tsx";
+import Img, {ImageType} from "../elements/Imgs.tsx";
 
 
 interface ThemeTagPropsType {
@@ -79,16 +80,18 @@ function RegionShowcase() {
       });
   }, []);
 
-  if (pageState === PageState.LOADING) return <RegionShowcaseSkeleton/>;
-  else if (isPageError(pageState)) return <PageError pageState={pageState}/>;
+  if (isPageError(pageState)) return <PageError pageState={pageState}/>;
 
-  const tUrl = ImageUrlProcessor(regionInfo?.thumbnail);
   return (
-    <>
+    <AnimatedSuspense
+      pageState={pageState}
+      loadingSkeleton={<RegionShowcaseSkeleton/>}
+    >
       <BackHeader title={regionInfo?.name ?? ""}/>
 
-      <img
-        src={tUrl}
+      <Img
+        src={regionInfo?.thumbnail}
+        type={ImageType.REGION_THUMBNAIL}
         className={"mb-10 w-full shadow"}
       />
 
@@ -110,7 +113,7 @@ function RegionShowcase() {
           />
         ))}
       </div>
-    </>
+    </AnimatedSuspense>
   );
 }
 

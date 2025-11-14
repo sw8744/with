@@ -10,6 +10,7 @@ import {plannerAction} from "../../core/redux/PlannerReducer.ts";
 import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {PageStepperMotion} from "../../core/motionVariants.ts";
 import GeneratePlan from "./GeneratePlan.tsx";
+import {PageTransitionLayer} from "../elements/hierarchy/HierarchyStructure.tsx";
 
 
 function CorePlanner() {
@@ -49,7 +50,7 @@ function CorePlanner() {
   }, [dispatch, myName, myUuid]);
 
   return (
-    <>
+    <PageTransitionLayer>
       <div className={"w-screen absolute left-0 top-0 overflow-clip"}>
         <motion.div
           className={
@@ -61,7 +62,7 @@ function CorePlanner() {
           }}
         />
       </div>
-      <div className={"flex flex-col gap-4 mt-[4px] p-5 h-[calc(100vh-68.74px)]"}>
+      <div className={"flex flex-col gap-4 p-5 h-[calc(100vh-68.74px)]"}>
         {/* 여기에 initial false 걸면 아래 skeletion animation 고장남 */}
         <AnimatePresence initial={false} mode={"wait"} custom={isForward}>
           <motion.div
@@ -107,7 +108,7 @@ function CorePlanner() {
           </motion.div>
         </AnimatePresence>
       </div>
-    </>
+    </PageTransitionLayer>
   );
 }
 

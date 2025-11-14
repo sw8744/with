@@ -1,7 +1,7 @@
-import {ImageUrlProcessor} from "../../../core/model/ImageUrlProcessor.ts";
 import {Link} from "react-router-dom";
 import type {Place} from "../../../core/model/LocationModels.ts";
 import {SkeletonElement, SkeletonUnit} from "../Skeleton.tsx";
+import Img, {ImageType} from "../Imgs.tsx";
 
 interface InformationAreaPropsType {
   place: Place,
@@ -13,8 +13,6 @@ function PlaceArea(
     place, className
   }: InformationAreaPropsType
 ) {
-  const tUrl = ImageUrlProcessor(place.thumbnail);
-
   return (
     <Link
       className={
@@ -23,8 +21,9 @@ function PlaceArea(
       }
       to={"/location/place/" + place.uid}
     >
-      <img
-        src={tUrl}
+      <Img
+        src={place.thumbnail}
+        type={ImageType.PLACE_THUMBNAIL}
         className={
           "h-[130px] w-1/2 object-cover " +
           "[mask-image:linear-gradient(to_right,black_70%,transparent)] " +
@@ -45,8 +44,6 @@ function PlaceAreaShow(
     place, className
   }: InformationAreaPropsType
 ) {
-  const tUrl = ImageUrlProcessor(place.thumbnail);
-
   return (
     <div
       className={
@@ -54,8 +51,9 @@ function PlaceAreaShow(
         (className ? " " + className : "")
       }
     >
-      <img
-        src={tUrl}
+      <Img
+        src={place.thumbnail}
+        type={ImageType.PLACE_THUMBNAIL}
         className={
           "h-[130px] w-1/2 object-cover " +
           "[mask-image:linear-gradient(to_right,black_70%,transparent)] " +

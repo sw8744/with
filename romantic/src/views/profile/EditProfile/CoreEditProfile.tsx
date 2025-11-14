@@ -14,6 +14,7 @@ import Spinner from "../../elements/Spinner.tsx";
 import CoreEditProfilePicture from "./CoreEditProfilePicture.tsx";
 import {BackHeader} from "../../elements/hierarchy/HierarchyStructure.tsx";
 import AnimatedSuspense from "../../elements/hierarchy/AnimatedSuspense.tsx";
+import Img, {ImageType} from "../../elements/Imgs.tsx";
 
 function CoreEditProfile() {
   const myUuid = useAppSelector(state => state.userInfoReducer.uid);
@@ -100,8 +101,10 @@ function CoreEditProfile() {
 
       <div className={'mx-5'}>
         <div className={'my-3'}>
-          <img
-            src={"/api/v1/resources/image/profile/" + myUuid + "?t=" + profilePictureUpdateInterrupt}
+          <Img
+            src={myUuid}
+            type={ImageType.PROFILE_PICTURE}
+            refreshKey={profilePictureUpdateInterrupt}
             className={"mx-auto rounded-full h-20 w-20"}
           />
           <button
@@ -184,10 +187,7 @@ function EditProfileSkeleton() {
       <BackHeader title={"프로필 수정"}/>
 
       <div className={'my-3'}>
-        <img
-          src={"/api/v1/resources/image/store/00000000-0000-4000-0000-000000000000"}
-          className={"mx-auto rounded-full h-20 w-20"}
-        />
+        <SkeletonElement unit className={"mx-auto rounded-full h-20 w-20"}/>
         <p className={'text-center px-2 py-1 my-2 font-medium text-sky-700'}>프로필사진 변경</p>
       </div>
 

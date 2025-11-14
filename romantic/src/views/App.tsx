@@ -1,7 +1,6 @@
 import "../style/univ.css"
 import Footer from "./outline/Footer.tsx";
 import {BrowserRouter, Route, Routes, useLocation} from "react-router-dom";
-import CoreLocation from "./location/CoreLocation.tsx";
 import CoreLogin from "./auth/authentication/login/CoreLogin.tsx";
 import SetJwt from "./auth/authentication/login/SetJwt.tsx";
 import CoreProfile from "./profile/CoreProfile.tsx";
@@ -19,7 +18,7 @@ import {AnimatePresence} from "framer-motion";
 function App() {
   return (
     <BrowserRouter>
-      <main className={"w-full sm:w-3/4 md:w-1/2 xl:w-[35%] pb-[65px] overflow-x-clip relative"}>
+      <main className={"w-full mx-auto sm:w-3/4 md:w-1/2 xl:w-[35%] pb-[65px] overflow-x-clip relative"}>
         <AnimatedRouter/>
       </main>
       <Footer/>
@@ -33,7 +32,7 @@ function AnimatedRouter() {
   return (
     <AnimatePresence mode="popLayout">
       <Routes location={location} key={location.pathname}>
-        <Route path={"/location"} element={<CoreLocation/>}>
+        <Route path={"/location"}>
           <Route path={""} element={<CoreLocationIndex/>}/>
           <Route path={"region/:regionUID"} element={<RegionShowcase/>}/>
           <Route path={"place/:placeUID"} element={<PlaceShowcase/>}/>

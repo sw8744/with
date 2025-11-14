@@ -2,6 +2,7 @@ import {AnimatePresence, motion} from "framer-motion";
 import {CarouselStepperMotion} from "../../../core/motionVariants.ts";
 import {useEffect, useState} from "react";
 import {ChevronLeftIcon, ChevronRightIcon} from "../../../assets/svgs/svgs.ts";
+import Img, {ImageType} from "../../elements/Imgs.tsx";
 
 function CarouselRecommendation() {
   const CAROUSEL_COUNT = 2;
@@ -108,8 +109,9 @@ function RecommendationCarousel(
     <motion.div
       className={'w-full rounded-2xl overflow-clip relative'}
     >
-      <img
+      <Img
         src={url}
+        type={ImageType.ETC}
         className={'aspect-video'}
       />
       <div className={'absolute left-0 top-0 w-full h-full px-5 flex flex-col justify-center'}>

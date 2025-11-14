@@ -3,6 +3,7 @@ import {type ReactElement} from "react";
 import {PlanRole} from "../../../core/redux/PlanReducer.ts";
 import type {PlanMemberType} from "../../../core/apiResponseInterfaces/plan.ts";
 import ModifyMember from "./ModifyMember.tsx";
+import Img, {ImageType} from "../../elements/Imgs.tsx";
 
 function CoreMembers() {
   const members: PlanMemberType[] = useAppSelector(state => state.planReducer.members);
@@ -26,8 +27,9 @@ function CoreMembers() {
     const elem = (
       <div className={'flex items-center justify-between py-3'}>
         <div className={'flex gap-3 items-center'}>
-          <img
-            src={"/api/v1/resources/image/profile/" + member.uid}
+          <Img
+            src={member.uid}
+            type={ImageType.PROFILE_PICTURE}
             className={"rounded-full w-10 aspect-square"}
           />
           <p className={'text-lg font-medium'}>{member.name}</p>

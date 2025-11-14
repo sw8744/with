@@ -17,6 +17,7 @@ import {SkeletonElement, SkeletonFrame} from "../elements/Skeleton.tsx";
 import Spinner from "../elements/Spinner.tsx";
 import CoreMembers from "./member/CoreMembers.tsx";
 import ChangePlanName from "./ChangePlanName.tsx";
+import Img, {ImageType} from "../elements/Imgs.tsx";
 
 function CorePlan() {
   const planUuid = useParams()["planUUID"];
@@ -135,9 +136,10 @@ function FriendDaegari(
       exit={"exit"}
       className={"flex flex-col gap-2 items-center max-w-1/4"}
     >
-      <img
-        src={"/api/v1/resources/image/profile/" + friend.uid}
+      <Img
+        src={friend.uid}
         alt={friend.name}
+        type={ImageType.PROFILE_PICTURE}
         className={"rounded-full h-16 w-16"}
       />
       <p className={"font-medium cursor-default"}>{friend.name}</p>
@@ -155,10 +157,7 @@ function CorePlanSkeleton() {
         </div>
         <div className={"flex gap-3 overflow-x-auto overflow-y-hidden"}>
           <div className={"flex flex-col gap-2 items-center max-w-1/4"}>
-            <img
-              src={"/api/v1/resources/image/store/00000000-0000-4000-0000-000000000000"}
-              className={"rounded-full h-16 w-16"}
-            />
+            <SkeletonElement unit className={"rounded-full h-16 w-16"}/>
             <SkeletonElement unit expH={24} expW={45}/>
           </div>
         </div>

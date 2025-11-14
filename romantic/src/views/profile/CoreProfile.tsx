@@ -11,6 +11,7 @@ import {PageError} from "../error/ErrorPage.tsx";
 import type {userFollowerCount, userFollowingCount} from "../../core/apiResponseInterfaces/relationship.ts";
 import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import AnimatedSuspense from "../elements/hierarchy/AnimatedSuspense.tsx";
+import Img, {ImageType} from "../elements/Imgs.tsx";
 
 interface ProfileMenuButtonPropsType {
   children: ReactNode;
@@ -68,9 +69,10 @@ function CoreProfile() {
     >
       <div className={"flex justify-between mx-5 items-center"}>
         <div className={"flex items-center gap-4"}>
-          <img
-            src={"/api/v1/resources/image/profile/" + myUuid}
+          <Img
+            src={myUuid}
             className={"rounded-full h-16 w-16"}
+            type={ImageType.PROFILE_PICTURE}
           />
           <p className={"text-xl font-bold"}>{identity?.name}</p>
         </div>
@@ -105,15 +107,12 @@ function ProfileSkeleton() {
     <>
       <SkeletonFrame className={"flex justify-between mx-5 items-center"}>
         <div className={"flex items-center gap-4"}>
-          <img
-            src={"/api/v1/resources/image/store/00000000-0000-4000-0000-000000000000"}
-            className={"rounded-full h-16 w-16"}
-          />
-          <SkeletonElement expH={28} expW={65}/>
+          <SkeletonElement unit className={"rounded-full h-16 w-16"}/>
+          <SkeletonElement unit expH={28} expW={65}/>
         </div>
         <div className={"grid grid-cols-2 gap-x-6 grid-rows-2"}>
-          <SkeletonElement expH={24} expW={60}/>
-          <SkeletonElement expH={24} expW={60}/>
+          <SkeletonElement unit expH={24} expW={60}/>
+          <SkeletonElement unit expH={24} expW={60}/>
           <p>팔로워</p>
           <p>팔로잉</p>
         </div>

@@ -4,7 +4,6 @@ import type {Place} from "../../core/model/LocationModels.ts";
 import {isPageError, PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {locationPlaceAPI} from "../../core/apiResponseInterfaces/location.ts";
-import {ImageUrlProcessor} from "../../core/model/ImageUrlProcessor.ts";
 import {SkeletonElement, SkeletonFrame} from "../elements/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
 import PlaceMetaInterpreter from "./PlaceMetadata.tsx";
@@ -12,6 +11,7 @@ import type {interactionLike} from "../../core/apiResponseInterfaces/interaction
 import {StarFilledIcon, StarIcon} from "../../assets/svgs/svgs.ts";
 import {BackHeader} from "../elements/hierarchy/HierarchyStructure.tsx";
 import AnimatedSuspense from "../elements/hierarchy/AnimatedSuspense.tsx";
+import Img, {ImageType} from "../elements/Imgs.tsx";
 
 interface ThemeTagPropsType {
   emogi: string;
@@ -109,8 +109,9 @@ function PlaceShowcase() {
     >
       <BackHeader title={placeInfo?.name ?? ""}/>
 
-      <img
-        src={ImageUrlProcessor(placeInfo?.thumbnail)}
+      <Img
+        src={placeInfo?.thumbnail}
+        type={ImageType.PLACE_THUMBNAIL}
         className={"mb-10 w-full shadow"}
       />
 

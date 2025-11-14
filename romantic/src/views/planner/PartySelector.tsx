@@ -16,6 +16,7 @@ import {Button} from "../elements/Buttons.tsx";
 import {useDispatch} from "react-redux";
 import {plannerAction} from "../../core/redux/PlannerReducer.ts";
 import {HorizontalListMotionVariants} from "../../core/motionVariants.ts";
+import Img, {ImageType} from "../elements/Imgs.tsx";
 
 function PartySelector(
   {next, working, children}: {
@@ -200,9 +201,10 @@ function PartySelector(
                 exit={"exit"}
                 className={"flex flex-col gap-2 items-center max-w-1/4"}
               >
-                <img
-                  src={"/api/v1/resources/image/profile/" + friend.uid}
+                <Img
+                  src={friend.uid}
                   alt={friend.name}
+                  type={ImageType.PROFILE_PICTURE}
                   className={"rounded-full h-16 w-16 cursor-pointer"}
                 />
                 <p className={"font-medium cursor-default"}>{friend.name}</p>
@@ -247,8 +249,9 @@ function FriendInList(
       className={"flex gap-4 items-center justify-between"}
     >
       <div className={"flex gap-4 items-center"}>
-        <img
-          src={"/api/v1/resources/image/profile/" + uuid}
+        <Img
+          src={uuid}
+          type={ImageType.PROFILE_PICTURE}
           className={"w-10 h-10 aspect-1/1 rounded-full"}
           alt={name}
         />
