@@ -1,5 +1,5 @@
 import React, {type ChangeEvent, useEffect, useRef, useState} from "react";
-import {Checkbox} from "../elements/Inputs.tsx";
+import {Checkbox} from "../elements/common/Inputs.tsx";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import {
   type FriendInformationType,
@@ -8,15 +8,15 @@ import {
 } from "../../core/apiResponseInterfaces/relationship.ts";
 import {isPageError, PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
 import {PageError} from "../error/ErrorPage.tsx";
-import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/Skeleton.tsx";
+import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/loading/Skeleton.tsx";
 import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {AnimatePresence, motion} from "framer-motion";
-import Spinner from "../elements/Spinner.tsx";
-import {Button} from "../elements/Buttons.tsx";
+import Spinner from "../elements/loading/Spinner.tsx";
+import {Button} from "../elements/common/Buttons.tsx";
 import {useDispatch} from "react-redux";
 import {plannerAction} from "../../core/redux/PlannerReducer.ts";
 import {HorizontalListMotionVariants} from "../../core/motionVariants.ts";
-import Img, {ImageType} from "../elements/Imgs.tsx";
+import Img, {ImageType} from "../elements/common/Imgs.tsx";
 
 function PartySelector(
   {next, working, children}: {
@@ -252,7 +252,7 @@ function FriendInList(
         <Img
           src={uuid}
           type={ImageType.PROFILE_PICTURE}
-          className={"w-10 h-10 aspect-1/1 rounded-full"}
+          className={"w-10 h-10 aspect-square rounded-full"}
           alt={name}
         />
         <p className={"font-medium"}>{name}</p>

@@ -1,14 +1,14 @@
-import {DatePicker} from "../../../elements/Inputs.tsx";
+import {DatePicker} from "../../../elements/common/Inputs.tsx";
 import {useEffect, useState} from "react";
 import {useAppSelector} from "../../../../core/hook/ReduxHooks.ts";
-import {Button} from "../../../elements/Buttons.tsx";
+import {Button} from "../../../elements/common/Buttons.tsx";
 import {InlineError, PageError} from "../../../error/ErrorPage.tsx";
 import {isPageError, PageState} from "../../../../core/apiResponseInterfaces/apiInterface.ts";
 import {apiAuth, handleAxiosError} from "../../../../core/axios/withAxios.ts";
 import type {GetMyVoteRequest, GetVoteStatusRequest} from "../../../../core/apiResponseInterfaces/plan.ts";
 import {PlanRole} from "../../../../core/redux/PlanReducer.ts";
-import Dialog from "../../../elements/Dialog.tsx";
-import Spinner from "../../../elements/Spinner.tsx";
+import Dialog from "../../../elements/common/Dialog.tsx";
+import Spinner from "../../../elements/loading/Spinner.tsx";
 import HostDateFix from "./HostDateFix.tsx";
 
 function DatePoll() {

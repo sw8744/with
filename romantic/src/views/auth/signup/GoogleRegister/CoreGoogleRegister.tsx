@@ -86,7 +86,7 @@ function CoreGoogleRegister() {
           }}
         />
       </div>
-      <div className={"flex flex-col gap-4 mt-[4px] p-5 h-[calc(100vh-68.74px)]"}>
+      <div className={"flex flex-col gap-4 mt-[4px] p-5 h-[calc(100vh-65px)]"}>
         <AnimatePresence mode={"wait"} custom={isForward}>
           <motion.div
             key={step}

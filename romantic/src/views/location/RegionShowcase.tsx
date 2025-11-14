@@ -4,12 +4,12 @@ import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {locationPlaceAPI, locationRegionAPI} from "../../core/apiResponseInterfaces/location.ts";
 import {isPageError, PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
 import type {Place, Region} from "../../core/model/LocationModels.ts";
-import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/Skeleton.tsx";
+import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/loading/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
 import {PlaceArea, PlaceAreaSkeleton} from "../elements/location/PlaceArea.tsx";
 import {BackHeader} from "../elements/hierarchy/HierarchyStructure.tsx";
 import AnimatedSuspense from "../elements/hierarchy/AnimatedSuspense.tsx";
-import Img, {ImageType} from "../elements/Imgs.tsx";
+import Img, {ImageType} from "../elements/common/Imgs.tsx";
 
 
 interface ThemeTagPropsType {

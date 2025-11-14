@@ -5,6 +5,15 @@ type userAPI = ApiInterface & {
   user: Identity
 }
 
+type SearchedUser = {
+  uid: string;
+  name: string;
+}
+
+type SearchUsersAPI = ApiInterface & {
+  users: Array<SearchedUser>
+}
+
 export type {
-  userAPI
+  userAPI, SearchUsersAPI, SearchedUser
 }

@@ -1,17 +1,17 @@
 import {type ReactNode, useEffect, useState} from "react";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {userAPI} from "../../core/apiResponseInterfaces/user.ts";
-import {ButtonLink} from "../elements/Buttons.tsx";
+import {ButtonLink} from "../elements/common/Buttons.tsx";
 import {MapPinAndEllipseIcon, PersonIcon, StarFilledIcon} from "../../assets/svgs/svgs.ts";
 import type {Identity} from "../../core/model/User.ts";
 import {isPageError, PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
 import {Link, Outlet} from "react-router-dom";
-import {SkeletonElement, SkeletonFrame} from "../elements/Skeleton.tsx";
+import {SkeletonElement, SkeletonFrame} from "../elements/loading/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
 import type {userFollowerCount, userFollowingCount} from "../../core/apiResponseInterfaces/relationship.ts";
 import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import AnimatedSuspense from "../elements/hierarchy/AnimatedSuspense.tsx";
-import Img, {ImageType} from "../elements/Imgs.tsx";
+import Img, {ImageType} from "../elements/common/Imgs.tsx";
 
 interface ProfileMenuButtonPropsType {
   children: ReactNode;

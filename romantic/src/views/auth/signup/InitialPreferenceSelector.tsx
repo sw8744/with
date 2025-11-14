@@ -1,5 +1,5 @@
-import {Button} from "../../elements/Buttons.tsx";
-import Alert from "../../elements/Alert.tsx";
+import {Button} from "../../elements/common/Buttons.tsx";
+import Alert from "../../elements/common/Alert.tsx";
 
 function InitialPreferenceSelector(
   {

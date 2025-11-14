@@ -2,14 +2,14 @@ import {useAppDispatch, useAppSelector} from "../../../core/hook/ReduxHooks.ts";
 import {planActions, PlanRole} from "../../../core/redux/PlanReducer.ts";
 import {PencilIcon} from "../../../assets/svgs/svgs.ts";
 import {useState} from "react";
-import Dialog from "../../elements/Dialog.tsx";
+import Dialog from "../../elements/common/Dialog.tsx";
 import PartySelector from "../../planner/PartySelector.tsx";
 import {plannerAction} from "../../../core/redux/PlannerReducer.ts";
 import type {FriendInformationType} from "../../../core/apiResponseInterfaces/relationship.ts";
 import {PageState} from "../../../core/apiResponseInterfaces/apiInterface.ts";
 import {apiAuth, handleAxiosError} from "../../../core/axios/withAxios.ts";
 import {InlineError} from "../../error/ErrorPage.tsx";
-import {Button} from "../../elements/Buttons.tsx";
+import {Button} from "../../elements/common/Buttons.tsx";
 
 function ModifyMember() {
   const myRole = useAppSelector(state => state.planReducer.role);

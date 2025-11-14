@@ -7,8 +7,8 @@ import {PageError} from "../../error/ErrorPage.tsx";
 import {useAppSelector} from "../../../core/hook/ReduxHooks.ts";
 import type {locationRegionAPI} from "../../../core/apiResponseInterfaces/location.ts";
 import {Link} from "react-router-dom";
-import {SkeletonElement, SkeletonFrame} from "../../elements/Skeleton.tsx";
-import Img, {ImageType} from "../../elements/Imgs.tsx";
+import {SkeletonElement, SkeletonFrame} from "../../elements/loading/Skeleton.tsx";
+import Img, {ImageType} from "../../elements/common/Imgs.tsx";
 
 function RegionalSearch() {
   const userName = useAppSelector(state => state.userInfoReducer.name);

@@ -1,4 +1,4 @@
-import {ButtonLink} from "../../../elements/Buttons.tsx";
+import {ButtonLink} from "../../../elements/common/Buttons.tsx";
 import {LogoGoogleIcon} from "../../../../assets/svgs/svgs.ts";
 
 function CoreLogin() {

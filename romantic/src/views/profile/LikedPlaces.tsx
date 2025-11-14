@@ -5,7 +5,7 @@ import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {interactionLikes} from "../../core/apiResponseInterfaces/interaction.ts";
 import {PageError} from "../error/ErrorPage.tsx";
 import {PlaceArea, PlaceAreaSkeleton} from "../elements/location/PlaceArea.tsx";
-import {SkeletonFrame} from "../elements/Skeleton.tsx";
+import {SkeletonFrame} from "../elements/loading/Skeleton.tsx";
 
 function LikedPlaces() {
   const [pageState, setPageState] = useState<PageState>(PageState.LOADING)

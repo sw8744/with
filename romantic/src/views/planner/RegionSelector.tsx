@@ -1,5 +1,5 @@
-import {Button} from "../elements/Buttons.tsx";
-import {TextInput} from "../elements/Inputs.tsx";
+import {Button} from "../elements/common/Buttons.tsx";
+import {TextInput} from "../elements/common/Inputs.tsx";
 import {type ReactElement, useEffect, useState} from "react";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {locationRegionAPI} from "../../core/apiResponseInterfaces/location.ts";
@@ -10,9 +10,9 @@ import {useAppDispatch, useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {AnimatePresence, motion} from "framer-motion";
 import {plannerAction} from "../../core/redux/PlannerReducer.ts";
 import {PageError} from "../error/ErrorPage.tsx";
-import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/Skeleton.tsx";
+import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/loading/Skeleton.tsx";
 import {BlockListMotion} from "../../core/motionVariants.ts";
-import Img, {ImageType} from "../elements/Imgs.tsx";
+import Img, {ImageType} from "../elements/common/Imgs.tsx";
 
 function RegionSelector(
   {prev, next}: {

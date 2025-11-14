@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
-import {DatePicker, Select, TextInput} from "../../../elements/Inputs.tsx";
-import {Form, FormGroup} from "../../../elements/Form.tsx";
-import {Button} from "../../../elements/Buttons.tsx";
+import {DatePicker, Select, TextInput} from "../../../elements/common/Inputs.tsx";
+import {Form, FormGroup} from "../../../elements/common/Form.tsx";
+import {Button} from "../../../elements/common/Buttons.tsx";
 import {useNavigate} from "react-router-dom"
-import {CheckmarkFillIcon, XMarkIcon} from "../../../../assets/svgs/svgs.ts";
+import {CheckmarkFillIcon, XCircleFillIcon} from "../../../../assets/svgs/svgs.ts";
 import {check, lengthCheck, rangeCheck, regexCheck, verifyAll} from "../../../../core/validation.ts";
 import type {authOAuthGoogleRegisterInfoAPI} from "../../../../core/apiResponseInterfaces/register.ts";
 import {api} from "../../../../core/axios/withAxios.ts";
@@ -78,7 +78,7 @@ function GoogleRegister(
     });
   }, []);
 
-  let emailVerified = <XMarkIcon height={20} className={"mt-[-4px] fill-red-600"} title={"확인되지 않은 이메일입니다"}/>;
+  let emailVerified = <XCircleFillIcon height={20} className={"mt-[-4px] fill-red-600"} title={"확인되지 않은 이메일입니다"}/>;
   if (vEmail == email) {
     emailVerified = <CheckmarkFillIcon height={20} className={"mt-[-4px] fill-green-600"} title={"확인된 이메일입니다"}/>;
   }

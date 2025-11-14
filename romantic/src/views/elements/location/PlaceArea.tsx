@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom";
 import type {Place} from "../../../core/model/LocationModels.ts";
-import {SkeletonElement, SkeletonUnit} from "../Skeleton.tsx";
-import Img, {ImageType} from "../Imgs.tsx";
+import {SkeletonElement, SkeletonUnit} from "../loading/Skeleton.tsx";
+import Img, {ImageType} from "../common/Imgs.tsx";
 
 interface InformationAreaPropsType {
   place: Place,

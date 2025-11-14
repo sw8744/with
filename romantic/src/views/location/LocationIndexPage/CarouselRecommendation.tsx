@@ -2,7 +2,7 @@ import {AnimatePresence, motion} from "framer-motion";
 import {CarouselStepperMotion} from "../../../core/motionVariants.ts";
 import {useEffect, useState} from "react";
 import {ChevronLeftIcon, ChevronRightIcon} from "../../../assets/svgs/svgs.ts";
-import Img, {ImageType} from "../../elements/Imgs.tsx";
+import Img, {ImageType} from "../../elements/common/Imgs.tsx";
 
 function CarouselRecommendation() {
   const CAROUSEL_COUNT = 2;

@@ -8,7 +8,7 @@ import {number} from "motion";
 import ThemeTag from "../../elements/theme/ThemeTag.tsx";
 import {PageError} from "../../error/ErrorPage.tsx";
 import {ThemeTagMotionVariants} from "../../../core/motionVariants.ts";
-import {SkeletonElement, SkeletonFrame} from "../../elements/Skeleton.tsx";
+import {SkeletonElement, SkeletonFrame} from "../../elements/loading/Skeleton.tsx";
 
 function ThemeSearch() {
   const [themeMapping, setThemeMapping] = useState<ThemeMapping>({});

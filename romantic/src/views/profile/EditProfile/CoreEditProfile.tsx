@@ -1,20 +1,20 @@
-import {CheckmarkFillIcon, XMarkIcon} from "../../../assets/svgs/svgs.ts";
+import {CheckmarkFillIcon, XCircleFillIcon} from "../../../assets/svgs/svgs.ts";
 import {useAppSelector} from "../../../core/hook/ReduxHooks.ts";
-import {DatePicker, Select, TextInput} from "../../elements/Inputs.tsx";
-import {Form, FormGroup} from "../../elements/Form.tsx";
-import {Button} from "../../elements/Buttons.tsx";
+import {DatePicker, Select, TextInput} from "../../elements/common/Inputs.tsx";
+import {Form, FormGroup} from "../../elements/common/Form.tsx";
+import {Button, TextButton} from "../../elements/common/Buttons.tsx";
 import {useEffect, useState} from "react";
 import {check, lengthCheck, rangeCheck, regexCheck, verifyAll} from "../../../core/validation.ts";
 import {apiAuth, handleAxiosError} from "../../../core/axios/withAxios.ts";
 import type {userAPI} from "../../../core/apiResponseInterfaces/user.ts";
 import {isPageError, PageState} from "../../../core/apiResponseInterfaces/apiInterface.ts";
 import {PageError} from "../../error/ErrorPage.tsx";
-import {SkeletonElement, SkeletonFrame} from "../../elements/Skeleton.tsx";
-import Spinner from "../../elements/Spinner.tsx";
+import {SkeletonElement, SkeletonFrame} from "../../elements/loading/Skeleton.tsx";
+import Spinner from "../../elements/loading/Spinner.tsx";
 import CoreEditProfilePicture from "./CoreEditProfilePicture.tsx";
 import {BackHeader} from "../../elements/hierarchy/HierarchyStructure.tsx";
 import AnimatedSuspense from "../../elements/hierarchy/AnimatedSuspense.tsx";
-import Img, {ImageType} from "../../elements/Imgs.tsx";
+import Img, {ImageType} from "../../elements/common/Imgs.tsx";
 
 function CoreEditProfile() {
   const myUuid = useAppSelector(state => state.userInfoReducer.uid);
@@ -85,8 +85,8 @@ function CoreEditProfile() {
 
   if (isPageError(pageState)) return <PageError pageState={pageState}/>
 
-  let emailVerificationCheckmark = <XMarkIcon height={20} className={"mt-[-4px] fill-red-600"}
-                                              title={"확인되지 않은 이메일입니다"}/>;
+  let emailVerificationCheckmark = <XCircleFillIcon height={20} className={"mt-[-4px] fill-red-600"}
+                                                    title={"확인되지 않은 이메일입니다"}/>;
   if (verifiedEmail === email) {
     emailVerificationCheckmark =
       <CheckmarkFillIcon height={20} className={"mt-[-4px] fill-green-600"} title={"확인된 이메일입니다"}/>;
@@ -107,12 +107,12 @@ function CoreEditProfile() {
             refreshKey={profilePictureUpdateInterrupt}
             className={"mx-auto rounded-full h-20 w-20"}
           />
-          <button
-            className={'block mx-auto px-2 py-1 my-2 font-medium text-sky-700 hover:text-sky-800 transition-colors duration-200'}
+          <TextButton
             onClick={() => setShowingProfilePictureEditDialog(true)}
+            className={"mx-auto my-2"}
           >
             프로필사진 변경
-          </button>
+          </TextButton>
         </div>
 
         <Form className={'py-4'}>

@@ -14,3 +14,13 @@ class IdentityPatchRequest(BaseModel):
   ),
   sex: SEX = Field()
   birthday: datetime = Field()
+
+
+class IdentitySearchRequest(BaseModel):
+  name: str = Field(
+    min_length=1, max_length=64
+  )
+  limit: int = Field(
+    default=10,
+    ge=1, le=10
+  )

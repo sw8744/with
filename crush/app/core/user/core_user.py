@@ -1,12 +1,14 @@
 import io
 import json
 import logging
-from typing import Optional
+from typing import Optional, Tuple
 from uuid import uuid4, UUID
 
 from PIL import Image
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy import Row
+from sqlalchemy.orm import Session, aliased
+from sqlalchemy.sql.expression import case
 from starlette.datastructures import UploadFile
 
 from app.core.database.database import redis_db0
@@ -17,9 +19,10 @@ from app.core.user.core_jwt import get_sub
 from app.models.auth.GoogleAuth import GoogleAuthModel
 from app.models.preferences.UserPrefer import UserPrefer
 from app.models.users.IdentityModel import IdentityModel
+from app.models.users.RelationshipModel import RelationshipModel
 from app.schemas.user.Identity import Identity
 from app.schemas.user.IdentityRegisterRequests import RegisterIdentityReq
-from app.schemas.user.IdentityRequests import IdentityPatchRequest
+from app.schemas.user.IdentityRequests import IdentityPatchRequest, IdentitySearchRequest
 
 log = logging.getLogger(__name__)
 
@@ -199,3 +202,79 @@ async def update_profile_picture(
   db.commit()
 
   return img_uuid
+
+
+def search_identities(
+  query: IdentitySearchRequest,
+  sub: UUID,
+  db: Session
+):
+  # 검색 우선순위(이름이 일치하는 사람 중에서)
+  # 1. 내가 팔로우
+  # 2. 나를 팔로잉
+  # 3. 내가 팔로우 하는 사람이 팔로우
+
+  priority_one = (
+    db.query()
+    .filter(
+      RelationshipModel.user_id == sub,
+      RelationshipModel.friend_id == IdentityModel.uid
+    )
+    .correlate(IdentityModel)
+    .exists()
+  )
+
+  priority_two = (
+    db.query()
+    .filter(
+      RelationshipModel.user_id == IdentityModel.uid,
+      RelationshipModel.friend_id == sub
+    )
+    .correlate(IdentityModel)
+    .exists()
+  )
+
+  r1 = aliased(RelationshipModel)
+  r2 = aliased(RelationshipModel)
+
+  priority_three = (
+    db.query()
+    .select_from(r1)
+    .join(
+      r2,
+      r1.friend_id == r2.user_id
+    )
+    .filter(
+      r1.user_id == sub,
+      r2.friend_id == IdentityModel.uid
+    )
+    .correlate(IdentityModel)
+    .exists()
+  )
+
+  priority_case = case(
+    (priority_one, 1),
+    (priority_two, 2),
+    (priority_three, 3),
+    else_=4
+  )
+
+  result: list[Row[Tuple[IdentityModel, int]]] = (
+    db.query(
+      IdentityModel,
+      priority_case
+    )
+    .filter(
+      IdentityModel.name.ilike(f"%{query.name}%"),
+      IdentityModel.uid != sub
+    )
+    .order_by(priority_case.asc())
+    .all()
+  )
+
+  return [
+    {
+      "uid": str(iden[0].uid),
+      "name": iden[0].name,
+    } for iden in result
+  ]

@@ -14,6 +14,10 @@ import CoreGoogleRegister from "./auth/signup/GoogleRegister/CoreGoogleRegister.
 import CorePlan from "./plan/CorePlan.tsx";
 import CoreEditProfile from "./profile/EditProfile/CoreEditProfile.tsx";
 import {AnimatePresence} from "framer-motion";
+import CoreMembers from "./plan/member/CoreMembers.tsx";
+import CoreSchedule from "./plan/schedule/CoreSchedule.tsx";
+import CoreFind from "./find/CoreFind.tsx";
+import ShareProfile from "./profile/ShareProfile.tsx";
 
 function App() {
   return (
@@ -39,6 +43,7 @@ function AnimatedRouter() {
         </Route>
 
         <Route path={"/profile/edit"} element={<CoreEditProfile/>}/>
+        <Route path={"/profile/share"} element={<ShareProfile/>}/>
 
         <Route
           path={"/profile"}
@@ -50,8 +55,14 @@ function AnimatedRouter() {
 
         <Route path={"/plan"}>
           <Route path={""} element={<CorePlanner/>}/>
-          <Route path={":planUUID/*"} element={<CorePlan/>}/>
+          <Route path={":planUUID/*"} element={<CorePlan/>}>
+            <Route path={""} element={<CoreSchedule/>}/>
+            <Route path={"timeline"} element={<CoreSchedule/>}/>
+            <Route path={'members'} element={<CoreMembers/>}/>
+          </Route>
         </Route>
+
+        <Route path={"/find"} element={<CoreFind/>}/>
 
         <Route
           path={"/register/google"}

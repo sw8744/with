@@ -1,7 +1,8 @@
 import logging
+from typing import Annotated
 
 from fastapi import APIRouter, UploadFile
-from fastapi.params import Security, Depends, File
+from fastapi.params import Security, Depends, File, Query
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
@@ -9,7 +10,7 @@ from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection
 from app.core.user import core_user
 from app.core.user.core_jwt import require_role, Role, get_sub
-from app.schemas.user.IdentityRequests import IdentityPatchRequest
+from app.schemas.user.IdentityRequests import IdentityPatchRequest, IdentitySearchRequest
 
 log = logging.getLogger(__name__)
 
@@ -85,5 +86,31 @@ async def update_user_profile_picture(
       "code": 200,
       "status": "OK",
       "uid": str(img_uuid)
+    }
+  )
+
+
+@router.get(
+  path="/search"
+)
+def search_users(
+  query: Annotated[IdentitySearchRequest, Query()],
+  jwt: str = Security(authorization_header),
+  db: Session = Depends(create_connection)
+):
+  token = authorize_jwt(jwt)
+  require_role(token, Role.CORE_USER)
+
+  sub = get_sub(token)
+  log.info("Searching users with query %r by %r", query, sub)
+  results = core_user.search_identities(query, sub, db)
+  log.info("Search for users with query %r of user %r returned %d results", query, sub, len(results))
+
+  return JSONResponse(
+    status_code=200,
+    content={
+      "code": 200,
+      "status": "OK",
+      "users": results
     }
   )

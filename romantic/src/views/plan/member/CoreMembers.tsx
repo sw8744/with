@@ -3,7 +3,7 @@ import {type ReactElement} from "react";
 import {PlanRole} from "../../../core/redux/PlanReducer.ts";
 import type {PlanMemberType} from "../../../core/apiResponseInterfaces/plan.ts";
 import ModifyMember from "./ModifyMember.tsx";
-import Img, {ImageType} from "../../elements/Imgs.tsx";
+import Img, {ImageType} from "../../elements/common/Imgs.tsx";
 
 function CoreMembers() {
   const members: PlanMemberType[] = useAppSelector(state => state.planReducer.members);

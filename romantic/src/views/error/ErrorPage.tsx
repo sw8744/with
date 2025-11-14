@@ -1,6 +1,6 @@
 import React from "react";
 import {PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
-import Alert from "../elements/Alert.tsx";
+import Alert from "../elements/common/Alert.tsx";
 
 interface ErrorPageProps {
   errorCode?: number;

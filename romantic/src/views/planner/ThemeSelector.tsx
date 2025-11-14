@@ -1,4 +1,4 @@
-import {Button} from "../elements/Buttons.tsx";
+import {Button} from "../elements/common/Buttons.tsx";
 import {type ReactElement, useEffect, useState} from "react";
 import type {ThemeMapping} from "../../core/model/Theme.ts";
 import {getThemeMapping} from "../../core/theme/theme.ts";
@@ -10,7 +10,7 @@ import {number} from "motion";
 import {useAppDispatch, useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {plannerAction} from "../../core/redux/PlannerReducer.ts";
 import {PageError} from "../error/ErrorPage.tsx";
-import Spinner from "../elements/Spinner.tsx";
+import Spinner from "../elements/loading/Spinner.tsx";
 import {ThemeTagMotionVariants} from "../../core/motionVariants.ts";
 
 function ThemeSelector(

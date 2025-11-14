@@ -1,8 +1,8 @@
-import {DateRangePicker} from "../../../elements/Inputs.tsx";
+import {DateRangePicker} from "../../../elements/common/Inputs.tsx";
 import {useState} from "react";
 import {AnimatePresence, motion} from "framer-motion";
-import {Button} from "../../../elements/Buttons.tsx";
-import Dialog from "../../../elements/Dialog.tsx";
+import {Button} from "../../../elements/common/Buttons.tsx";
+import Dialog from "../../../elements/common/Dialog.tsx";
 import {verifyAll} from "../../../../core/validation.ts";
 import {apiAuth, handleAxiosError} from "../../../../core/axios/withAxios.ts";
 import {useAppSelector} from "../../../../core/hook/ReduxHooks.ts";

@@ -51,10 +51,10 @@ function CorePlanner() {
 
   return (
     <PageTransitionLayer>
-      <div className={"w-screen absolute left-0 top-0 overflow-clip"}>
+      <div className={"w-full absolute left-0 top-0 overflow-clip"}>
         <motion.div
           className={
-            "w-screen rounded-r-full h-[4px] bg-neutral-700"
+            "w-full rounded-r-full h-[4px] bg-neutral-700"
           }
           initial={{width: 0}}
           animate={{
@@ -62,7 +62,7 @@ function CorePlanner() {
           }}
         />
       </div>
-      <div className={"flex flex-col gap-4 p-5 h-[calc(100vh-68.74px)]"}>
+      <div className={"flex flex-col gap-4 p-5 h-[calc(100vh-65px)]"}>
         {/* 여기에 initial false 걸면 아래 skeletion animation 고장남 */}
         <AnimatePresence initial={false} mode={"wait"} custom={isForward}>
           <motion.div

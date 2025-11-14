@@ -65,6 +65,27 @@ function ButtonLink(
   )
 }
 
+function TextButton(
+  {
+    children, onClick, className, disabled
+  }: ButtonPropsType
+) {
+  return (
+    <button
+      className={
+        'block px-2 py-1 ' +
+        'font-medium text-sky-700 hover:text-sky-800 transition-colors duration-200 ' +
+        (className ? ' ' + className : '')
+      }
+      disabled={disabled}
+
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+}
+
 export {
-  Button, ButtonLink
+  Button, ButtonLink, TextButton
 }

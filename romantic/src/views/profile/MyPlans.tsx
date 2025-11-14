@@ -5,7 +5,7 @@ import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {ListMyPlansRequest, Plan} from "../../core/apiResponseInterfaces/plan.ts";
 import {Link} from "react-router-dom";
 import {getDayDelta, isoToDisplayDateString} from "../../core/datetime.ts";
-import {SkeletonElement, SkeletonFrame} from "../elements/Skeleton.tsx";
+import {SkeletonElement, SkeletonFrame} from "../elements/loading/Skeleton.tsx";
 
 function MyPlans() {
   const [pageState, setPageState] = useState<PageState>(PageState.LOADING);

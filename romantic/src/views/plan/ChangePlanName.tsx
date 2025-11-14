@@ -1,9 +1,9 @@
 import {PencilIcon} from "../../assets/svgs/svgs.ts";
 import {useAppDispatch, useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {useState} from "react";
-import Dialog from "../elements/Dialog.tsx";
-import {TextInput} from "../elements/Inputs.tsx";
-import {Button} from "../elements/Buttons.tsx";
+import Dialog from "../elements/common/Dialog.tsx";
+import {TextInput} from "../elements/common/Inputs.tsx";
+import {Button} from "../elements/common/Buttons.tsx";
 import {PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
 import {check, lengthCheck, verifyAll} from "../../core/validation.ts";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";

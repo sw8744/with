@@ -1,6 +1,6 @@
-import Dialog from "../../elements/Dialog.tsx";
+import Dialog from "../../elements/common/Dialog.tsx";
 import {type ChangeEvent, useEffect, useRef, useState} from "react";
-import {Button} from "../../elements/Buttons.tsx";
+import {Button} from "../../elements/common/Buttons.tsx";
 import {PageState} from "../../../core/apiResponseInterfaces/apiInterface.ts";
 import {apiAuth, handleAxiosError} from "../../../core/axios/withAxios.ts";
 import {InlineError} from "../../error/ErrorPage.tsx";

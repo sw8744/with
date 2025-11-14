@@ -4,14 +4,14 @@ import type {Place} from "../../core/model/LocationModels.ts";
 import {isPageError, PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {locationPlaceAPI} from "../../core/apiResponseInterfaces/location.ts";
-import {SkeletonElement, SkeletonFrame} from "../elements/Skeleton.tsx";
+import {SkeletonElement, SkeletonFrame} from "../elements/loading/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
 import PlaceMetaInterpreter from "./PlaceMetadata.tsx";
 import type {interactionLike} from "../../core/apiResponseInterfaces/interaction.ts";
 import {StarFilledIcon, StarIcon} from "../../assets/svgs/svgs.ts";
 import {BackHeader} from "../elements/hierarchy/HierarchyStructure.tsx";
 import AnimatedSuspense from "../elements/hierarchy/AnimatedSuspense.tsx";
-import Img, {ImageType} from "../elements/Imgs.tsx";
+import Img, {ImageType} from "../elements/common/Imgs.tsx";
 
 interface ThemeTagPropsType {
   emogi: string;

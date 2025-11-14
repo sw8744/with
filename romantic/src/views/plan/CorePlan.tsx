@@ -1,9 +1,8 @@
-import {Link, Route, Routes, useParams} from "react-router-dom";
+import {Link, Outlet, useParams} from "react-router-dom";
 import {PencilIcon} from "../../assets/svgs/svgs.ts";
 import type {FriendInformationType} from "../../core/apiResponseInterfaces/relationship.ts";
 import {AnimatePresence, motion} from "framer-motion";
 import {HorizontalListMotionVariants} from "../../core/motionVariants.ts";
-import CoreSchedule from "./schedule/CoreSchedule.tsx";
 import {useEffect, useState} from "react";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import {uuidCheck} from "../../core/validation.ts";
@@ -13,11 +12,10 @@ import {useDispatch} from "react-redux";
 import {planActions} from "../../core/redux/PlanReducer.ts";
 import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {PageError} from "../error/ErrorPage.tsx";
-import {SkeletonElement, SkeletonFrame} from "../elements/Skeleton.tsx";
-import Spinner from "../elements/Spinner.tsx";
-import CoreMembers from "./member/CoreMembers.tsx";
+import {SkeletonElement, SkeletonFrame} from "../elements/loading/Skeleton.tsx";
+import Spinner from "../elements/loading/Spinner.tsx";
 import ChangePlanName from "./ChangePlanName.tsx";
-import Img, {ImageType} from "../elements/Imgs.tsx";
+import Img, {ImageType} from "../elements/common/Imgs.tsx";
 
 function CorePlan() {
   const planUuid = useParams()["planUUID"];
@@ -111,11 +109,7 @@ function CorePlan() {
       </div>
 
       <div className={'flex flex-col gap-3'}>
-        <Routes>
-          <Route path={""} element={<CoreSchedule/>}/>
-          <Route path={"timeline"} element={<CoreSchedule/>}/>
-          <Route path={'members'} element={<CoreMembers/>}/>
-        </Routes>
+        <Outlet/>
       </div>
     </div>
   );

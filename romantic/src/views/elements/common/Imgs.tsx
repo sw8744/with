@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {PageState} from "../../core/apiResponseInterfaces/apiInterface.ts";
+import {PageState} from "../../../core/apiResponseInterfaces/apiInterface.ts";
 
 //@ts-expect-error enum이 뭐 어때서
 enum ImageType {
