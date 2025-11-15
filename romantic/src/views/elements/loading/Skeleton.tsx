@@ -83,6 +83,7 @@ function SkeletonElement(
           width: expW,
           height: expH
         }}
+        //@ts-expect-error 타입 에러 나지만 잘 돌아감. 키프레임 입력한거임
         variants={unitMotionVariants}
       />
     );

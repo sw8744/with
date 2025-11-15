@@ -184,7 +184,7 @@ function DatePicker(
       setCurrentYear(fromDate.getFullYear());
       setCurrentMonth(fromDate.getMonth() + 1);
     } else if (toDate) {
-      setCurrentYear(toDate.getFullYear);
+      setCurrentYear(toDate.getFullYear());
       setCurrentMonth(toDate.getMonth() + 1);
     } else {
       const today = new Date();

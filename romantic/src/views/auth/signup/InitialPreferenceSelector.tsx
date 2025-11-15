@@ -1,32 +1,95 @@
 import {Button} from "../../elements/common/Buttons.tsx";
-import Alert from "../../elements/common/Alert.tsx";
+import {type ReactElement, useEffect, useState} from "react";
+import type {ThemeMapping} from "../../../core/model/Theme.ts";
+import {PageState} from "../../../core/apiResponseInterfaces/apiInterface.ts";
+import {getThemeMapping} from "../../../core/theme/theme.ts";
+import {handleAxiosError} from "../../../core/axios/withAxios.ts";
+import {InlineError} from "../../error/ErrorPage.tsx";
+import {motion} from "framer-motion";
+import {ThemeTagMotionVariants} from "../../../core/motionVariants.ts";
+import {number} from "motion";
+import ThemeTag from "../../elements/theme/ThemeTag.tsx";
 
 function InitialPreferenceSelector(
   {
-    prev, next, blockForm, pageState, preferVector, setPreferVector
+    prev, next, blockForm, preferVector, setPreferVector, signInState
   }: {
     prev: () => void;
     next: () => void;
     blockForm: boolean;
-    pageState: number;
-    preferVector: number[],
-    setPreferVector: (preferVector: number[]) => void
+    preferVector: number[];
+    setPreferVector: (preferVector: number[]) => void;
+    signInState: PageState;
   }
 ) {
+  const [themeMapping, setThemeMapping] = useState<ThemeMapping>({});
+  const [pageState, setPageState] = useState<PageState>(PageState.LOADING);
+
+  function toggleThemeSelection(uid: number) {
+    if (preferVector[uid] === 1) {
+      const newPreferVector = [...preferVector];
+      newPreferVector[uid] = 0;
+      setPreferVector(newPreferVector);
+    } else {
+      const newPreferVector = [...preferVector];
+      newPreferVector[uid] = 1;
+      setPreferVector(newPreferVector);
+    }
+  }
+
+  useEffect(() => {
+    getThemeMapping()
+      .then(mapping => {
+        setThemeMapping(mapping);
+        setPageState(PageState.NORMAL);
+      })
+      .catch(err => handleAxiosError(err, setPageState));
+  }, []);
+
+  const ThemeTags: ReactElement[] = [];
+  Object.entries(themeMapping).forEach(([uid, theme]) => {
+    if (preferVector[parseInt(uid)] === 1) {
+      ThemeTags.push(
+        <motion.button
+          key={uid}
+          layout={"position"}
+          variants={ThemeTagMotionVariants}
+          className={"my-1"}
+          onClick={() => toggleThemeSelection(number.parse(uid))}
+        >
+          <ThemeTag key={uid} theme={theme}/>
+        </motion.button>
+      );
+    } else {
+      ThemeTags.push(
+        <motion.button
+          key={uid}
+          layout={"position"}
+          variants={ThemeTagMotionVariants}
+          className={"my-1"}
+          onClick={() => toggleThemeSelection(number.parse(uid))}
+        >
+          <ThemeTag key={uid} theme={theme} type={"outlined"}/>
+        </motion.button>
+      );
+    }
+  });
+
   return (
-    <div className={"h-full flex flex-col gap-4"}>
+    <>
       <p className={"text-2xl text-center font-bold"}>좋아하는 테마를 골라주세요.</p>
 
-      <div className={"flex-grow"}></div>
+      <div className={"flex-grow flex flex-wrap justify-center gap-2 my-2"}>
+        {ThemeTags}
+      </div>
 
-      <Alert variant={"errorFill"} show={pageState === 2}>세션이 만료되었습니다. 다시 로그인해주세요.</Alert>
-      <Alert variant={"errorFill"} show={pageState === 3}>잘못된 요청입니다.</Alert>
-      <Alert variant={"errorFill"} show={pageState === 4}>회원가입하지 못했습니다.</Alert>
+      <InlineError pageState={pageState}/>
+      <InlineError pageState={signInState}/>
       <div className={"w-full flex justify-between"}>
         <Button onClick={prev} disabled={blockForm}>이전</Button>
         <Button onClick={next} disabled={blockForm}>회원가입</Button>
       </div>
-    </div>
+    </>
   )
 }
 

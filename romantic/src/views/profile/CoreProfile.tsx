@@ -87,7 +87,7 @@ function CoreProfile() {
         <ButtonLink className={"!rounded-lg !py-1 w-full"} theme={"white"} to={"/profile/edit"}>프로필 수정</ButtonLink>
         <ButtonLink className={"!rounded-lg !py-1 w-full"} theme={"white"} to={"/profile/share"}>프로필 공유</ButtonLink>
       </div>
-      <div className={"flex gap-3 justify-between px-5 mx-auto w-full max-w-[360px]"}>
+      <div className={"flex gap-3 justify-around px-5 mx-auto w-full max-w-[360px]"}>
         <ProfileMenuButton to={"/profile"}>
           <StarFilledIcon className={"mx-auto"} height={24}/>
         </ProfileMenuButton>
@@ -121,7 +121,7 @@ function ProfileSkeleton() {
         <ButtonLink className={"!rounded-lg !py-1 w-full"} theme={"white"} to={"/profile/edit"}>프로필 수정</ButtonLink>
         <ButtonLink className={"!rounded-lg !py-1 w-full"} theme={"white"} to={"/profile/share"}>프로필 공유</ButtonLink>
       </div>
-      <div className={"flex gap-3 justify-between px-5 mx-auto w-full max-w-[360px]"}>
+      <div className={"flex gap-3 justify-around px-5 mx-auto w-full max-w-[360px]"}>
         <ProfileMenuButton to={"/profile"}>
           <StarFilledIcon className={"mx-auto"} height={24}/>
         </ProfileMenuButton>

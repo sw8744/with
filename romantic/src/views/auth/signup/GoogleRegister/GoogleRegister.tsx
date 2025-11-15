@@ -83,8 +83,11 @@ function GoogleRegister(
     emailVerified = <CheckmarkFillIcon height={20} className={"mt-[-4px] fill-green-600"} title={"확인된 이메일입니다"}/>;
   }
 
+  const datePickerArray = [];
+  if (birthday !== "") datePickerArray.push(birthday);
+
   return (
-    <div className={"h-full flex flex-col gap-4"}>
+    <>
       <p className={"text-2xl text-center font-bold"}>WITH 시작하기</p>
 
       <Form className={"flex-grow"}>
@@ -127,7 +130,7 @@ function GoogleRegister(
 
         <FormGroup name={"생년월일"}>
           <DatePicker
-            value={[birthday]}
+            value={datePickerArray}
             setter={(e) => setBirthday(e[0])}
             toDate={new Date()}
             disabled={blockForm}
@@ -139,7 +142,7 @@ function GoogleRegister(
       <div className={"w-full flex justify-end"}>
         <Button onClick={nextValidation} disabled={blockForm}>다음</Button>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -53,9 +53,7 @@ function CorePlanner() {
     <PageTransitionLayer>
       <div className={"w-full absolute left-0 top-0 overflow-clip"}>
         <motion.div
-          className={
-            "w-full rounded-r-full h-[4px] bg-neutral-700"
-          }
+          className={"w-full rounded-r-full h-[4px] bg-neutral-700"}
           initial={{width: 0}}
           animate={{
             width: (step * 25.25) + "%",
