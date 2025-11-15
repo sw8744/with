@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Security, Cookie
-from fastapi.params import Depends
+from fastapi.params import Depends, Header
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
@@ -38,10 +38,16 @@ def authorize_access_token(
   path="/refresh"
 )
 def refresh_access_token(
+  x_refresh_token: Annotated[str | None, Header()] = None,
   WAUTHREF: Annotated[str | None, Cookie()] = None,
   db: Session = Depends(create_connection)
 ):
-  at, rt = core_refresh_token.use_refresh_token(WAUTHREF, db)
+  token = WAUTHREF
+
+  if WAUTHREF is None and x_refresh_token is not None:
+    token = x_refresh_token
+
+  at, rt = core_refresh_token.use_refresh_token(token, db)
 
   response = JSONResponse(
     status_code=200,
