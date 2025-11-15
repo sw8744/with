@@ -1,0 +1,12 @@
+{
+  "name": "romance",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {},
+  "workspaces": [
+    "love",
+    "romantic",
+    "memory"
+  ]
+}
