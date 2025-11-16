@@ -2,7 +2,7 @@ import {ChevronLeftIcon} from "../../../assets/svgs/svgs.ts";
 import {useNavigate} from "react-router-dom";
 import {type ReactNode} from "react";
 import {PageTransitionMotion} from "../../../core/motionVariants.ts";
-import {motion} from "motion/react";
+import {motion} from "framer-motion";
 
 function BackHeader(
   {title, className}: { title: string, className?: string }

@@ -6,7 +6,7 @@ import type {locationRegionAPI} from "love/api/LocationAPI.ts";
 import PageState from "love/model/PageState.ts";
 import {isPageError} from "love/api/APITypes.ts";
 import type {recommendationRegion} from "love/api/RecommendationAPI.ts";
-import type {Region} from "love/model/LocationModels.ts";
+import type {Region} from "love/model/Location.ts";
 import {useAppDispatch, useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {AnimatePresence, motion} from "framer-motion";
 import {plannerAction} from "../../core/redux/PlannerReducer.ts";

@@ -7,7 +7,6 @@ import {isPageError} from "love/api/APITypes.ts";
 import {handleAxiosError} from "../../core/axios/withAxios.ts";
 import ThemeTag from "../elements/theme/ThemeTag.tsx";
 import {AnimatePresence, motion} from "framer-motion";
-import {number} from "motion";
 import {useAppDispatch, useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {plannerAction} from "../../core/redux/PlannerReducer.ts";
 import {PageError} from "../error/ErrorPage.tsx";
@@ -29,14 +28,14 @@ function ThemeSelector(
     if (uid in selectedTheme) {
       const newSelection: ThemeMapping = {};
       Object.entries(selectedTheme).forEach(([uid_ele, theme]) => {
-        const ue = number.parse(uid_ele);
+        const ue = parseInt(uid_ele);
         if (ue !== uid) newSelection[ue] = theme;
       });
       dispatch(plannerAction.setTheme(newSelection));
     } else {
       const newSelection: ThemeMapping = {};
       Object.entries(selectedTheme).forEach(([uid, theme]) => {
-        newSelection[number.parse(uid)] = theme;
+        newSelection[parseInt(uid)] = theme;
       });
       newSelection[uid] = themeMapping[uid];
       dispatch(plannerAction.setTheme(newSelection));
@@ -62,7 +61,7 @@ function ThemeSelector(
         key={uid}
         layout={"position"}
         className={"my-1"}
-        onClick={() => toggleThemeSelection(number.parse(uid))}
+        onClick={() => toggleThemeSelection(parseInt(uid))}
       >
         <ThemeTag key={uid} theme={theme}/>
       </motion.button>
@@ -74,7 +73,7 @@ function ThemeSelector(
         key={uid}
         layout={"position"}
         className={"my-1"}
-        onClick={() => toggleThemeSelection(number.parse(uid))}
+        onClick={() => toggleThemeSelection(parseInt(uid))}
       >
         <ThemeTag key={uid} theme={theme}/>
       </motion.button>

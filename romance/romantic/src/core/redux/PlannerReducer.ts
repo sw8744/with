@@ -1,5 +1,5 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import type {Place, Region} from "love/model/LocationModels.ts";
+import type {Place, Region} from "love/model/Location.ts";
 import type {ThemeMapping} from "love/model/Theme.ts";
 import type {FriendInformationType} from "love/api/RelationshipAPI.ts";
 

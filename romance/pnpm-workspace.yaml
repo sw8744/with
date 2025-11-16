@@ -1,0 +1,8 @@
+packages:
+  - love
+  - romantic
+  - memory
+
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - esbuild

@@ -1,5 +1,5 @@
 import {api} from "./withAxios.ts";
-import type {userAPI} from "love/api/UserAPI.ts";
+import type {UserAPI} from "love/api/UserAPI.ts";
 import axios from "axios";
 import type {authAuthorizeAPI, authRefreshAPI} from "love/api/AuthenticationAPI.ts";
 import store from "../redux/RootReducer.ts";
@@ -32,7 +32,7 @@ async function resetAccessToken(
   if (!authResp.data.auth) throw 2;
 
   try {
-    const resp = await api.get<userAPI>(
+    const resp = await api.get<UserAPI>(
       "/user",
       {headers: {"Authorization": `Bearer ${accessToken}`}}
     );

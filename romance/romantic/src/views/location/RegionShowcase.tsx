@@ -4,7 +4,7 @@ import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {locationPlaceAPI, locationRegionAPI} from "love/api/LocationAPI.ts";
 import PageState from "love/model/PageState.ts";
 import {isPageError} from "love/api/APITypes.ts";
-import type {Place, Region} from "love/model/LocationModels.ts";
+import type {Place, Region} from "love/model/Location.ts";
 import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/loading/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
 import {PlaceArea, PlaceAreaSkeleton} from "../elements/location/PlaceArea.tsx";

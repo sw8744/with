@@ -5,7 +5,6 @@ import {isPageError} from "love/api/APITypes.ts";
 import {getThemeMapping} from "../../../core/theme/theme.ts";
 import {handleAxiosError} from "../../../core/axios/withAxios.ts";
 import {AnimatePresence, motion} from "framer-motion";
-import {number} from "motion";
 import ThemeTag from "../../elements/theme/ThemeTag.tsx";
 import {PageError} from "../../error/ErrorPage.tsx";
 import {SkeletonElement, SkeletonFrame} from "../../elements/loading/Skeleton.tsx";
@@ -20,14 +19,14 @@ function ThemeSearch() {
     if (uid in selectedTheme) {
       const newSelection: ThemeMapping = {};
       Object.entries(selectedTheme).forEach(([uid_ele, theme]) => {
-        const ue = number.parse(uid_ele);
+        const ue = parseInt(uid_ele);
         if (ue !== uid) newSelection[ue] = theme;
       });
       setSelectedTheme(newSelection);
     } else {
       const newSelection: ThemeMapping = {};
       Object.entries(selectedTheme).forEach(([uid, theme]) => {
-        newSelection[number.parse(uid)] = theme;
+        newSelection[parseInt(uid)] = theme;
       });
       newSelection[uid] = themeMapping[uid];
       setSelectedTheme(newSelection);
@@ -53,7 +52,7 @@ function ThemeSearch() {
         key={uid}
         layout={"position"}
         className={"my-1"}
-        onClick={() => toggleThemeSelection(number.parse(uid))}
+        onClick={() => toggleThemeSelection(parseInt(uid))}
       >
         <ThemeTag key={uid} theme={theme}/>
       </motion.button>
@@ -65,7 +64,7 @@ function ThemeSearch() {
         key={uid}
         layout={"position"}
         className={"my-1"}
-        onClick={() => toggleThemeSelection(number.parse(uid))}
+        onClick={() => toggleThemeSelection(parseInt(uid))}
       >
         <ThemeTag key={uid} theme={theme}/>
       </motion.button>

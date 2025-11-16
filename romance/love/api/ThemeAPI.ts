@@ -1,5 +1,5 @@
 import type APITypes from "./APITypes.ts";
-import type {ThemeMapping} from "model/Theme.ts";
+import type {ThemeMapping} from "../model/Theme";
 
 type recommendationThemeAPI = APITypes & {
   themes: ThemeMapping;

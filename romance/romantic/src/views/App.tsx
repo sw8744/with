@@ -1,6 +1,6 @@
 import "../style/univ.css"
 import Footer from "./outline/Footer.tsx";
-import {BrowserRouter, Route, Routes, useLocation, useNavigate} from "react-router-dom";
+import {BrowserRouter, type NavigateFunction, Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import CoreLogin from "./auth/authentication/login/CoreLogin.tsx";
 import SetJwt from "./auth/authentication/login/SetJwt.tsx";
 import CoreProfile from "./profile/CoreProfile.tsx";
@@ -20,7 +20,7 @@ import CoreFind from "./find/CoreFind.tsx";
 import ShareProfile from "./profile/ShareProfile.tsx";
 import {useEffect} from "react";
 
-let navigator;
+let navigator: NavigateFunction;
 
 function App() {
   return (

@@ -6,7 +6,7 @@ import {Button, TextButton} from "../../elements/common/Buttons.tsx";
 import {useEffect, useState} from "react";
 import {check, lengthCheck, rangeCheck, regexCheck, verifyAll} from "../../../core/validation.ts";
 import {apiAuth, handleAxiosError} from "../../../core/axios/withAxios.ts";
-import type {userAPI} from "love/api/UserAPI.ts";
+import type {UserAPI} from "love/api/UserAPI.ts";
 import {isPageError} from "love/api/APITypes.ts";
 import {PageError} from "../../error/ErrorPage.tsx";
 import {SkeletonElement, SkeletonFrame} from "../../elements/loading/Skeleton.tsx";
@@ -70,7 +70,7 @@ function CoreEditProfile() {
   }
 
   useEffect(() => {
-    apiAuth.get<userAPI>(
+    apiAuth.get<UserAPI>(
       "/user"
     ).then(res => {
       setName(res.data.user.name);

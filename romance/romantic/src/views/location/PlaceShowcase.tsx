@@ -1,6 +1,6 @@
 import {useParams} from "react-router-dom";
 import {type ReactElement, type ReactNode, useEffect, useState} from "react";
-import type {Place} from "love/model/LocationModels.ts";
+import type {Place} from "love/model/Location.ts";
 import PageState from "love/model/PageState.ts";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {locationPlaceAPI} from "love/api/LocationAPI.ts";

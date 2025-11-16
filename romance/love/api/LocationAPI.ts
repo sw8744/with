@@ -1,5 +1,5 @@
 import type APITypes from "./APITypes.ts";
-import {Place, Region} from "../model/LocationModels";
+import type {Place, Region} from "../model/Location";
 
 type locationRegionAPI = APITypes & {
   content: Region[]

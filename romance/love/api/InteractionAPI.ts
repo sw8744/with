@@ -1,5 +1,5 @@
 import type APITypes from "./APITypes.ts";
-import {Place} from "../model/LocationModels";
+import type {Place} from "../model/Location";
 
 type interactionLike = APITypes & {
   liked: boolean;

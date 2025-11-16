@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import type {Place} from "../love/model/LocationModels.ts";
+import type {Place} from "love/model/Location.ts";
 import {SkeletonElement, SkeletonUnit} from "../loading/Skeleton.tsx";
 import Img, {ImageType} from "../common/Imgs.tsx";
 

@@ -5,7 +5,6 @@ import {getThemeMapping} from "../../../core/theme/theme.ts";
 import {handleAxiosError} from "../../../core/axios/withAxios.ts";
 import {InlineError} from "../../error/ErrorPage.tsx";
 import {motion} from "framer-motion";
-import {number} from "motion";
 import ThemeTag from "../../elements/theme/ThemeTag.tsx";
 import PageState from "love/model/PageState.ts";
 
@@ -53,7 +52,7 @@ function InitialPreferenceSelector(
           key={uid}
           layout={"position"}
           className={"my-1"}
-          onClick={() => toggleThemeSelection(number.parse(uid))}
+          onClick={() => toggleThemeSelection(parseInt(uid))}
         >
           <ThemeTag key={uid} theme={theme}/>
         </motion.button>
@@ -64,7 +63,7 @@ function InitialPreferenceSelector(
           key={uid}
           layout={"position"}
           className={"my-1"}
-          onClick={() => toggleThemeSelection(number.parse(uid))}
+          onClick={() => toggleThemeSelection(parseInt(uid))}
         >
           <ThemeTag key={uid} theme={theme} type={"outlined"}/>
         </motion.button>

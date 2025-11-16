@@ -4,7 +4,7 @@ import PageState from "love/model/PageState.ts";
 import {isPageError} from "love/api/APITypes.ts";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {recommendationPlace} from "love/api/RecommendationAPI.ts";
-import type {Place} from "love/model/LocationModels.ts";
+import type {Place} from "love/model/Location.ts";
 import type {locationPlaceAPI} from "love/api/LocationAPI.ts";
 import {useAppDispatch, useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {PlaceAreaShow, PlaceAreaSkeleton} from "../elements/location/PlaceArea.tsx";
@@ -12,8 +12,7 @@ import {PageError} from "../error/ErrorPage.tsx";
 import {SkeletonFrame} from "../elements/loading/Skeleton.tsx";
 import {plannerAction} from "../../core/redux/PlannerReducer.ts";
 import {TextInput} from "../elements/common/Inputs.tsx";
-import {motion} from "motion/react";
-import {AnimatePresence} from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
 import {BlockListMotion} from "../../core/motionVariants.ts";
 
 function PlaceSelector(

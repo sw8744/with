@@ -110,7 +110,6 @@ apiAuth.interceptors.response.use(
         } catch (err) {
           processQueue(err, "");
 
-          // @ts-expect-error 타입 문제 없음
           navigator("/login");
           return Promise.reject(err);
         } finally {

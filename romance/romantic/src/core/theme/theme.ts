@@ -1,6 +1,6 @@
 import type {ThemeMapping} from "love/model/Theme.ts";
 import {apiAuth} from "../axios/withAxios.ts";
-import type {recommendationThemeAPI} from "love/api/theme.ts";
+import type {recommendationThemeAPI} from "love/api/ThemeAPI.ts";
 
 let themeListLoaded = false;
 let theme: ThemeMapping = {};

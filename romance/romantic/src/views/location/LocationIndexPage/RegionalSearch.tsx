@@ -3,7 +3,7 @@ import {apiAuth, handleAxiosError} from "../../../core/axios/withAxios.ts";
 import type {recommendationRegion} from "love/api/RecommendationAPI.ts";
 import PageState from "love/model/PageState.ts";
 import {isPageError} from "love/api/APITypes.ts";
-import type {Region} from "love/model/LocationModels.ts";
+import type {Region} from "love/model/Location.ts";
 import {PageError} from "../../error/ErrorPage.tsx";
 import {useAppSelector} from "../../../core/hook/ReduxHooks.ts";
 import type {locationRegionAPI} from "love/api/LocationAPI.ts";

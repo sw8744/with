@@ -1,6 +1,6 @@
 import {type ReactNode, useEffect, useState} from "react";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
-import type {userAPI} from "love/api/UserAPI.ts";
+import type {UserAPI} from "love/api/UserAPI.ts";
 import {ButtonLink} from "../elements/common/Buttons.tsx";
 import {MapPinAndEllipseIcon, PersonIcon, StarFilledIcon} from "../../assets/svgs/svgs.ts";
 import type {Identity} from "love/model/User.ts";
@@ -45,7 +45,7 @@ function CoreProfile() {
 
   useEffect(() => {
     Promise.all([
-      apiAuth.get<userAPI>("/user"),
+      apiAuth.get<UserAPI>("/user"),
       apiAuth.get<userFollowingCount>("/user/following/count"),
       apiAuth.get<userFollowerCount>("/user/follower/count")
     ]).then(([respUser, respFollowings, respFollowers]) => {

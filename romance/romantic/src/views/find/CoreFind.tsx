@@ -2,7 +2,7 @@ import {type ReactElement, useEffect, useState} from "react";
 import PageState from "love/model/PageState.ts";
 import {TextInput} from "../elements/common/Inputs.tsx";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
-import type {SearchedUser, SearchUsersAPI} from "love/api/UserAPI.ts";
+import type {SearchUsersAPI} from "love/api/UserAPI.ts";
 import {lengthCheck, verifyAll} from "../../core/validation.ts";
 import Img, {ImageType} from "../elements/common/Imgs.tsx";
 import {SkeletonElement, SkeletonFrame} from "../elements/loading/Skeleton.tsx";
@@ -13,6 +13,7 @@ import {TextButton} from "../elements/common/Buttons.tsx";
 import {XMarkIcon} from "../../assets/svgs/svgs.ts";
 import {PageTransitionLayer} from "../elements/hierarchy/HierarchyStructure.tsx";
 import {isPageError} from "love/api/APITypes.ts";
+import type {SearchedUser} from "love/model/User.ts";
 
 function CoreFind() {
   const [workState, setWorkState] = useState<PageState>(PageState.NORMAL);
