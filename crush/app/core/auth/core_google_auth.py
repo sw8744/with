@@ -13,7 +13,7 @@ from app.core.auth.core_oauth import get_session_state
 from app.core.config_store import config
 from app.core.database.database import redis_db0
 from app.core.hash import sha256
-from app.models.auth.GoogleAuth import GoogleAuthModel
+from app.models.auth.GoogleAuthModel import GoogleAuthModel
 from app.models.users.IdentityModel import IdentityModel
 from app.schemas.user.Identity import Identity
 

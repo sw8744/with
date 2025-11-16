@@ -71,3 +71,11 @@ redis_refresh_token_blacklist_db1 = redis.Redis(
   db=1,
   decode_responses=True
 )
+
+redis_aaguid_db2 = redis.Redis(
+  host=config["database"]["redis"]["host"],
+  port=config["database"]["redis"]["port"],
+  password=config["database"]["redis"]["password"],
+  db=2,
+  decode_responses=True
+)

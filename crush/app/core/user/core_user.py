@@ -16,7 +16,7 @@ from app.core.hash import sha256
 from app.core.recommendation import core_prefer_vector
 from app.core.resources import core_image
 from app.core.user.core_jwt import get_sub
-from app.models.auth.GoogleAuth import GoogleAuthModel
+from app.models.auth.GoogleAuthModel import GoogleAuthModel
 from app.models.preferences.UserPrefer import UserPrefer
 from app.models.users.IdentityModel import IdentityModel
 from app.models.users.RelationshipModel import RelationshipModel

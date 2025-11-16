@@ -13,4 +13,4 @@ logs
 .env
 .env.*
 crush/images
-
+crush/resources/combined_aaguid.json

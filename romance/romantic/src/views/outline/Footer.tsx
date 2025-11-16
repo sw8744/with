@@ -1,6 +1,6 @@
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {LocationIcon, MagnifyingGlassIcon, PersonIcon, RouteIcon} from "../../assets/svgs/svgs.ts";
-import type {ReactElement} from "react";
+import {type ReactElement, useEffect, useState} from "react";
 
 interface FooterMenuPropsType {
   to: string,
@@ -21,6 +21,24 @@ function FooterMenu(
 }
 
 function Footer() {
+  const location = useLocation();
+  const [showingFooter, setShowingFooter] = useState(false);
+
+  useEffect(() => {
+    if (
+      location.pathname.startsWith("/login") ||
+      location.pathname.startsWith("/login/set-token")
+    ) {
+      setShowingFooter(false);
+    } else {
+      setShowingFooter(true);
+    }
+  }, [location]);
+
+  if (!showingFooter) {
+    return null;
+  }
+
   return (
     <footer
       className={

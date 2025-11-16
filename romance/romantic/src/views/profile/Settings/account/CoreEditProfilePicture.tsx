@@ -1,8 +1,8 @@
-import Dialog from "../../elements/common/Dialog.tsx";
+import Dialog from "../../../elements/common/Dialog.tsx";
 import {type ChangeEvent, useEffect, useRef, useState} from "react";
-import {Button} from "../../elements/common/Buttons.tsx";
-import {apiAuth, handleAxiosError} from "../../../core/axios/withAxios.ts";
-import {InlineError} from "../../error/ErrorPage.tsx";
+import {Button} from "../../../elements/common/Buttons.tsx";
+import {apiAuth, handleAxiosError} from "../../../../core/axios/withAxios.ts";
+import {InlineError} from "../../../error/ErrorPage.tsx";
 import PageState from "love/model/PageState.ts";
 
 function CoreEditProfilePicture(

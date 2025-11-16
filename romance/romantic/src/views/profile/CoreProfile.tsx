@@ -66,7 +66,7 @@ function CoreProfile() {
     <AnimatedSuspense
       pageState={pageState}
       loadingSkeleton={<ProfileSkeleton/>}
-      className={"flex flex-col gap-2.5 p-5"}
+      className={"flex flex-col gap-2.5 px-5 p-5"}
     >
       <div className={"flex justify-between mx-5 items-center"}>
         <div className={"flex items-center gap-4"}>
@@ -85,7 +85,7 @@ function CoreProfile() {
         </div>
       </div>
       <div className={"flex gap-3"}>
-        <ButtonLink className={"!rounded-lg !py-1 w-full"} theme={"white"} to={"/profile/edit"}>프로필 수정</ButtonLink>
+        <ButtonLink className={"!rounded-lg !py-1 w-full"} theme={"white"} to={"/settings"}>프로필 수정</ButtonLink>
         <ButtonLink className={"!rounded-lg !py-1 w-full"} theme={"white"} to={"/profile/share"}>프로필 공유</ButtonLink>
       </div>
       <div className={"flex gap-3 justify-around px-5 mx-auto w-full max-w-[360px]"}>

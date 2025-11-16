@@ -28,6 +28,10 @@ import ChevronRightIcon from "./chevron.right.svg?react";
 import PencilIcon from "./pencil.svg?react";
 import CalendarIcon from "./calendar.svg?react";
 import MagnifyingGlassIcon from "./magnifyingglass.svg?react";
+import PasskeyFilledIcon from "./person.badge.key.fill.svg?react";
+import LockFilledIcon from "./lock.fill.svg?react";
+import DoorOpenIcon from "./door.right.hand.open.svg?react";
+import TrashIcon from "./trash.fill.svg?react";
 
 export {
   RouteIcon,
@@ -56,5 +60,9 @@ export {
   PencilIcon,
   CalendarIcon,
   MagnifyingGlassIcon,
+  PasskeyFilledIcon,
+  LockFilledIcon,
+  DoorOpenIcon,
+  TrashIcon,
   InstagramIcon
 };

@@ -1,20 +1,20 @@
-import {CheckmarkFillIcon, XCircleFillIcon} from "../../../assets/svgs/svgs.ts";
-import {useAppSelector} from "../../../core/hook/ReduxHooks.ts";
-import {DatePicker, Select, TextInput} from "../../elements/common/Inputs.tsx";
-import {Form, FormGroup} from "../../elements/common/Form.tsx";
-import {Button, TextButton} from "../../elements/common/Buttons.tsx";
+import {CheckmarkFillIcon, XCircleFillIcon} from "../../../../assets/svgs/svgs.ts";
+import {useAppSelector} from "../../../../core/hook/ReduxHooks.ts";
+import {DatePicker, Select, TextInput} from "../../../elements/common/Inputs.tsx";
+import {Form, FormGroup} from "../../../elements/common/Form.tsx";
+import {Button, TextButton} from "../../../elements/common/Buttons.tsx";
 import {useEffect, useState} from "react";
-import {check, lengthCheck, rangeCheck, regexCheck, verifyAll} from "../../../core/validation.ts";
-import {apiAuth, handleAxiosError} from "../../../core/axios/withAxios.ts";
+import {check, lengthCheck, rangeCheck, regexCheck, verifyAll} from "../../../../core/validation.ts";
+import {apiAuth, handleAxiosError} from "../../../../core/axios/withAxios.ts";
 import type {UserAPI} from "love/api/UserAPI.ts";
 import {isPageError} from "love/api/APITypes.ts";
-import {PageError} from "../../error/ErrorPage.tsx";
-import {SkeletonElement, SkeletonFrame} from "../../elements/loading/Skeleton.tsx";
-import Spinner from "../../elements/loading/Spinner.tsx";
+import {PageError} from "../../../error/ErrorPage.tsx";
+import {SkeletonElement, SkeletonFrame} from "../../../elements/loading/Skeleton.tsx";
+import Spinner from "../../../elements/loading/Spinner.tsx";
 import CoreEditProfilePicture from "./CoreEditProfilePicture.tsx";
-import {BackHeader} from "../../elements/hierarchy/HierarchyStructure.tsx";
-import AnimatedSuspense from "../../elements/hierarchy/AnimatedSuspense.tsx";
-import Img, {ImageType} from "../../elements/common/Imgs.tsx";
+import {BackHeader} from "../../../elements/hierarchy/HierarchyStructure.tsx";
+import AnimatedSuspense from "../../../elements/hierarchy/AnimatedSuspense.tsx";
+import Img, {ImageType} from "../../../elements/common/Imgs.tsx";
 import PageState from "love/model/PageState.ts";
 
 function CoreEditProfile() {
@@ -98,7 +98,7 @@ function CoreEditProfile() {
       pageState={pageState}
       loadingSkeleton={<EditProfileSkeleton/>}
     >
-      <BackHeader title={"프로필 수정"}/>
+      <BackHeader title={"프로필"}/>
 
       <div className={'mx-5'}>
         <div className={'my-3'}>

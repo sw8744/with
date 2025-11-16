@@ -6,6 +6,7 @@ enum ImageType {
   PROFILE_PICTURE,
   REGION_THUMBNAIL,
   PLACE_THUMBNAIL,
+  AUTHENTICATION_ICON,
   ETC
 }
 
@@ -36,6 +37,7 @@ function Img(
   if (src && loadingState !== PageState.UNKNOWN_FAULT) {
     if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(src)) {
       if (type === ImageType.PROFILE_PICTURE) url = `/api/v1/resources/image/profile/${src}`;
+      else if (type === ImageType.AUTHENTICATION_ICON) url = `/api/v1/resources/image/authenticator/${src}`;
       else url = `/api/v1/resources/image/store/${src}`;
     } else {
       url = src;
@@ -52,6 +54,7 @@ function Img(
         url = "/api/v1/resources/image/store/00000000-0000-4000-0000-000000000002";
         break;
       case ImageType.ETC:
+      case ImageType.AUTHENTICATION_ICON:
       default:
         url = "/api/v1/resources/image/store/00000000-0000-4000-0000-000000000003";
         break;

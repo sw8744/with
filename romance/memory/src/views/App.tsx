@@ -10,7 +10,7 @@ function App() {
   return (
     <BrowserRouter>
       <Header/>
-      <main className={"w-full min-h-screen grid grid-cols-[200px_1fr]"}>
+      <main className={"w-full h-[calc(100vh-53px)] grid grid-cols-[200px_1fr]"}>
         <div className={"flex flex-col gap-1.5 border-r border-neutral-600 p-4"}>
           <Hierarchy text={"홈"} to={"/"}/>
           <Hierarchy text={"인증센터"}>

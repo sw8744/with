@@ -124,7 +124,8 @@ def list_followers(
   followers_query = (
     db.query(RelationshipModel)
     .filter(
-      RelationshipModel.friend_id == identity.uid
+      RelationshipModel.friend_id == identity.uid,
+      RelationshipModel.state != RelationshipState.BLOCKED
     )
   )
 
@@ -169,7 +170,10 @@ def count_follower(
 
   cnt = (
     db.query(RelationshipModel)
-    .filter(RelationshipModel.friend_id == identity.uid)
+    .filter(
+      RelationshipModel.friend_id == identity.uid,
+      RelationshipModel.state != RelationshipState.BLOCKED
+    )
     .count()
   )
   log.info("Found %d followings of %s", cnt, identity.uid)

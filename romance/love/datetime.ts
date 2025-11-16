@@ -31,6 +31,37 @@ function getDayDelta(from: Date, to: Date): string {
   else return `D+${-delta}`;
 }
 
+function getTimeDelta(from: Date, to: Date): string {
+  const deltaSeconds = Math.floor((to.getTime() - from.getTime()) / 1000);
+  if (deltaSeconds < 60) {
+    return `${deltaSeconds}초 전`;
+  }
+  const deltaMinutes = Math.floor(deltaSeconds / 60);
+  if (deltaMinutes < 60) {
+    return `${deltaMinutes}분 전`;
+  }
+  const deltaHours = Math.floor(deltaMinutes / 60);
+  if (deltaHours < 24) {
+    return `${deltaHours}시간 전`;
+  }
+  const deltaDays = Math.floor(deltaHours / 24);
+  if (deltaDays < 30) {
+    return `${deltaDays}일 전`;
+  }
+  const deltaMonths = Math.floor(deltaDays / 30);
+  if (deltaMonths < 12) {
+    return `${deltaMonths}개월 전`;
+  }
+  const deltaYears = Math.floor(deltaMonths / 12);
+  return `${deltaYears}년 전`;
+}
+
 export {
-  toAPIDatetimeString, toAPIDateString, dateString, getLocalizedDayString, isoToDisplayDateString, getDayDelta
+  toAPIDatetimeString,
+  toAPIDateString,
+  dateString,
+  getLocalizedDayString,
+  isoToDisplayDateString,
+  getDayDelta,
+  getTimeDelta
 }

@@ -12,13 +12,17 @@ import LikedPlaces from "./profile/LikedPlaces.tsx";
 import MyPlans from "./profile/MyPlans.tsx";
 import CoreGoogleRegister from "./auth/signup/GoogleRegister/CoreGoogleRegister.tsx";
 import CorePlan from "./plan/CorePlan.tsx";
-import CoreEditProfile from "./profile/EditProfile/CoreEditProfile.tsx";
+import CoreEditProfile from "./profile/Settings/account/CoreEditProfile.tsx";
 import {AnimatePresence} from "framer-motion";
 import CoreMembers from "./plan/member/CoreMembers.tsx";
 import CoreSchedule from "./plan/schedule/CoreSchedule.tsx";
 import CoreFind from "./find/CoreFind.tsx";
 import ShareProfile from "./profile/ShareProfile.tsx";
 import {useEffect} from "react";
+import Logout from "./auth/authentication/login/Logout.tsx";
+import LoginOptions from "./auth/authentication/login/LoginOptions.tsx";
+import CoreSettings from "./profile/Settings/CoreSettings.tsx";
+import CoreAuthenticationSettings from "./profile/Settings/authentication/CoreAuthenticationSettings.tsx";
 
 let navigator: NavigateFunction;
 
@@ -50,7 +54,10 @@ function AnimatedRouter() {
           <Route path={"place/:placeUID"} element={<PlaceShowcase/>}/>
         </Route>
 
-        <Route path={"/profile/edit"} element={<CoreEditProfile/>}/>
+        <Route path={"/settings"} element={<CoreSettings/>}/>
+        <Route path={"/settings/account"} element={<CoreEditProfile/>}/>
+        <Route path={"/settings/auth"} element={<CoreAuthenticationSettings/>}/>
+
         <Route path={"/profile/share"} element={<ShareProfile/>}/>
 
         <Route
@@ -80,10 +87,16 @@ function AnimatedRouter() {
         <Route
           path={"/login"}
           element={<CoreLogin/>}
-        />
+        >
+          <Route path={""} element={<LoginOptions/>}/>
+        </Route>
         <Route
           path={"/login/set-token"}
           element={<SetJwt/>}
+        />
+        <Route
+          path={"/logout"}
+          element={<Logout/>}
         />
 
         <Route

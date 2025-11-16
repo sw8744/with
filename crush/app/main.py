@@ -4,9 +4,10 @@ from datetime import datetime
 
 from fastapi import FastAPI
 
+from app.core.auth.passkey.paykey_aaguid import load_aaguid
 from app.core.config_store import mode
 from app.routers.ErrorHandlingRouter import add_error_handler
-from app.routers.auth import GoogleOAuthRouter, GeneralAuthRouter
+from app.routers.auth import GoogleOAuthRouter, GeneralAuthRouter, PasskeyAuthRouter, PasskeyRouter
 from app.routers.interaction import LikeRouter
 from app.routers.location import PlaceRouter, RegionRouter
 from app.routers.plan import PlanRouter, PlanDatePollingRouter, PlanMembersRouter, PlanActivitiesRouter
@@ -24,6 +25,8 @@ app = FastAPI()
 app.include_router(RegionRouter.router)
 app.include_router(PlaceRouter.router)
 app.include_router(GoogleOAuthRouter.router)
+app.include_router(PasskeyAuthRouter.router)
+app.include_router(PasskeyRouter.router)
 app.include_router(IdentityRegisterRouter.router)
 app.include_router(GeneralAuthRouter.router)
 app.include_router(IdentityRouter.router)
@@ -38,5 +41,7 @@ app.include_router(PlanMembersRouter.router)
 app.include_router(PlanActivitiesRouter.router)
 app.include_router(ImageResourcesRouter.router)
 add_error_handler(app)
+
+load_aaguid()
 
 log.info("Application started on %s", datetime.now().isoformat())

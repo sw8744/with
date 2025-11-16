@@ -10,11 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "love": "workspace:*",
     "@reduxjs/toolkit": "^2.9.0",
     "@tailwindcss/vite": "^4.1.12",
     "axios": "^1.11.0",
     "framer-motion": "^12.23.24",
+    "love": "workspace:*",
     "qrcode.react": "^4.2.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

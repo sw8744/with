@@ -57,3 +57,24 @@ def use_refresh_token(
   log.info("Access token %s and refresh token %s was issued for user %s", sha256(access_token),
            sha256(new_refresh_token), sub)
   return access_token, new_refresh_token
+
+
+def revoke_refresh_token(
+  refresh_token: str
+):
+  try:
+    token = core_jwt.decode_refresh_token(refresh_token)
+  except InvalidTokenError as e:
+    logger.warning(f"Revoke failed: Refresh token is invalid or unauthorized {e}")
+    raise HTTPException(status_code=401, detail="Refresh token is invalid or unauthorized")
+
+  if redis_refresh_token_blacklist_db1.exists(token.get("rti")):
+    log.warning("Revoke failed: token was already blacklisted. token_hash=%s", sha256(refresh_token))
+    raise HTTPException(status_code=401, detail="Refresh token cannot be used")
+  else:
+    log.info("Blacklisted token %s", sha256(refresh_token))
+    redis_refresh_token_blacklist_db1.set(
+      name=token.get("rti"),
+      value=1,
+      ex=2419200
+    )

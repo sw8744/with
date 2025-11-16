@@ -1,12 +1,15 @@
+import base64
 import logging
 import re
-from typing import Tuple
+from typing import Tuple, Optional
 from uuid import UUID
 
 from fastapi import UploadFile
 from sqlalchemy.orm import Session
 from starlette.exceptions import HTTPException
 
+from app.core.auth.passkey import core_passkey, core_passkey_auth
+from app.core.auth.passkey.paykey_aaguid import Authenticator
 from app.models.resources.ImageStoreModel import ImageStoreModel
 from app.models.users.IdentityModel import IdentityModel
 
@@ -89,3 +92,20 @@ def upload_binary(
     image_file.write(binary)
 
   return image_uuid
+
+
+def authenticator_image(
+  aaguid: UUID
+) -> Tuple[str, str]:
+  authenticator = core_passkey_auth.get_authenticator(aaguid)
+
+  if authenticator is None:
+    log.warning("Authenticator with aaguid of %r was not found", aaguid)
+    raise HTTPException(status_code=404, detail="Authenticator not found")
+
+  mime, svg_b64 = authenticator.icon_light.split(",", 1)
+  mime = mime.replace("data:", "").replace(";base64", "")
+
+  svg = base64.b64decode(svg_b64).decode("utf-8")
+
+  return svg, mime

@@ -200,6 +200,9 @@ def test_count_followers(
     _ = relation_factory(f, user, RelationshipState.FOLLOWING)
     friends.append(f)
 
+  f, f_at = access_token_factory("blocked_friend")
+  _ = relation_factory(f, user, RelationshipState.BLOCKED)
+
   resp = client.get(
     "/api/v1/user/follower/count",
     headers={

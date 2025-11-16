@@ -149,7 +149,8 @@ def list_followings(
   followings_query = (
     db.query(RelationshipModel)
     .filter(
-      RelationshipModel.user_id == identity.uid
+      RelationshipModel.user_id == identity.uid,
+      RelationshipModel.state != RelationshipState.BLOCKED
     )
   )
 
@@ -194,7 +195,10 @@ def count_following(
 
   cnt = (
     db.query(RelationshipModel)
-    .filter(RelationshipModel.user_id == identity.uid)
+    .filter(
+      RelationshipModel.user_id == identity.uid,
+      RelationshipModel.state != RelationshipState.BLOCKED
+    )
     .count()
   )
 
