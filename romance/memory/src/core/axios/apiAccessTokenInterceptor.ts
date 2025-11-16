@@ -4,6 +4,7 @@ import axios from "axios";
 import type {authAuthorizeAPI, authRefreshAPI} from "love/api/AuthenticationAPI.ts";
 import {userInfoAction, type UserSignInType} from "../redux/UserInfoReducer.ts";
 import store from "../redux/RootReducer.ts";
+import issueNotification from "../notification/NotificationCenter.ts";
 
 /**
  * reset access token and user redux
@@ -60,6 +61,12 @@ async function refreshAccessToken(): Promise<string> {
 
   const credential = await resetAccessToken(resp.data.accessToken);
   store.dispatch(userInfoAction.signIn(credential));
+
+  issueNotification(
+    "인증 정보 업데이트",
+    "액세스 토큰이 갱신되었습니다.",
+    "info"
+  );
 
   return credential.accessToken;
 }

@@ -4,7 +4,7 @@ function Panel(
   {children}: { children: ReactNode }
 ) {
   return (
-    <div className={"px-4"}>
+    <div className={"px-4 mb-5"}>
       {children}
     </div>
   )

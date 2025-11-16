@@ -3,7 +3,7 @@ import PageState from "love/model/PageState.ts";
 import {TextInput} from "../elements/common/Inputs.tsx";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {SearchUsersAPI} from "love/api/UserAPI.ts";
-import {lengthCheck, verifyAll} from "../../core/validation.ts";
+import {lengthCheck, verifyAll} from "love/validation.ts";
 import Img, {ImageType} from "../elements/common/Imgs.tsx";
 import {SkeletonElement, SkeletonFrame} from "../elements/loading/Skeleton.tsx";
 import useDebounce from "../../core/debouncedQuery.tsx";

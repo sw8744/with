@@ -4,7 +4,7 @@ import {Form, FormGroup} from "../../../elements/common/Form.tsx";
 import {Button} from "../../../elements/common/Buttons.tsx";
 import {useNavigate} from "react-router-dom"
 import {CheckmarkFillIcon, XCircleFillIcon} from "../../../../assets/svgs/svgs.ts";
-import {check, lengthCheck, rangeCheck, regexCheck, verifyAll} from "../../../../core/validation.ts";
+import {check, lengthCheck, rangeCheck, regexCheck, verifyAll} from "love/validation.ts";
 import type {authOAuthGoogleRegisterInfoAPI} from "love/api/RegisterAPI.ts";
 import {api} from "../../../../core/axios/withAxios.ts";
 

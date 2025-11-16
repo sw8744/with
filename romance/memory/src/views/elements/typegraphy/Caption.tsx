@@ -8,7 +8,7 @@ function Caption(
   {children}: CaptionPropsType
 ) {
   return (
-    <div className={"text-neutral-400"}>
+    <div className={"text-neutral-300"}>
       {children}
     </div>
   )

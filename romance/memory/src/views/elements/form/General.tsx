@@ -8,7 +8,7 @@ function FormGroup(
   {children}: ChildrenOnlyPropsType
 ) {
   return (
-    <div className={"mb-4 flex flex-col gap-2"}>
+    <div className={"mb-4 mt-2 flex flex-col gap-1.5"}>
       {children}
     </div>
   )

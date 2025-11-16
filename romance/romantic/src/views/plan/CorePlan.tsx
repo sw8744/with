@@ -5,7 +5,7 @@ import {AnimatePresence, motion} from "framer-motion";
 import {HorizontalListMotionVariants} from "../../core/motionVariants.ts";
 import {useEffect, useState} from "react";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
-import {uuidCheck} from "../../core/validation.ts";
+import {uuidCheck} from "../../../../love/validation.ts";
 import PageState from "love/model/PageState.ts";
 import {isPageError} from "love/api/APITypes.ts";
 import type {GetGeneralPlanRequest} from "love/api/PlanAPI.ts";

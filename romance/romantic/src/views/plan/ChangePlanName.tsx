@@ -5,7 +5,7 @@ import Dialog from "../elements/common/Dialog.tsx";
 import {TextInput} from "../elements/common/Inputs.tsx";
 import {Button} from "../elements/common/Buttons.tsx";
 import PageState from "love/model/PageState.ts";
-import {check, lengthCheck, verifyAll} from "../../core/validation.ts";
+import {check, lengthCheck, verifyAll} from "love/validation.ts";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import {InlineError} from "../error/ErrorPage.tsx";
 import {planActions} from "../../core/redux/PlanReducer.ts";

@@ -4,7 +4,7 @@ import logging
 import os
 import uuid
 from datetime import datetime
-from typing import Type, Tuple
+from typing import Tuple
 from uuid import UUID
 
 from fastapi import HTTPException
@@ -17,7 +17,7 @@ from app.core.auth.passkey.paykey_aaguid import get_authenticator
 from app.core.config_store import config
 from app.core.database.database import redis_db0
 from app.core.hash import sha256, sha256_bytes
-from app.core.user import core_user, core_login
+from app.core.user import core_login
 from app.models.auth.PasskeyAuthModel import PasskeyAuthModel
 from app.schemas.authentication.PasskeyRequests import PasskeyAttestationRequest
 from app.schemas.user.Identity import Identity

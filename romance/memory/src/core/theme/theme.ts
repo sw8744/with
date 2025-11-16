@@ -22,6 +22,11 @@ function getThemeMapping(): Promise<ThemeMapping> {
   });
 }
 
+function resetThemeCache() {
+  themeListLoaded = false;
+  theme = {};
+}
+
 export {
-  getThemeMapping,
+  getThemeMapping, resetThemeCache
 }

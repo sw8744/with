@@ -95,7 +95,7 @@ def callback_authentication(
       httponly=True,
       samesite="strict",
       secure=config["cookie"]["secure"],
-      path="/api/v1/auth/refresh"
+      path="/"
     )
     db.commit()
     log.info("Identity %s successfully logged in using google", identity.uid)

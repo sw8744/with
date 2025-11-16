@@ -43,6 +43,12 @@ logging.basicConfig(
 access_logger = logging.getLogger("uvicorn.access")
 access_logger.handlers = handler
 
+uvicorn_logger = logging.getLogger("uvicorn")
+uvicorn_logger.handlers = handler
+
+uvicorn_error = logging.getLogger("uvicorn.error")
+uvicorn_error.handlers = handler
+
 engine_logger = logging.getLogger("sqlalchemy.engine")
 engine_logger.handlers = handler
 

@@ -4,7 +4,7 @@ import {DatePicker, Select, TextInput} from "../../../elements/common/Inputs.tsx
 import {Form, FormGroup} from "../../../elements/common/Form.tsx";
 import {Button, TextButton} from "../../../elements/common/Buttons.tsx";
 import {useEffect, useState} from "react";
-import {check, lengthCheck, rangeCheck, regexCheck, verifyAll} from "../../../../core/validation.ts";
+import {check, lengthCheck, rangeCheck, regexCheck, verifyAll} from "love/validation.ts";
 import {apiAuth, handleAxiosError} from "../../../../core/axios/withAxios.ts";
 import type {UserAPI} from "love/api/UserAPI.ts";
 import {isPageError} from "love/api/APITypes.ts";

@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
 from app.core.auth.core_authorization import authorization_header, authorize_jwt
-from app.core.auth.passkey import core_passkey, core_passkey_auth
+from app.core.auth.passkey import core_passkey_auth
 from app.core.config_store import config
 from app.core.database.database import create_connection
 from app.core.user import core_user
@@ -27,8 +27,6 @@ router = APIRouter(
   path="/challenge/option"
 )
 def get_passkey_challenge_options():
-  log.debug("User requested authentication option")
-
   (session_id, option) = core_passkey_auth.begin_authentication()
 
   response = JSONResponse(
@@ -84,7 +82,7 @@ def create_passkey_challenge(
     httponly=True,
     samesite="strict",
     secure=config["cookie"]["secure"],
-    path="/api/v1/auth/refresh"
+    path="/"
   )
 
   return response

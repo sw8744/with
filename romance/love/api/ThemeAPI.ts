@@ -1,10 +1,10 @@
 import type APITypes from "./APITypes.ts";
 import type {ThemeMapping} from "../model/Theme";
 
-type recommendationThemeAPI = APITypes & {
+type RecommendationThemeAPI = APITypes & {
   themes: ThemeMapping;
 }
 
 export type {
-  recommendationThemeAPI
+  RecommendationThemeAPI
 }
