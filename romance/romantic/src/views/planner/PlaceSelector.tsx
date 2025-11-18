@@ -5,7 +5,7 @@ import {isPageError} from "love/api/APITypes.ts";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
 import type {recommendationPlace} from "love/api/RecommendationAPI.ts";
 import type {Place} from "love/model/Location.ts";
-import type {locationPlaceAPI} from "love/api/LocationAPI.ts";
+import type {LocationPlaceAPI} from "love/api/LocationAPI.ts";
 import {useAppDispatch, useAppSelector} from "../../core/hook/ReduxHooks.ts";
 import {PlaceAreaShow, PlaceAreaSkeleton} from "../elements/location/PlaceArea.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
@@ -59,7 +59,7 @@ function PlaceSelector(
       const recommendations = initialRecommendation.data.recommendation;
       const recommendedPlaces: Place[] = []
       for (const recommendation of recommendations) {
-        const placeResp = await apiAuth.get<locationPlaceAPI>(
+        const placeResp = await apiAuth.get<LocationPlaceAPI>(
           "/location/place",
           {
             params: {
@@ -95,7 +95,7 @@ function PlaceSelector(
       return;
     }
 
-    apiAuth.get<locationPlaceAPI>(
+    apiAuth.get<LocationPlaceAPI>(
       "/location/place",
       {
         params: {
@@ -136,7 +136,7 @@ function PlaceSelector(
         additionalPlace.push(selectedPlace);
       } else {
         (async () => {
-          const sPlace = await apiAuth.get<locationPlaceAPI>(
+          const sPlace = await apiAuth.get<LocationPlaceAPI>(
             "/location/place",
             {
               params: {
@@ -164,6 +164,13 @@ function PlaceSelector(
           key={"noresult"}
           layout={"position"}
           variants={BlockListMotion}
+          transition={{
+            duration: 0.3,
+            ease: "easeInOut",
+            layout: {
+              type: "spring", stiffness: 400, damping: 30
+            }
+          }}
           className={"my-3"}
         >
           <p className={"text-center font-medium text-lg my-1"}>검색결과가 없습니다.</p>
@@ -178,6 +185,13 @@ function PlaceSelector(
             key={place.uid}
             layout={"position"}
             variants={BlockListMotion}
+            transition={{
+              duration: 0.3,
+              ease: "easeInOut",
+              layout: {
+                type: "spring", stiffness: 400, damping: 30
+              }
+            }}
             className={
               "w-full rounded-2xl overflow-clip " +
               "shadow-neutral-300 shadow hover:shadow-md transition-all duration-300 " +

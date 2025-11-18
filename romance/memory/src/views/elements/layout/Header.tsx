@@ -17,7 +17,7 @@ function Header() {
 
   return (
     <header
-      className={"w-full flex justify-center items-center gap-5 py-3 sticky left-0 top-0 border-b bg-neutral-900 border-neutral-600"}>
+      className={"w-full flex justify-center items-center gap-5 py-3 sticky left-0 top-0 border-b bg-neutral-900 border-neutral-600 z-50"}>
       <p className={"text-xl font-medium"}>{toAPIDatetimeString(clock)} {getLocalizedDayString(clock)}요일</p>
       {MODE !== "production" &&
         <p className={"px-3 bg-rose-900 text-rose-200 rounded-full"}>{MODE}</p>

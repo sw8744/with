@@ -2,7 +2,7 @@ import {Button} from "../elements/common/Buttons.tsx";
 import {TextInput} from "../elements/common/Inputs.tsx";
 import {type ReactElement, useEffect, useState} from "react";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
-import type {locationRegionAPI} from "love/api/LocationAPI.ts";
+import type {LocationRegionAPI} from "love/api/LocationAPI.ts";
 import PageState from "love/model/PageState.ts";
 import {isPageError} from "love/api/APITypes.ts";
 import type {recommendationRegion} from "love/api/RecommendationAPI.ts";
@@ -14,6 +14,7 @@ import {PageError} from "../error/ErrorPage.tsx";
 import {SkeletonElement, SkeletonFrame, SkeletonUnit} from "../elements/loading/Skeleton.tsx";
 import {BlockListMotion} from "../../core/motionVariants.ts";
 import Img, {ImageType} from "../elements/common/Imgs.tsx";
+import useDebounce from "../../core/debouncedQuery.tsx";
 
 function RegionSelector(
   {prev, next}: {
@@ -25,6 +26,7 @@ function RegionSelector(
   const [recommendedCache, setRecommendedCache] = useState<Region[]>([]);
   const [pageState, setPageState] = useState(PageState.LOADING);
   const [regionsInList, setRegionsInList] = useState<Region[]>([]);
+  const debouncedQuery = useDebounce(searchQuery);
 
   const dispatch = useAppDispatch();
   const regionSelected = useAppSelector(state => state.plannerReducer.region);
@@ -57,7 +59,7 @@ function RegionSelector(
       const recommendations = initialRecommendation.data.recommendation;
       const recommendedRegions: Region[] = []
       for (const recommendation of recommendations) {
-        const regionResp = await apiAuth.get<locationRegionAPI>(
+        const regionResp = await apiAuth.get<LocationRegionAPI>(
           "/location/region",
           {
             params: {
@@ -85,7 +87,7 @@ function RegionSelector(
 
     setPageState(PageState.WORKING);
 
-    if (searchQuery == "") {
+    if (debouncedQuery == "") {
       setRegionsInList(
         loadAlreadySelectedRegion(recommendedCache)
       );
@@ -93,11 +95,11 @@ function RegionSelector(
       return;
     }
 
-    apiAuth.get<locationRegionAPI>(
+    apiAuth.get<LocationRegionAPI>(
       "/location/region",
       {
         params: {
-          name: searchQuery
+          name: debouncedQuery
         }
       }
     ).then(res => {
@@ -108,7 +110,7 @@ function RegionSelector(
     }).catch(err => {
       handleAxiosError(err, setPageState);
     });
-  }, [searchQuery]);
+  }, [debouncedQuery]);
 
   function loadAlreadySelectedRegion(loadedRegions: Region[]): Region[] {
     const additionalRegion: Region[] = [];
@@ -134,7 +136,7 @@ function RegionSelector(
         additionalRegion.push(selectedRegion);
       } else {
         (async () => {
-          const sRegion = await apiAuth.get<locationRegionAPI>(
+          const sRegion = await apiAuth.get<LocationRegionAPI>(
             "/location/region",
             {
               params: {
@@ -163,6 +165,13 @@ function RegionSelector(
           key={"noresult"}
           layout={"position"}
           variants={BlockListMotion}
+          transition={{
+            duration: 0.3,
+            ease: "easeInOut",
+            layout: {
+              type: "spring", stiffness: 400, damping: 30
+            }
+          }}
           className={"my-3"}
         >
           <p className={"text-center font-medium text-lg my-1"}>검색결과가 없습니다.</p>
@@ -192,7 +201,7 @@ function RegionSelector(
           setter={setSearchQuery}
         />
         <div className={"flex-1 flex flex-col gap-3 my-2"}>
-          <AnimatePresence mode={"popLayout"}>
+          <AnimatePresence initial={true} mode={"popLayout"}>
             {regions}
           </AnimatePresence>
         </div>
@@ -224,6 +233,13 @@ function RegionResult(
       key={region.uid}
       layout={"position"}
       variants={BlockListMotion}
+      transition={{
+        duration: 0.3,
+        ease: "easeInOut",
+        layout: {
+          type: "spring", stiffness: 400, damping: 30
+        }
+      }}
       className={
         "w-full rounded-2xl overflow-clip " +
         "shadow-neutral-300 shadow hover:shadow-md transition-all duration-300 " +

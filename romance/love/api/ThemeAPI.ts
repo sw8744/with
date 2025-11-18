@@ -5,6 +5,11 @@ type RecommendationThemeAPI = APITypes & {
   themes: ThemeMapping;
 }
 
+type PlaceThemeRequestAPI = APITypes & {
+  themes: number[];
+}
+
 export type {
-  RecommendationThemeAPI
+  RecommendationThemeAPI,
+  PlaceThemeRequestAPI
 }

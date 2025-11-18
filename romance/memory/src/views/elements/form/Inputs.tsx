@@ -1,4 +1,4 @@
-import type {ChangeEvent} from "react";
+import {type ChangeEvent} from "react";
 
 interface TextInputProps {
   placeholder?: string;
@@ -34,6 +34,31 @@ function TextInput(
   );
 }
 
+interface CheckboxPropsType {
+  checked: boolean;
+  setter: (value: boolean) => void;
+}
+
+function Checkbox(
+  {
+    checked, setter
+  }: CheckboxPropsType
+) {
+  function toggle() {
+    setter(!checked);
+  }
+
+  return (
+    <button
+      className={
+        "aspect-square" +
+        (checked ? " bg-sky-500" : " bg-neutral-700")
+      }
+      onClick={toggle}
+    />
+  );
+}
+
 export {
-  TextInput
+  TextInput, Checkbox
 };

@@ -1,5 +1,6 @@
 import logging
 from typing import Annotated
+from uuid import UUID
 
 from fastapi import APIRouter
 from fastapi.params import Depends, Security
@@ -8,6 +9,7 @@ from starlette.responses import JSONResponse
 
 from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection
+from app.core.location import core_place
 from app.core.recommendation import core_theme
 from app.core.user.core_jwt import require_role, Role
 from app.schemas.recommendation.ThemeRequests import ThemeSearchQuery, SetTheme
@@ -66,5 +68,28 @@ def set_theme(
       "code": 200,
       "status": "OK",
       "theme": new_theme.model_dump()
+    }
+  )
+
+
+@router.get(
+  path="/place/{place_uid}"
+)
+def get_theme_of_place(
+  place_uid: UUID,
+  jwt: str = Security(authorization_header),
+  db: Session = Depends(create_connection)
+):
+  token = authorize_jwt(jwt)
+  require_role(token, Role.PLACE_EDIT)
+
+  place_theme = core_place.get_place_theme(place_uid, db)
+
+  return JSONResponse(
+    status_code=200,
+    content={
+      "code": 200,
+      "status": "OK",
+      "themes": place_theme.tolist()
     }
   )

@@ -7,19 +7,17 @@
 }
 
 * {
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: "Noto Sans KR", "sans-serif";
   font-optical-sizing: auto;
-  font-style: normal;
-}
-
-.asimovian-regular {
-  font-family: "Asimovian", "Noto Sans KR", sans-serif;
-  font-weight: 400;
   font-style: normal;
 }
 
 body {
   color: #F0F9F6;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 /* FIXME: 잘보면 selection arrow 배경이 select box랑 안 맞음 */

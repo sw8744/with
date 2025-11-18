@@ -25,16 +25,11 @@ function ThemesSet() {
     getThemeMapping()
       .then(mapping => {
         setThemeCache(mapping);
-        issueNotification(
-          "테마 캐시",
-          "테마 캐시를 불러왔습니다.",
-          "success"
-        )
       }).catch(err => {
       console.error(err);
       issueNotification(
         "테마 캐시",
-        "테마 캐시를 로딩하지 못했습니다.\n테마 로드 기능이 동작하지 않을 수 있습니다.",
+        "테마 캐시를 불러오지 못했습니다.\n테마 로드 기능이 동작하지 않을 수 있습니다.",
         "error"
       );
     });
@@ -64,6 +59,8 @@ function ThemesSet() {
       setFormState(validation);
       return;
     }
+
+    setFormState(0);
 
     apiAuth.post(
       "/recommendation/theme",

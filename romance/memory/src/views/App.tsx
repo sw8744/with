@@ -2,22 +2,27 @@ import "../style/univ.css"
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Header from "./elements/layout/Header.tsx";
 import Hierarchy from "./elements/Hierarchy.tsx";
-import AuthLogin from "./auth/login/AuthLogin.tsx";
+import AuthLogin from "./auth/AuthLogin.tsx";
 import ErrorPage from "./ErrorPage.tsx";
 import NotificationCenter from "./elements/layout/NotificationCenter.tsx";
-import PlacesList from "./places/list/PlacesList.tsx";
+import PlacesList from "./places/PlacesList.tsx";
 import ThemesList from "./themes/ThemesList.tsx";
 import ThemesSet from "./themes/ThemesSet.tsx";
+import RegionsList from "./regions/RegionsList.tsx";
+import ThemesPlace from "./themes/ThemesPlace.tsx";
+import AuthRole from "./auth/AuthRole.tsx";
+import Index from "./Index.tsx";
 
 function App() {
   return (
     <BrowserRouter>
       <Header/>
-      <main className={"w-full min-h-[calc(100vh-53px)] grid grid-cols-[200px_1fr]"}>
-        <div className={"flex flex-col gap-1.5 border-r border-neutral-600 p-4"}>
+      <main className={"max-w-full min-h-[calc(100vh-53px)] grid grid-cols-[200px_minmax(0,1fr)]"}>
+        <div className={"w-[200px] flex flex-col gap-1.5 border-r border-neutral-600 p-4"}>
           <Hierarchy text={"홈"} to={"/"}/>
           <Hierarchy text={"인증센터"}>
             <Hierarchy text={"로그인"} to={"/auth/login"}/>
+            <Hierarchy text={"권한"} to={"/auth/role"}/>
           </Hierarchy>
           <Hierarchy text={"지역"}>
             <Hierarchy text={"지역 목록"} to={"/regions/list"}/>
@@ -30,14 +35,22 @@ function App() {
           <Hierarchy text={"테마"}>
             <Hierarchy text={"테마 목록"} to={"/themes/list"}/>
             <Hierarchy text={"테마 설정"} to={"/themes/set"}/>
+            <Hierarchy text={"장소 테마"} to={"/themes/place"}/>
           </Hierarchy>
         </div>
 
         <NotificationCenter/>
 
         <Routes>
+          <Route path={"/"} element={<Index/>}/>
+
           <Route path={"/auth"}>
             <Route path={"login"} element={<AuthLogin/>}/>
+            <Route path={"role"} element={<AuthRole/>}/>
+          </Route>
+
+          <Route path={"/regions"}>
+            <Route path={"list"} element={<RegionsList/>}/>
           </Route>
 
           <Route path={"/places"}>
@@ -47,6 +60,7 @@ function App() {
           <Route path={"/themes"}>
             <Route path={"list"} element={<ThemesList/>}/>
             <Route path={"set"} element={<ThemesSet/>}/>
+            <Route path={"place"} element={<ThemesPlace/>}/>
           </Route>
 
           <Route path={"*"} element={<ErrorPage code={404} message={"Not Found"}/>}/>

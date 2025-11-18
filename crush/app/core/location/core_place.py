@@ -2,7 +2,9 @@ import logging
 from typing import Optional
 from uuid import UUID
 
+import numpy as np
 from fastapi import HTTPException
+from numpy._typing import NDArray
 from sqlalchemy.orm import Session
 
 from app.core.database.database import jsonb_path_equals
@@ -75,8 +77,8 @@ def search_place(
     )
   else:
     if q.name is not None:
-      log.debug("Added name %s filter for place search", q.name)
       qname_umso = 풀어쓰기(q.name)
+      log.debug("Added name %s filter for place search", qname_umso)
       query = query.filter(PlaceModel.name_umso.like("%" + qname_umso + "%"))
     if q.region_uid is not None:
       log.debug("Added region %s filter for place search", q.region_uid)
@@ -162,3 +164,20 @@ def patch_place(
     place.theme.theme = n_array
 
   db.commit()
+
+
+def get_place_theme(
+  place_id: UUID,
+  db: Session
+) -> NDArray[np.float32]:
+  place_theme: Optional[PlaceThemeModel] = (
+    db.query(PlaceThemeModel)
+    .filter(PlaceThemeModel.place_id == place_id)
+    .scalar()
+  )
+
+  if place_theme is None:
+    log.warning("Place %s was not found", place_id)
+    raise HTTPException(status_code=404, detail="No region was found")
+
+  return place_theme.theme

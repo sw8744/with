@@ -6,7 +6,7 @@ import {isPageError} from "love/api/APITypes.ts";
 import type {Region} from "love/model/Location.ts";
 import {PageError} from "../../error/ErrorPage.tsx";
 import {useAppSelector} from "../../../core/hook/ReduxHooks.ts";
-import type {locationRegionAPI} from "love/api/LocationAPI.ts";
+import type {LocationRegionAPI} from "love/api/LocationAPI.ts";
 import {Link} from "react-router-dom";
 import {SkeletonElement, SkeletonFrame} from "../../elements/loading/Skeleton.tsx";
 import Img, {ImageType} from "../../elements/common/Imgs.tsx";
@@ -43,7 +43,7 @@ function RegionalSearch() {
       setRegionRecommendation(regionsRecommended);
 
       for (let i = 0; i < regionsRecommended.length; i++) {
-        apiAuth.get<locationRegionAPI>(
+        apiAuth.get<LocationRegionAPI>(
           "/location/region",
           {
             params: {

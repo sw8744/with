@@ -9,7 +9,7 @@ type Place = {
   uid: string;
   name: string;
   description: string;
-  coordinate: [number] | undefined;
+  coordinate: number[] | undefined;
   address: string | undefined;
   region_uid: string | undefined;
   thumbnail: string | undefined;

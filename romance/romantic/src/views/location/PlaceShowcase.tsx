@@ -3,7 +3,7 @@ import {type ReactElement, type ReactNode, useEffect, useState} from "react";
 import type {Place} from "love/model/Location.ts";
 import PageState from "love/model/PageState.ts";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
-import type {locationPlaceAPI} from "love/api/LocationAPI.ts";
+import type {LocationPlaceAPI} from "love/api/LocationAPI.ts";
 import {SkeletonElement, SkeletonFrame} from "../elements/loading/Skeleton.tsx";
 import {PageError} from "../error/ErrorPage.tsx";
 import PlaceMetaInterpreter from "./PlaceMetadata.tsx";
@@ -77,7 +77,7 @@ function PlaceShowcase() {
     }
 
     (async () => {
-      const placeResp = await apiAuth.get<locationPlaceAPI>(
+      const placeResp = await apiAuth.get<LocationPlaceAPI>(
         "location/place",
         {
           params: {

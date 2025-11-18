@@ -51,7 +51,7 @@ function NotificationCenter() {
   });
 
   return (
-    <div className={"fixed right-3 bottom-3 flex flex-col gap-2"}>
+    <div className={"fixed right-3 bottom-3 flex flex-col gap-2 z-50"}>
       <AnimatePresence>
         {notificationStack}
       </AnimatePresence>

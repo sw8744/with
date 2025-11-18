@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
-import type {locationPlaceAPI, locationRegionAPI} from "love/api/LocationAPI.ts";
+import type {LocationPlaceAPI, LocationRegionAPI} from "love/api/LocationAPI.ts";
 import PageState from "love/model/PageState.ts";
 import {isPageError} from "love/api/APITypes.ts";
 import type {Place, Region} from "love/model/Location.ts";
@@ -49,7 +49,7 @@ function RegionShowcase() {
 
     (async () => {
       const regionResp =
-        await apiAuth.get<locationRegionAPI>(
+        await apiAuth.get<LocationRegionAPI>(
           "/location/region",
           {
             params: {
@@ -64,7 +64,7 @@ function RegionShowcase() {
       setRegionInfo(regionResp.data.content[0]);
 
       const placeResp =
-        await apiAuth.get<locationPlaceAPI>(
+        await apiAuth.get<LocationPlaceAPI>(
           "/location/place",
           {
             params: {

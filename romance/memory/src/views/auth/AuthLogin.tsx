@@ -1,15 +1,15 @@
-import Panel from "../../elements/layout/panel.tsx";
-import {Button, ButtonGroup} from "../../elements/form/Buttons.tsx";
-import {useAppDispatch, useAppSelector} from "../../../core/hook/ReduxHooks.ts";
-import {H1} from "../../elements/typegraphy/Headers.tsx";
-import {userInfoAction} from "../../../core/redux/UserInfoReducer.ts";
-import issueNotification from "../../../core/notification/NotificationCenter.ts";
-import {FormGroup} from "../../elements/form/General.tsx";
-import {api} from "../../../core/axios/withAxios.ts";
+import Panel from "../elements/layout/panel.tsx";
+import {Button, ButtonGroup} from "../elements/form/Buttons.tsx";
+import {useAppDispatch, useAppSelector} from "../../core/hook/ReduxHooks.ts";
+import {H1} from "../elements/typegraphy/Headers.tsx";
+import {userInfoAction} from "../../core/redux/UserInfoReducer.ts";
+import issueNotification from "../../core/notification/NotificationCenter.ts";
+import {FormGroup} from "../elements/form/General.tsx";
+import {api} from "../../core/axios/withAxios.ts";
 import {startAuthentication} from "@simplewebauthn/browser";
 import type {PasskeyAuthenticationAPI} from "love/api/AuthenticationAPI.ts";
-import {refreshAccessToken, resetAccessToken} from "../../../core/axios/apiAccessTokenInterceptor.ts";
-import {RequireRole, RoleTag} from "../../elements/RoleTag.tsx";
+import {refreshAccessToken, resetAccessToken} from "../../core/axios/apiAccessTokenInterceptor.ts";
+import {RequireRole, RoleTag} from "../elements/RoleTag.tsx";
 import {Role} from "love/model/User.ts";
 
 function AuthLogin() {
