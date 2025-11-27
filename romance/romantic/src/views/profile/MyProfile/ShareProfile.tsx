@@ -1,10 +1,10 @@
-import {BackHeader} from "../elements/hierarchy/HierarchyStructure.tsx";
-import {Button} from "../elements/common/Buttons.tsx";
+import {BackHeader} from "../../elements/hierarchy/HierarchyStructure.tsx";
+import {Button} from "../../elements/common/Buttons.tsx";
 import {QRCodeSVG} from "qrcode.react";
 import PageState from "love/model/PageState.ts";
-import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
-import AnimatedSuspense from "../elements/hierarchy/AnimatedSuspense.tsx";
-import {SkeletonElement, SkeletonFrame} from "../elements/loading/Skeleton.tsx";
+import {useAppSelector} from "../../../core/hook/ReduxHooks.ts";
+import AnimatedSuspense from "../../elements/hierarchy/AnimatedSuspense.tsx";
+import {SkeletonElement, SkeletonFrame} from "../../elements/loading/Skeleton.tsx";
 
 function ShareProfile() {
   const myName = useAppSelector(state => state.userInfoReducer.name);

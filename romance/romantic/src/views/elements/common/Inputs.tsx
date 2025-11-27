@@ -1,6 +1,6 @@
 import {type ChangeEvent, useEffect, useState} from "react";
 import {CheckmarkFillIcon, ChevronLeftIcon, ChevronRightIcon, CircleIcon} from "../../../assets/svgs/svgs.ts";
-import {dateString} from "../../../../../love/datetime.ts";
+import {dateString} from "love/datetime.ts";
 
 interface TextInputPropsType {
   type?: "text" | "password" | "email"

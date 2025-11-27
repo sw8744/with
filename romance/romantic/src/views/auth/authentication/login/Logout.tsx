@@ -4,7 +4,7 @@ import {userInfoAction} from "../../../../core/redux/UserInfoReducer.ts";
 import {useNavigate} from "react-router-dom";
 import {api, handleAxiosError} from "../../../../core/axios/withAxios.ts";
 import PageState from "love/model/PageState.ts";
-import {isPageError} from "../../../../../../love/api/APITypes.ts";
+import {isPageError} from "love/api/APITypes.ts";
 import {PageError} from "../../../error/ErrorPage.tsx";
 
 function Logout() {

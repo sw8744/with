@@ -1,15 +1,15 @@
-from typing import Annotated
-from uuid import UUID
-
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from fastapi.params import Security, Depends, Query
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
+from typing import Annotated
+from uuid import UUID
 
 from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection
 from app.core.relationship import core_following
 from app.core.user import core_user
+from app.core.user.core_jwt import require_role, Role
 from app.schemas.relationship.FollowRequests import FollowRequest, FollowPatchRequest, ListingRelationshipRequest
 
 router = APIRouter(
@@ -50,8 +50,35 @@ def count_following(
   jwt: str = Security(authorization_header),
   db: Session = Depends(create_connection)
 ):
-  token: dict[str, str] = authorize_jwt(jwt)
+  token = authorize_jwt(jwt)
   identity = core_user.get_identity(token, db)
+  cnt = core_following.count_following(identity, db)
+
+  return JSONResponse(
+    status_code=200,
+    content={
+      "code": 200,
+      "status": "OK",
+      "count": cnt
+    }
+  )
+
+
+@router.get(
+  path="/count/{user_id}"
+)
+def count_user_following(
+  user_id: UUID,
+  jwt: str = Security(authorization_header),
+  db: Session = Depends(create_connection)
+):
+  token = authorize_jwt(jwt)
+  require_role(token, Role.CORE_USER)
+
+  identity = core_user.get_identity_by_uid(user_id, db)
+  if identity is None:
+    raise HTTPException(status_code=404, detail="Identity not found")
+
   cnt = core_following.count_following(identity, db)
 
   return JSONResponse(
@@ -72,7 +99,7 @@ def query_relationship(
   jwt: str = Security(authorization_header),
   db: Session = Depends(create_connection)
 ):
-  token: dict[str, str] = authorize_jwt(jwt)
+  token = authorize_jwt(jwt)
   identity = core_user.get_identity(token, db)
   relation = core_following.query_following(identity, friend_id, db)
 
@@ -94,7 +121,7 @@ def follow(
   jwt: str = Security(authorization_header),
   db: Session = Depends(create_connection)
 ):
-  token: dict[str, str] = authorize_jwt(jwt)
+  token = authorize_jwt(jwt)
   identity = core_user.get_identity(token, db)
 
   core_following.follow(identity, body, db)
@@ -116,7 +143,7 @@ def unfollow(
   jwt: str = Security(authorization_header),
   db: Session = Depends(create_connection)
 ):
-  token: dict[str, str] = authorize_jwt(jwt)
+  token = authorize_jwt(jwt)
   identity = core_user.get_identity(token, db)
   core_following.unfollow(identity, friend_id, db)
 
@@ -138,7 +165,7 @@ def patch_relationship(
   jwt: str = Security(authorization_header),
   db: Session = Depends(create_connection)
 ):
-  token: dict[str, str] = authorize_jwt(jwt)
+  token = authorize_jwt(jwt)
   identity = core_user.get_identity(token, db)
 
   core_following.patch_relationship(identity, friend_id, body, db)

@@ -3,26 +3,23 @@ import Footer from "./outline/Footer.tsx";
 import {BrowserRouter, type NavigateFunction, Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import CoreLogin from "./auth/authentication/login/CoreLogin.tsx";
 import SetJwt from "./auth/authentication/login/SetJwt.tsx";
-import CoreProfile from "./profile/CoreProfile.tsx";
+import CoreProfile from "./profile/MyProfile/CoreProfile.tsx";
 import RegionShowcase from "./location/RegionShowcase.tsx";
 import PlaceShowcase from "./location/PlaceShowcase.tsx";
 import CoreLocationIndex from "./location/LocationIndexPage/CoreLocationIndex.tsx";
-import CorePlanner from "./planner/CorePlanner.tsx";
-import LikedPlaces from "./profile/LikedPlaces.tsx";
-import MyPlans from "./profile/MyPlans.tsx";
+import LikedPlaces from "./profile/MyProfile/LikedPlaces.tsx";
+import MyPlans from "./profile/MyProfile/MyPlans.tsx";
 import CoreGoogleRegister from "./auth/signup/GoogleRegister/CoreGoogleRegister.tsx";
-import CorePlan from "./plan/CorePlan.tsx";
 import CoreEditProfile from "./profile/Settings/account/CoreEditProfile.tsx";
 import {AnimatePresence} from "framer-motion";
-import CoreMembers from "./plan/member/CoreMembers.tsx";
-import CoreSchedule from "./plan/schedule/CoreSchedule.tsx";
 import CoreFind from "./find/CoreFind.tsx";
-import ShareProfile from "./profile/ShareProfile.tsx";
+import ShareProfile from "./profile/MyProfile/ShareProfile.tsx";
 import {useEffect} from "react";
 import Logout from "./auth/authentication/login/Logout.tsx";
 import LoginOptions from "./auth/authentication/login/LoginOptions.tsx";
 import CoreSettings from "./profile/Settings/CoreSettings.tsx";
 import CoreAuthenticationSettings from "./profile/Settings/authentication/CoreAuthenticationSettings.tsx";
+import CoreUser from "./profile/OtherProfile/CoreUser.tsx";
 
 let navigator: NavigateFunction;
 
@@ -68,14 +65,7 @@ function AnimatedRouter() {
           <Route path={"plans"} element={<MyPlans/>}/>
         </Route>
 
-        <Route path={"/plan"}>
-          <Route path={""} element={<CorePlanner/>}/>
-          <Route path={":planUUID/*"} element={<CorePlan/>}>
-            <Route path={""} element={<CoreSchedule/>}/>
-            <Route path={"timeline"} element={<CoreSchedule/>}/>
-            <Route path={'members'} element={<CoreMembers/>}/>
-          </Route>
-        </Route>
+        <Route path={"/user/:userUUID"} element={<CoreUser/>}/>
 
         <Route path={"/find"} element={<CoreFind/>}/>
 

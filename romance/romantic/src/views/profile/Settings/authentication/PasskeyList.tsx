@@ -3,17 +3,13 @@ import PageState from "love/model/PageState.ts";
 import type {Passkey} from "love/model/Passkey.ts";
 import type {ListPasskeyAPI} from "love/api/PasskeyAPI.ts";
 import {apiAuth, handleAxiosError} from "../../../../core/axios/withAxios.ts";
-import {isPageError} from "../../../../../../love/api/APITypes.ts";
+import {isPageError} from "love/api/APITypes.ts";
 import {InlineError, PageError} from "../../../error/ErrorPage.tsx";
 import Img, {ImageType} from "../../../elements/common/Imgs.tsx";
-import {
-  getTimeDelta,
-  isoToDisplayDateString
-} from "../../../../../../love/datetime.ts";
+import {getTimeDelta, isoToDisplayDateString} from "love/datetime.ts";
 import {PencilIcon, TrashIcon} from "../../../../assets/svgs/svgs.ts";
 import Dialog from "../../../elements/common/Dialog.tsx";
 import {TextInput} from "../../../elements/common/Inputs.tsx";
-import {FormGroup} from "../../../elements/common/Form.tsx";
 import {Button} from "../../../elements/common/Buttons.tsx";
 
 function PasskeyList(
@@ -186,7 +182,7 @@ function Passkey(
           <p className={"text-center"}>기기에 저장된 패스키는 삭제되지 않습니다.</p>
         </div>
 
-        <InlineError pageState={renameState}/>
+        <InlineError pageState={deleteState}/>
 
         <div className={'flex flex-col gap-2'}>
           <Button onClick={deletePasskey}>삭제</Button>

@@ -1,18 +1,18 @@
 import {type ReactNode, useEffect, useState} from "react";
-import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
+import {apiAuth, handleAxiosError} from "../../../core/axios/withAxios.ts";
 import type {UserAPI} from "love/api/UserAPI.ts";
-import {ButtonLink} from "../elements/common/Buttons.tsx";
-import {MapPinAndEllipseIcon, PersonIcon, StarFilledIcon} from "../../assets/svgs/svgs.ts";
+import {ButtonLink} from "../../elements/common/Buttons.tsx";
+import {MapPinAndEllipseIcon, PersonIcon, StarFilledIcon} from "../../../assets/svgs/svgs.ts";
 import type {Identity} from "love/model/User.ts";
 import {isPageError} from "love/api/APITypes.ts";
 import PageState from "love/model/PageState.ts";
 import {Link, Outlet} from "react-router-dom";
-import {SkeletonElement, SkeletonFrame} from "../elements/loading/Skeleton.tsx";
-import {PageError} from "../error/ErrorPage.tsx";
+import {SkeletonElement, SkeletonFrame} from "../../elements/loading/Skeleton.tsx";
+import {PageError} from "../../error/ErrorPage.tsx";
 import type {userFollowerCount, userFollowingCount} from "love/api/RelationshipAPI.ts";
-import {useAppSelector} from "../../core/hook/ReduxHooks.ts";
-import AnimatedSuspense from "../elements/hierarchy/AnimatedSuspense.tsx";
-import Img, {ImageType} from "../elements/common/Imgs.tsx";
+import {useAppSelector} from "../../../core/hook/ReduxHooks.ts";
+import AnimatedSuspense from "../../elements/hierarchy/AnimatedSuspense.tsx";
+import Img, {ImageType} from "../../elements/common/Imgs.tsx";
 
 interface ProfileMenuButtonPropsType {
   children: ReactNode;

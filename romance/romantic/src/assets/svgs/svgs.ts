@@ -32,6 +32,11 @@ import PasskeyFilledIcon from "./person.badge.key.fill.svg?react";
 import LockFilledIcon from "./lock.fill.svg?react";
 import DoorOpenIcon from "./door.right.hand.open.svg?react";
 import TrashIcon from "./trash.fill.svg?react";
+import ChevronDownIcon from "./chevron.down.svg?react";
+import StarHexagonFillIcon from "./star.hexagon.fill.svg?react";
+import StarHexagonIcon from "./star.hexagon.svg?react";
+import HeartIcon from "./heart.svg?react";
+import HeartFilledIcon from "./heart.fill.svg?react";
 
 export {
   RouteIcon,
@@ -64,5 +69,10 @@ export {
   LockFilledIcon,
   DoorOpenIcon,
   TrashIcon,
+  ChevronDownIcon,
+  StarHexagonFillIcon,
+  StarHexagonIcon,
+  HeartIcon,
+  HeartFilledIcon,
   InstagramIcon
 };

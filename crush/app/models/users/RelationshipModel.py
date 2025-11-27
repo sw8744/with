@@ -1,16 +1,16 @@
 import enum
 from datetime import datetime
-from uuid import UUID as PyUUID
-
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP
 from sqlalchemy.orm import Mapped, relationship, backref
+from uuid import UUID as PyUUID
 
 from app.core.database.database import BaseTable, EnumAsValue
 from app.models.users.IdentityModel import IdentityModel
 
 
 class RelationshipState(enum.IntEnum):
+  NONE = -1  # 관계 없음
   BLOCKED = 0  # user 의 정보를 friend 에게 비공개
   FOLLOWING = 1  # user 가 friend 를 팔로우
   FRIEND = 2  # user가 friend를 초대할 수 있음

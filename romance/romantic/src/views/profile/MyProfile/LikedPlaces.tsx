@@ -2,11 +2,11 @@ import {useEffect, useState} from "react";
 import {isPageError} from "love/api/APITypes.ts";
 import type {Place} from "love/model/Location.ts";
 import type {interactionLikes} from "love/api/InteractionAPI.ts";
-import {PageError} from "../error/ErrorPage.tsx";
-import {PlaceArea, PlaceAreaSkeleton} from "../elements/location/PlaceArea.tsx";
-import {SkeletonFrame} from "../elements/loading/Skeleton.tsx";
+import {PageError} from "../../error/ErrorPage.tsx";
+import {PlaceArea, PlaceAreaSkeleton} from "../../elements/location/PlaceArea.tsx";
+import {SkeletonFrame} from "../../elements/loading/Skeleton.tsx";
 import PageState from "love/model/PageState.ts";
-import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
+import {apiAuth, handleAxiosError} from "../../../core/axios/withAxios.ts";
 
 function LikedPlaces() {
   const [pageState, setPageState] = useState<PageState>(PageState.LOADING)

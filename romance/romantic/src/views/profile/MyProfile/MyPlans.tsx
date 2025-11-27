@@ -1,12 +1,12 @@
 import {type ReactElement, useEffect, useState} from "react";
 import {isPageError} from "love/api/APITypes.ts";
 import PageState from "love/model/PageState.ts";
-import {PageError} from "../error/ErrorPage.tsx";
+import {PageError} from "../../error/ErrorPage.tsx";
 import type {ListMyPlansRequest, Plan} from "love/api/PlanAPI.ts";
 import {Link} from "react-router-dom";
-import {getDayDelta, isoToDisplayDateString} from "../../../../love/datetime.ts";
-import {SkeletonElement, SkeletonFrame} from "../elements/loading/Skeleton.tsx";
-import {apiAuth, handleAxiosError} from "../../core/axios/withAxios.ts";
+import {getDayDelta, isoToDisplayDateString} from "love/datetime.ts";
+import {SkeletonElement, SkeletonFrame} from "../../elements/loading/Skeleton.tsx";
+import {apiAuth, handleAxiosError} from "../../../core/axios/withAxios.ts";
 
 function MyPlans() {
   const [pageState, setPageState] = useState<PageState>(PageState.LOADING);

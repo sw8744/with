@@ -1,8 +1,7 @@
 import logging
-from uuid import UUID
-
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from uuid import UUID
 
 from app.models.users.IdentityModel import IdentityModel
 from app.models.users.RelationshipModel import RelationshipState, RelationshipModel
@@ -40,7 +39,7 @@ def query_following(
 
   if relation is None:
     log.warning("Relationship %r->%r was not found", identity.uid, friend_id)
-    return None
+    return RelationshipState.NONE
 
   log.info("Found relationship %r->%r is %d", identity.uid, friend_id, relation.state.value)
   return relation.state

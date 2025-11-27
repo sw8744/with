@@ -1,23 +1,34 @@
 from datetime import datetime
-
 from pydantic import BaseModel, Field, EmailStr
+from typing import Optional
+from uuid import UUID
 
 from app.models.users.IdentityModel import SEX
 
 
 class IdentityPatchRequest(BaseModel):
-  name: str = Field(
+  name: Optional[str] = Field(
+    default=None,
     min_length=1, max_length=64
   ),
-  email: EmailStr = Field(
+  email: Optional[EmailStr] = Field(
+    default=None,
     min_length=1, max_length=64
   ),
-  sex: SEX = Field()
-  birthday: datetime = Field()
+  sex: Optional[SEX] = Field(
+    default=None
+  )
+  birthday: Optional[datetime] = Field(
+    default=None
+  )
 
 
 class IdentitySearchRequest(BaseModel):
-  name: str = Field(
+  uid: Optional[UUID] = Field(
+    default=None
+  )
+  name: Optional[str] = Field(
+    default=None,
     min_length=1, max_length=64
   )
   limit: int = Field(

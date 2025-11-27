@@ -1,15 +1,14 @@
 import io
 import json
 import logging
-from typing import Optional, Tuple
-from uuid import uuid4, UUID
-
 from PIL import Image
 from fastapi import HTTPException
 from sqlalchemy import Row
 from sqlalchemy.orm import Session, aliased
 from sqlalchemy.sql.expression import case
 from starlette.datastructures import UploadFile
+from typing import Optional, Tuple
+from uuid import uuid4, UUID
 
 from app.core.database.database import redis_db0
 from app.core.hash import sha256
@@ -47,7 +46,7 @@ def create_signup_session(
 
 
 def get_identity(
-  token: dict[str, any],
+  token: dict[str, str],
   db: Session
 ) -> Optional[Identity]:
   uid = get_sub(token)
@@ -63,6 +62,24 @@ def get_identity(
     return None
   else:
     return Identity(iden)
+
+
+def get_identity_by_uid(
+  uid: UUID,
+  db: Session
+) -> Optional[Identity]:
+  iden = (
+    db.query(IdentityModel)
+    .filter(IdentityModel.uid == uid)
+    .scalar()
+  )
+
+  if iden is None:
+    log.warning("Identity %s was not found", uid)
+    return None
+  else:
+    return Identity(iden)
+
 
 
 def register_using_session(
@@ -209,10 +226,30 @@ def search_identities(
   sub: UUID,
   db: Session
 ):
+  # uid가 있는 경우 해당 일치만 검색
+  if query.uid is not None:
+    log.info("Searching identity of  %r by %r", query.uid, sub)
+    iden: IdentityModel = (
+      db.query(IdentityModel)
+      .filter(IdentityModel.uid == query.uid)
+      .scalar()
+    )
+
+    return [
+      {
+        "uid": str(iden.uid),
+        "name": iden.name,
+      }
+    ]
+
   # 검색 우선순위(이름이 일치하는 사람 중에서)
   # 1. 내가 팔로우
   # 2. 나를 팔로잉
   # 3. 내가 팔로우 하는 사람이 팔로우
+
+  if query.name is None:
+    log.warning("Neither UID nor name query is provided for identity search by %r", sub)
+    raise HTTPException(400, "Name query is required if UID is not provided")
 
   priority_one = (
     db.query()
