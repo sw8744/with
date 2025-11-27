@@ -1,6 +1,5 @@
-from uuid import UUID
-
 from pydantic import Field, BaseModel
+from uuid import UUID
 
 
 class RecommendByUsersParam(BaseModel):

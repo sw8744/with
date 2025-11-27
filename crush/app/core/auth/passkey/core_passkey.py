@@ -1,8 +1,7 @@
 import logging
-from uuid import UUID
-
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from uuid import UUID
 
 from app.models.auth.PasskeyAuthModel import PasskeyAuthModel
 from app.schemas.authentication.Passkey import Passkey

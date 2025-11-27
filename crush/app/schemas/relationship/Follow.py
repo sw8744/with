@@ -1,6 +1,5 @@
-from uuid import UUID
-
 from pydantic import BaseModel, Field, field_serializer
+from uuid import UUID
 
 from app.models.users.RelationshipModel import RelationshipModel
 

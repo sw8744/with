@@ -1,8 +1,7 @@
-from uuid import UUID as PyUUID
-
 from sqlalchemy import Column, event
 from sqlalchemy.dialects.postgresql import UUID, VARCHAR, TEXT
 from sqlalchemy.orm import Mapped
+from uuid import UUID as PyUUID
 
 from app.core.database.database import BaseTable
 from app.core.hangul.umso import 풀어쓰기

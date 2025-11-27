@@ -1,9 +1,8 @@
 import json
-from typing import Callable, Tuple
-
 import pytest
 from sqlalchemy.orm import Session
 from starlette.testclient import TestClient
+from typing import Callable, Tuple
 
 from app.main import app
 from app.models.users.IdentityModel import IdentityModel

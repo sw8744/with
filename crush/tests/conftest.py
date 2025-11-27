@@ -1,10 +1,9 @@
-from datetime import datetime
-from typing import Callable, Tuple
-
 import numpy as np
 import pytest
+from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
+from typing import Callable, Tuple
 from typing_extensions import Generator
 
 from app.core.config_store import config

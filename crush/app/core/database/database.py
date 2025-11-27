@@ -1,6 +1,5 @@
-from functools import reduce
-
 import redis
+from functools import reduce
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker

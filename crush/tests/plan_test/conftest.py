@@ -1,9 +1,8 @@
+import pytest
 from datetime import datetime, timedelta, date
 from typing import Callable
-from uuid import UUID
-
-import pytest
 from typing_extensions import Generator
+from uuid import UUID
 
 from app.models.plan.PlanActivityModel import PlanActivityModel, ActivityCategory
 from app.models.plan.PlanMemberModel import PlanMemberModel, PlanRole

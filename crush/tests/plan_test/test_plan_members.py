@@ -1,6 +1,5 @@
-from unittest import TestCase
-
 from starlette.testclient import TestClient
+from unittest import TestCase
 
 from app.main import app
 from app.models.plan.PlanMemberModel import PlanMemberModel

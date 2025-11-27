@@ -1,8 +1,7 @@
 import logging
-from typing import Optional
-
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from typing import Optional
 
 from app.models.preferences.ThemeModel import ThemeModel
 from app.schemas.recommendation.Theme import Theme

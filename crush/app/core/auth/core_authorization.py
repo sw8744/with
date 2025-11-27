@@ -1,5 +1,4 @@
 import logging
-
 from fastapi import HTTPException
 from fastapi.security import APIKeyHeader
 from jwt import InvalidTokenError

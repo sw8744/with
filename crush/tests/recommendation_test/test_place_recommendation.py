@@ -1,6 +1,5 @@
-from typing import Tuple
-
 from starlette.testclient import TestClient
+from typing import Tuple
 
 from app.main import app
 from app.models.users.IdentityModel import IdentityModel

@@ -1,9 +1,8 @@
-from typing import Annotated
-
 from fastapi import APIRouter
 from fastapi.params import Security, Query, Depends
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
+from typing import Annotated
 
 from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection

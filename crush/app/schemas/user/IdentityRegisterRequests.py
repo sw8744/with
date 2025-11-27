@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from pydantic import BaseModel, Field, EmailStr
 
 from app.models.users.IdentityModel import SEX

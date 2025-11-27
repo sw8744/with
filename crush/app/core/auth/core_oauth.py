@@ -1,8 +1,7 @@
 import logging
+from fastapi import HTTPException
 from typing import Optional
 from uuid import uuid4
-
-from fastapi import HTTPException
 
 from app.core.database.database import redis_db0
 from app.core.hash import sha256

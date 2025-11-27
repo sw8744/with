@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from sqlalchemy import Column, ForeignKey, TIMESTAMP
 from sqlalchemy.dialects.postgresql import VARCHAR, BYTEA, INTEGER
 from sqlalchemy.dialects.postgresql.base import UUID

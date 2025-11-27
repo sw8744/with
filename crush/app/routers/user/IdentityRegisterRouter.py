@@ -1,11 +1,10 @@
 import logging
-from typing import Annotated
-from uuid import UUID
-
 from fastapi import APIRouter, Cookie, HTTPException
 from fastapi.params import Depends
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
+from typing import Annotated
+from uuid import UUID
 
 from app.core.config_store import config
 from app.core.database.database import create_connection

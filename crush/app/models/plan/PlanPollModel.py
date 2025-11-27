@@ -1,9 +1,8 @@
 from datetime import date
-from uuid import UUID as PyUUID
-
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.dialects.postgresql import ARRAY, UUID, DATE
 from sqlalchemy.orm import Mapped, relationship, backref
+from uuid import UUID as PyUUID
 
 from app.core.database.database import BaseTable
 from app.models.plan.PlanModel import PlanModel

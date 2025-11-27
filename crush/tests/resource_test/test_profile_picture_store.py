@@ -1,6 +1,5 @@
-from uuid import uuid4
-
 from starlette.testclient import TestClient
+from uuid import uuid4
 
 from app.main import app
 

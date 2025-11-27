@@ -1,11 +1,10 @@
 import logging
-from typing import Tuple
-from uuid import UUID
-
 from fastapi import HTTPException
 from sqlalchemy import Row, and_
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.functions import count
+from typing import Tuple
+from uuid import UUID
 
 from app.core.relationship import core_following
 from app.models.interacrions.LikeModel import LikesModel

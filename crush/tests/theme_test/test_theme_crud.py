@@ -1,5 +1,4 @@
 import json
-
 from starlette.testclient import TestClient
 
 from app.core.user.core_jwt import Role

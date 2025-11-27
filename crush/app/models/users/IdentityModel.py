@@ -1,10 +1,9 @@
 import enum
 from datetime import datetime
-from uuid import UUID as PyUUID
-
 from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql import UUID, VARCHAR, BOOLEAN, DATE, ARRAY
 from sqlalchemy.orm import Mapped
+from uuid import UUID as PyUUID
 
 from app.core.database.database import BaseTable, EnumAsValue
 

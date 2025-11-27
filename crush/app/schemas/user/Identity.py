@@ -1,7 +1,6 @@
 from datetime import datetime
-from uuid import UUID
-
 from pydantic import BaseModel, Field, EmailStr, field_serializer
+from uuid import UUID
 
 from app.models.users.IdentityModel import SEX, IdentityModel
 

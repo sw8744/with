@@ -1,7 +1,6 @@
 import logging
 import os
 from datetime import datetime
-
 from fastapi import FastAPI
 
 from app.core.auth.passkey.paykey_aaguid import load_aaguid

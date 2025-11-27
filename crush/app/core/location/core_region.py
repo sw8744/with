@@ -1,9 +1,8 @@
 import logging
-from typing import Optional
-from uuid import UUID
-
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from typing import Optional
+from uuid import UUID
 
 from app.core.hangul.umso import 풀어쓰기
 from app.models.locations.RegionModel import RegionModel

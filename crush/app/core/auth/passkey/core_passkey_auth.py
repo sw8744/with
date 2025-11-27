@@ -4,11 +4,10 @@ import logging
 import os
 import uuid
 from datetime import datetime
-from typing import Tuple
-from uuid import UUID
-
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from typing import Tuple
+from uuid import UUID
 from webauthn import generate_registration_options, generate_authentication_options, options_to_json, \
   verify_registration_response, verify_authentication_response
 from webauthn.helpers.structs import UserVerificationRequirement

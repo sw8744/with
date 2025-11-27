@@ -1,11 +1,10 @@
 import logging
-from typing import Optional
-from uuid import UUID
-
 import numpy as np
 from fastapi import HTTPException
 from numpy._typing import NDArray
 from sqlalchemy.orm import Session
+from typing import Optional
+from uuid import UUID
 
 from app.core.database.database import jsonb_path_equals
 from app.core.hangul.umso import 풀어쓰기

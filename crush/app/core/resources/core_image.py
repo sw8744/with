@@ -1,15 +1,13 @@
 import base64
 import logging
 import re
-from typing import Tuple, Optional
-from uuid import UUID
-
 from fastapi import UploadFile
 from sqlalchemy.orm import Session
 from starlette.exceptions import HTTPException
+from typing import Tuple, Optional
+from uuid import UUID
 
-from app.core.auth.passkey import core_passkey, core_passkey_auth
-from app.core.auth.passkey.paykey_aaguid import Authenticator
+from app.core.auth.passkey import core_passkey_auth
 from app.models.resources.ImageStoreModel import ImageStoreModel
 from app.models.users.IdentityModel import IdentityModel
 

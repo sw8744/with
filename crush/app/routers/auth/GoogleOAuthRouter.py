@@ -1,12 +1,11 @@
 import logging
-from typing import Annotated
-from uuid import UUID
-
 from fastapi import APIRouter
 from fastapi.params import Cookie, Depends
 from sqlalchemy.orm import Session
 from starlette.requests import Request
 from starlette.responses import RedirectResponse, JSONResponse
+from typing import Annotated
+from uuid import UUID
 
 from app.core.auth import core_google_auth
 from app.core.auth.core_google_auth import create_auth_url

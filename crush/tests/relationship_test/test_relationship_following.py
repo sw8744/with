@@ -1,9 +1,8 @@
 import json
-from typing import Callable, Tuple
-
 import pytest
 from sqlalchemy.orm import Session
 from starlette.testclient import TestClient
+from typing import Callable, Tuple
 
 from app.main import app
 from app.models.users.IdentityModel import IdentityModel
@@ -235,7 +234,6 @@ def test_count_followers(
 
   f, f_at = access_token_factory("blocked_friend")
   _ = relation_factory(user, f, RelationshipState.BLOCKED)
-
 
   resp = client.get(
     "/api/v1/user/following/count",

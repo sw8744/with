@@ -16,6 +16,7 @@ def sha256_bytes(msg: bytes) -> str:
 
   return s256.hexdigest()
 
+
 def md5(msg: str) -> str:
   encoded = msg.encode()
 

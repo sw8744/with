@@ -1,8 +1,7 @@
 import logging
-from uuid import UUID
-
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from uuid import UUID
 
 from app.models.locations.RegionModel import RegionModel
 from app.models.plan.PlanMemberModel import PlanMemberModel, PlanRole

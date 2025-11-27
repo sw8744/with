@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
-from uuid import UUID
-
 from starlette.testclient import TestClient
+from uuid import UUID
 
 from app.main import app
 from app.models.plan.PlanActivityModel import PlanActivityModel, ActivityCategory

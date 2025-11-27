@@ -1,5 +1,4 @@
 import logging
-
 from fastapi import HTTPException
 from jwt import InvalidTokenError
 from sqlalchemy.orm import Session

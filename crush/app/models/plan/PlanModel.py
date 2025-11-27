@@ -1,10 +1,9 @@
 from datetime import datetime, date
-from typing import Optional
-from uuid import UUID as PyUUID
-
 from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql import UUID, VARCHAR, DATE, ARRAY, TIMESTAMP
 from sqlalchemy.orm import Mapped
+from typing import Optional
+from uuid import UUID as PyUUID
 
 from app.core.database.database import BaseTable
 

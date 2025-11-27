@@ -1,11 +1,10 @@
 import logging
-from typing import Annotated
-
 from fastapi import Depends, HTTPException
 from fastapi.params import Cookie, Security
 from fastapi.routing import APIRouter
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
+from typing import Annotated
 
 from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.auth.passkey import core_passkey_auth

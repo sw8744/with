@@ -1,13 +1,12 @@
+import google_auth_oauthlib.flow
 import json
 import logging
-from datetime import datetime
-from typing import Optional
-from uuid import UUID
-
-import google_auth_oauthlib.flow
 import requests
+from datetime import datetime
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from typing import Optional
+from uuid import UUID
 
 from app.core.auth.core_oauth import get_session_state
 from app.core.config_store import config

@@ -1,13 +1,12 @@
+import jwt
 import logging
 import re
 import uuid
 from datetime import datetime, timedelta, timezone
 from enum import Enum
+from fastapi import HTTPException
 from typing import Optional
 from uuid import UUID
-
-import jwt
-from fastapi import HTTPException
 
 from app.core.config_store import config
 

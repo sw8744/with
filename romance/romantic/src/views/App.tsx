@@ -8,7 +8,6 @@ import RegionShowcase from "./location/RegionShowcase.tsx";
 import PlaceShowcase from "./location/PlaceShowcase.tsx";
 import CoreLocationIndex from "./location/LocationIndexPage/CoreLocationIndex.tsx";
 import LikedPlaces from "./profile/MyProfile/LikedPlaces.tsx";
-import MyPlans from "./profile/MyProfile/MyPlans.tsx";
 import CoreGoogleRegister from "./auth/signup/GoogleRegister/CoreGoogleRegister.tsx";
 import CoreEditProfile from "./profile/Settings/account/CoreEditProfile.tsx";
 import {AnimatePresence} from "framer-motion";
@@ -45,6 +44,8 @@ function AnimatedRouter() {
   return (
     <AnimatePresence mode="popLayout">
       <Routes location={location} key={location.pathname}>
+        <Route path={"/"} element={<CoreLocationIndex/>}/>
+
         <Route path={"/location"}>
           <Route path={""} element={<CoreLocationIndex/>}/>
           <Route path={"region/:regionUID"} element={<RegionShowcase/>}/>
@@ -62,7 +63,6 @@ function AnimatedRouter() {
           element={<CoreProfile/>}
         >
           <Route path={""} element={<LikedPlaces/>}/>
-          <Route path={"plans"} element={<MyPlans/>}/>
         </Route>
 
         <Route path={"/user/:userUUID"} element={<CoreUser/>}/>
@@ -87,11 +87,6 @@ function AnimatedRouter() {
         <Route
           path={"/logout"}
           element={<Logout/>}
-        />
-
-        <Route
-          path={"/blank"}
-          element={<></>}
         />
       </Routes>
     </AnimatePresence>

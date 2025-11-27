@@ -81,7 +81,6 @@ def get_identity_by_uid(
     return Identity(iden)
 
 
-
 def register_using_session(
   application: RegisterIdentityReq,
   reg_session_uuid: UUID,

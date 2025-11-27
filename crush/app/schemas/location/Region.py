@@ -1,7 +1,6 @@
+from pydantic import BaseModel, Field, ConfigDict, field_serializer
 from typing import Optional
 from uuid import UUID
-
-from pydantic import BaseModel, Field, ConfigDict, field_serializer
 
 from app.models.locations.RegionModel import RegionModel
 

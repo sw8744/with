@@ -1,10 +1,9 @@
 import logging
-from typing import Annotated
-from uuid import UUID
-
 from fastapi import APIRouter, Query, Depends, Security
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
+from typing import Annotated
+from uuid import UUID
 
 from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection

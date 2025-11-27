@@ -1,7 +1,6 @@
+from pydantic import Field, BaseModel
 from typing import Optional
 from uuid import UUID
-
-from pydantic import Field, BaseModel
 
 
 class LikeSearchRequest(BaseModel):

@@ -1,6 +1,5 @@
-import uuid
-
 import numpy as np
+import uuid
 from numpy._typing import NDArray
 from pgvector.sqlalchemy import Vector
 from sqlalchemy import Column, UUID, ForeignKey

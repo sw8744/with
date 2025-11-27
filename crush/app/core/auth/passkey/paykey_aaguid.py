@@ -1,9 +1,8 @@
 import json
 import logging
+from pydantic.dataclasses import dataclass
 from typing import Optional
 from uuid import UUID
-
-from pydantic.dataclasses import dataclass
 
 from app.core.database.database import redis_aaguid_db2
 

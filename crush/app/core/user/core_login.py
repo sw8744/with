@@ -1,12 +1,12 @@
 import logging
-from typing import Tuple
-
 from fastapi import HTTPException
+from typing import Tuple
 
 from app.core.user.core_jwt import create_access_token, create_refresh_token, Role
 from app.schemas.user.Identity import Identity
 
 log = logging.getLogger(__name__)
+
 
 def login(identity: Identity) -> Tuple[str, str]:
   if identity is None:

@@ -1,8 +1,7 @@
 import json
-import random
-
 import numpy as np
 import pytest
+import random
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 

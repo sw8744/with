@@ -1,8 +1,7 @@
-from uuid import UUID as PyUUID
-
 from sqlalchemy import Column, ForeignKey, event
 from sqlalchemy.dialects.postgresql import UUID, VARCHAR, DOUBLE_PRECISION, ARRAY, JSONB, TEXT
 from sqlalchemy.orm import Mapped, relationship, backref
+from uuid import UUID as PyUUID
 
 from app.core.database.database import BaseTable
 from app.core.hangul.umso import 풀어쓰기

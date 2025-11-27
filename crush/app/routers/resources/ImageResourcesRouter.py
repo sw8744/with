@@ -1,10 +1,9 @@
 import logging
-from uuid import UUID
-
 from fastapi import APIRouter, UploadFile
 from fastapi.params import Security, Depends, File
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse, RedirectResponse, FileResponse, Response
+from uuid import UUID
 
 from app.core.auth.core_authorization import authorization_header, authorize_jwt
 from app.core.database.database import create_connection
@@ -77,7 +76,7 @@ def get_profile_image(
   path="/authenticator/{aaguid}"
 )
 def get_authenticator_image(
-        aaguid: UUID,
+  aaguid: UUID,
 ):
   log.info("Querying authenticator image for AAGUID %r", aaguid)
   path, mime = core_image.authenticator_image(aaguid)

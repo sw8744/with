@@ -1,8 +1,7 @@
 from datetime import datetime
+from pydantic import BaseModel, Field, field_serializer
 from typing import Optional
 from uuid import UUID
-
-from pydantic import BaseModel, Field, field_serializer
 
 from app.models.plan.PlanModel import PlanModel
 

@@ -1,6 +1,5 @@
 import uuid
 from datetime import datetime
-
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID, VARCHAR, TIMESTAMP
 from sqlalchemy.orm import Mapped, relationship, backref

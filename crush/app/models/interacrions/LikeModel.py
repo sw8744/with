@@ -1,9 +1,8 @@
 from datetime import datetime
-from uuid import UUID as PyUUID
-
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP
 from sqlalchemy.orm import Mapped, relationship, backref
+from uuid import UUID as PyUUID
 
 from app.core.database.database import BaseTable
 from app.models.locations.PlaceModel import PlaceModel
